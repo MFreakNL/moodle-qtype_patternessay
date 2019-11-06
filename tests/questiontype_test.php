@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Unit tests for the pmatch question type class.
+ * Unit tests for the patternessay question type class.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright  2012 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,23 +26,23 @@
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
-require_once($CFG->dirroot . '/question/type/pmatch/questiontype.php');
+require_once($CFG->dirroot . '/question/type/patternessay/questiontype.php');
 
 
 /**
- * Unit tests for the pmatch question type class.
+ * Unit tests for the patternessay question type class.
  *
  * @copyright  2012 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @group      qtype_pmatch
+ * @group      qtype_patternessay
  */
-class qtype_pmatch_questiontype_test extends basic_testcase {
+class qtype_patternessay_questiontype_test extends basic_testcase {
     public static $includecoverage = array('question/type/questiontype.php',
-                                        'question/type/pmatch/questiontype.php');
+                                        'question/type/patternessay/questiontype.php');
     protected $qtype;
 
     protected function setUp() {
-        $this->qtype = new qtype_pmatch();
+        $this->qtype = new qtype_patternessay();
     }
 
     protected function tearDown() {
@@ -60,7 +60,7 @@ class qtype_pmatch_questiontype_test extends basic_testcase {
     }
 
     public function test_name() {
-        $this->assertEquals($this->qtype->name(), 'pmatch');
+        $this->assertEquals($this->qtype->name(), 'patternessay');
     }
 
     public function test_can_analyse_responses() {

@@ -9,7 +9,7 @@
   </question>
 
 <!-- question: 2  -->
-  <question type="pmatch">
+  <question type="patternessay">
     <name>
       <text>Imported pattern match question</text>
     </name>

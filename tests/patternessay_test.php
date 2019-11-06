@@ -16,39 +16,39 @@
 
 
 /**
- * This file contains tests that tests the interpretation of a pmatch string.
+ * This file contains tests that tests the interpretation of a patternessay string.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2012 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
-require_once($CFG->dirroot . '/question/type/pmatch/pmatchlib.php');
+require_once($CFG->dirroot . '/question/type/patternessay/patternessaylib.php');
 
 /**
- * Tests of the interpretation of the pmatch pattern in the pmatch library.
+ * Tests of the interpretation of the patternessay pattern in the patternessay library.
  *
  * @copyright 2012 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @group     qtype_pmatch
+ * @group     qtype_patternessay
  */
-class qtype_pmatch_test extends basic_testcase {
+class qtype_patternessay_test extends basic_testcase {
     protected function match($string, $expression, $options = null) {
-        $string = new pmatch_parsed_string($string, $options);
-        $expression = new pmatch_expression($expression, $options);
+        $string = new patternessay_parsed_string($string, $options);
+        $expression = new patternessay_expression($expression, $options);
         $this->assertEquals('', $expression->get_parse_error());
         return $expression->matches($string);
     }
 
     protected function error_message($expression, $options = null) {
-        $expression = new pmatch_expression($expression, $options);
+        $expression = new patternessay_expression($expression, $options);
         return $expression->get_parse_error();
     }
 
     public function test_strip_sentence_divider() {
-        $options = new pmatch_options();
+        $options = new patternessay_options();
 
         $this->assertEquals('Cat', $options->strip_sentence_divider('Cat'));
         $this->assertEquals('Cat', $options->strip_sentence_divider('Cat.'));
@@ -59,27 +59,27 @@ class qtype_pmatch_test extends basic_testcase {
     }
 
     /**
-     * Data provider function for test_pmatch_error
+     * Data provider function for test_patternessay_error
      *
      * @return array
      */
-    public function pmatch_error_provider() {
+    public function patternessay_error_provider() {
         return [
                 // No closing bracket.
                 ['match_mow([tom maud]|[sid jane]', get_string('ie_missingclosingbracket',
-                        'qtype_pmatch', 'match_mow([tom maud]|[sid jane]')],
+                        'qtype_patternessay', 'match_mow([tom maud]|[sid jane]')],
                 // No contents.
                 ['match_mow()', get_string('ie_unrecognisedsubcontents',
-                        'qtype_pmatch', 'match_mow()')],
+                        'qtype_patternessay', 'match_mow()')],
                 // Ends in an or character.
                 ['match_mow([tom maud]|)', get_string('ie_lastsubcontenttypeorcharacter',
-                        'qtype_pmatch', '[tom maud]|')],
+                        'qtype_patternessay', '[tom maud]|')],
                 // Ends in a space.
                 ['match_mow([tom maud] )', get_string('ie_lastsubcontenttypeworddelimiter',
-                        'qtype_pmatch', 'match_mow([tom maud] )')],
+                        'qtype_patternessay', 'match_mow([tom maud] )')],
                 // Ends in a proximity delimiter.
                 ['match_mow([tom maud]_)', get_string('ie_lastsubcontenttypeworddelimiter',
-                        'qtype_pmatch', 'match_mow([tom maud]_)')],
+                        'qtype_patternessay', 'match_mow([tom maud]_)')],
                 // A full stop is only allowed in match expressions if surrounded on both sides by digits.
                 ['match(abc.)', ''],
                 ['match(abc.def)', ''],
@@ -102,21 +102,21 @@ class qtype_pmatch_test extends basic_testcase {
     /**
      * Test for messege error
      *
-     * @dataProvider pmatch_error_provider
+     * @dataProvider patternessay_error_provider
      * @param $expression
      * @param $actual
      */
-    public function test_pmatch_error($expression, $actual) {
+    public function test_patternessay_error($expression, $actual) {
         $this->assertEquals($this->error_message($expression), $actual);
     }
 
     /**
-     * Data provider function for test_pmatch_matching
+     * Data provider function for test_patternessay_matching
      *
      * @return array
      */
-    public function pmatch_matching_provider() {
-        $options = new pmatch_options();
+    public function patternessay_matching_provider() {
+        $options = new patternessay_options();
         $options->sentencedividers = '|$';
 
         $expressionallnot = <<<EOF
@@ -329,10 +329,10 @@ EOF;
                 ['gabbcdffff', 'match_m2(abcdffff)', true],
                 ['abbcdgffff', 'match_m2(abcdffff)', true],
                 ['', 'match(*)', true],
-                ['ABCD', 'match(abcd)', true, pmatch_options::make(['ignorecase' => true])],
+                ['ABCD', 'match(abcd)', true, patternessay_options::make(['ignorecase' => true])],
                 ['Mary had a little LamB', 'match(mary had a little lamb)', true,
-                        pmatch_options::make(['ignorecase' => true])],
-                ['ABCD', 'match(abcd)', false, pmatch_options::make(['ignorecase' => false])],
+                        patternessay_options::make(['ignorecase' => true])],
+                ['ABCD', 'match(abcd)', false, patternessay_options::make(['ignorecase' => false])],
                 ['efgh', 'not ( match_c(c) )', true],
                 ['abc', 'not ( match_c(c) )', false],
                 ['lock', 'not ( match_c(c) )', false],
@@ -392,9 +392,9 @@ EOF;
                 // The sentence divider can be any characters (although they should not be characters that
                 // might appear in a word).
                 ['one four| two|', 'match_w(one_two)', false,
-                        pmatch_options::make(['sentencedividers' => '|'])],
+                        patternessay_options::make(['sentencedividers' => '|'])],
                 ['one four two|', 'match_w(one_two)', true,
-                        pmatch_options::make(['sentencedividers' => '|'])],
+                        patternessay_options::make(['sentencedividers' => '|'])],
                 ['one four| two|', 'match_w(one_two)', false, $options],
                 ['one four two|', 'match_w(one_two)', true, $options],
                 ['one four$ two$', 'match_w(one_two)', false, $options],
@@ -408,7 +408,7 @@ EOF;
                 ['abceghmn', $expressionstr, false],
                 ['fghij', 'match(abcde)', false],
                 ['fghij', 'match(abcde)', true,
-                        pmatch_options::make(['synonyms' => ['abcde' => 'xyz|fghij']])],
+                        patternessay_options::make(['synonyms' => ['abcde' => 'xyz|fghij']])],
                 // Further tests to check that phrase is matching the right no of words.
                 ['it does not really contain an object which is a verb',
                         'match_mw([not contain]_verb)', false],
@@ -447,33 +447,33 @@ EOF;
                 ['»Ich weiß nicht was ich sagen soll «', 'match(»Ich weiß nicht was ich sagen soll «)', true],
                 ['„Kommst du mit”', 'match(„Kommst du mit”)', true],
                 ['« Attends, je d\'important »', 'match(« Attends, je d\'important »)', true],
-                ['Test?', 'match(Test\?)', true, pmatch_options::make(['sentencedividers' => ''])],
-                ['Test', 'match(Test\?)', false, pmatch_options::make(['sentencedividers' => ''])],
-                ['Test.', 'match(Test\?)', false, pmatch_options::make(['sentencedividers' => ''])],
-                ['Testa', 'match(Test\?)', false, pmatch_options::make(['sentencedividers' => ''])],
-                ['Test?', 'match(Test?)', true, pmatch_options::make(['sentencedividers' => ''])],
-                ['Test', 'match(Test?)', false, pmatch_options::make(['sentencedividers' => ''])],
-                ['Test.', 'match(Test?)', true, pmatch_options::make(['sentencedividers' => ''])],
-                ['Testa', 'match(Test?)', true, pmatch_options::make(['sentencedividers' => ''])],
-                ['Punctuation is important.', 'match(Punctuation is important.)', true, pmatch_options::make(['sentencedividers' => ''])],
-                ['Punctuation is important', 'match(Punctuation is important.)', false, pmatch_options::make(['sentencedividers' => ''])],
-                ['Is punctuation important?', 'match(Is punctuation important?)', true, pmatch_options::make(['sentencedividers' => ''])],
-                ['Is punctuation important?', 'match(Is punctuation important)', false, pmatch_options::make(['sentencedividers' => ''])],
-                ['Punctuation is important!', 'match(Punctuation is important!)', true, pmatch_options::make(['sentencedividers' => ''])],
-                ['Punctuation is important!', 'match(Punctuation is important)', false, pmatch_options::make(['sentencedividers' => ''])],
+                ['Test?', 'match(Test\?)', true, patternessay_options::make(['sentencedividers' => ''])],
+                ['Test', 'match(Test\?)', false, patternessay_options::make(['sentencedividers' => ''])],
+                ['Test.', 'match(Test\?)', false, patternessay_options::make(['sentencedividers' => ''])],
+                ['Testa', 'match(Test\?)', false, patternessay_options::make(['sentencedividers' => ''])],
+                ['Test?', 'match(Test?)', true, patternessay_options::make(['sentencedividers' => ''])],
+                ['Test', 'match(Test?)', false, patternessay_options::make(['sentencedividers' => ''])],
+                ['Test.', 'match(Test?)', true, patternessay_options::make(['sentencedividers' => ''])],
+                ['Testa', 'match(Test?)', true, patternessay_options::make(['sentencedividers' => ''])],
+                ['Punctuation is important.', 'match(Punctuation is important.)', true, patternessay_options::make(['sentencedividers' => ''])],
+                ['Punctuation is important', 'match(Punctuation is important.)', false, patternessay_options::make(['sentencedividers' => ''])],
+                ['Is punctuation important?', 'match(Is punctuation important?)', true, patternessay_options::make(['sentencedividers' => ''])],
+                ['Is punctuation important?', 'match(Is punctuation important)', false, patternessay_options::make(['sentencedividers' => ''])],
+                ['Punctuation is important!', 'match(Punctuation is important!)', true, patternessay_options::make(['sentencedividers' => ''])],
+                ['Punctuation is important!', 'match(Punctuation is important)', false, patternessay_options::make(['sentencedividers' => ''])],
         ];
     }
 
     /**
-     * For Test pmatch matching
+     * For Test patternessay matching
      *
-     * @dataProvider pmatch_matching_provider
+     * @dataProvider patternessay_matching_provider
      * @param string $string
-     * @param pmatch_expression $expression
+     * @param patternessay_expression $expression
      * @param bool|null $shouldmatch is method assert.
-     * @param pmatch_options|null $option is optionfor method assert.
+     * @param patternessay_options|null $option is optionfor method assert.
      */
-    public function test_pmatch_matching($string, $expression, $shouldmatch, $options = null) {
+    public function test_patternessay_matching($string, $expression, $shouldmatch, $options = null) {
         if ($shouldmatch) {
             $this->assertTrue($this->match($string, $expression, $options));
         } else {
@@ -482,11 +482,11 @@ EOF;
     }
 
     /**
-     * Data provider function for test_pmatch_formatting
+     * Data provider function for test_patternessay_formatting
      *
      * @return array
      */
-    public function pmatch_formatting_provider() {
+    public function patternessay_formatting_provider() {
         return [
                 ['match_all (
     match_any (
@@ -556,18 +556,18 @@ EOF;
     }
 
     /**
-     * For Test pmatch formatting
+     * For Test patternessay formatting
      *
-     * @dataProvider pmatch_formatting_provider
+     * @dataProvider patternessay_formatting_provider
      * @param string $expected
      * @param $string $unformattedexpression
      */
-    public function test_pmatch_formatting($expected, $unformattedexpression) {
-        $expression = new pmatch_expression($unformattedexpression);
+    public function test_patternessay_formatting($expected, $unformattedexpression) {
+        $expression = new patternessay_expression($unformattedexpression);
         $this->assertEquals($expected, $expression->get_formatted_expression_string());
     }
 
-    public function pmatch_number_regex_testcases() {
+    public function patternessay_number_regex_testcases() {
         return [
             ['1.981', 1],
             ['-1.981', 1],
@@ -590,13 +590,13 @@ EOF;
     }
 
     /**
-     * @dataProvider pmatch_number_regex_testcases
+     * @dataProvider patternessay_number_regex_testcases
      */
-    public function test_pmatch_number_regex($string, $expectedmatches) {
-        $this->assertSame($expectedmatches, preg_match('!'.PMATCH_NUMBER.'$!A', $string));
+    public function test_patternessay_number_regex($string, $expectedmatches) {
+        $this->assertSame($expectedmatches, preg_match('!'.patternessay_NUMBER.'$!A', $string));
     }
 
-    public function pmatch_number_matching_cases() {
+    public function patternessay_number_matching_cases() {
         return [
             ['2', 'match(2)', true],
             ['1', 'match(1)', true],
@@ -655,9 +655,9 @@ EOF;
     }
 
     /**
-     * @dataProvider pmatch_number_matching_cases
+     * @dataProvider patternessay_number_matching_cases
      */
-    public function test_pmatch_number_matching($string, $expression, $shouldmatch) {
+    public function test_patternessay_number_matching($string, $expression, $shouldmatch) {
         if ($shouldmatch) {
             $this->assertTrue($this->match($string, $expression));
         } else {
@@ -665,7 +665,7 @@ EOF;
         }
     }
 
-    public function test_pmatch_unicode_matching() {
+    public function test_patternessay_unicode_matching() {
         // Unicode normalisation means that the same characters with two different
         // unicode representations should match.
         // "\xC3\x85" = 'LATIN CAPITAL LETTER A WITH RING ABOVE' (U+00C5)
@@ -673,12 +673,12 @@ EOF;
         $this->assertTrue($this->match("A\xCC\x8A", "match(\xC3\x85)"));
     }
 
-    public function test_pmatch_matching_countries() {
+    public function test_patternessay_matching_countries() {
         // This is a minimal failure in that doing any one of these things fixes it:
         // - Removing the set_synonyms call.
         // - Removing A from both the string and the pattern.
         // - Removing B from both the string and the pattern.
-        $options = new pmatch_options();
+        $options = new patternessay_options();
         $options->set_synonyms(array(
             (object) array('word' => 'B', 'synonyms' => '*B*'),
         ));

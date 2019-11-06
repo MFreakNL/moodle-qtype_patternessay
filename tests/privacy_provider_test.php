@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy API tests for qtype_pmatch
+ * Privacy API tests for qtype_patternessay
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2018 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace qtype_pmatch\tests;
+namespace qtype_patternessay\tests;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -36,23 +36,23 @@ class privacy_provider_test extends \core_privacy\tests\provider_testcase {
         $user1 = $generator->create_user();
         $user2 = $generator->create_user();
         set_user_preferences([
-                'qtype_pmatch_testquestion_pagesize' => 5
+                'qtype_patternessay_testquestion_pagesize' => 5
         ], $user1->id);
-        \qtype_pmatch\privacy\provider::export_user_preferences($user1->id);
+        \qtype_patternessay\privacy\provider::export_user_preferences($user1->id);
         $writer = writer::with_context(\context_system::instance());
         $export = (object) [
-            'qtype_pmatch_testquestion_pagesize' => (object) [
+            'qtype_patternessay_testquestion_pagesize' => (object) [
                 'value' => 5,
-                'description' => get_string('privacy:metadata:preference:pagesize', 'qtype_pmatch')
+                'description' => get_string('privacy:metadata:preference:pagesize', 'qtype_patternessay')
             ]
         ];
-        $this->assertEquals($export, $writer->get_user_preferences('qtype_pmatch'));
+        $this->assertEquals($export, $writer->get_user_preferences('qtype_patternessay'));
 
         // Test that another user with no user preferences doesn't get any data exported.
         writer::reset();
-        \qtype_pmatch\privacy\provider::export_user_preferences($user2->id);
+        \qtype_patternessay\privacy\provider::export_user_preferences($user2->id);
         $writer = writer::with_context(\context_system::instance());
         $export = (object) [];
-        $this->assertEquals($export, $writer->get_user_preferences('qtype_pmatch'));
+        $this->assertEquals($export, $writer->get_user_preferences('qtype_patternessay'));
     }
 }

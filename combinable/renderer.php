@@ -17,7 +17,7 @@
 /**
  * Combined question embedded sub question renderer class.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright  2013 The Open University
  * @author     Jamie Pratt <me@jamiep.org>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -27,7 +27,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 
-class qtype_pmatch_embedded_renderer extends qtype_combined_text_entry_renderer_base {
+class qtype_patternessay_embedded_renderer extends qtype_combined_text_entry_renderer_base {
 
     /**
      * @param question_attempt $qa
@@ -43,10 +43,10 @@ class qtype_pmatch_embedded_renderer extends qtype_combined_text_entry_renderer_
         $link = '';
         if ($subq->question->user_can_view()) {
             $link = html_writer::link(new moodle_url(
-                    '/question/type/pmatch/testquestion.php', ['id' => $subq->question->id]),
-                    get_string('test', 'qtype_pmatch'), ['title' => get_string('testsubquestionx', 'qtype_pmatch',
+                    '/question/type/patternessay/testquestion.php', ['id' => $subq->question->id]),
+                    get_string('test', 'qtype_patternessay'), ['title' => get_string('testsubquestionx', 'qtype_patternessay',
                             $subq->get_identifier())]);
         }
-        return html_writer::tag('span', $result . $link, ['class' => 'combined-pmatch-input']);
+        return html_writer::tag('span', $result . $link, ['class' => 'combined-patternessay-input']);
     }
 }

@@ -17,16 +17,16 @@
 /**
  * Defines the testquestion_responses class.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2016 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace qtype_pmatch;
+namespace qtype_patternessay;
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
-require_once($CFG->dirroot . '/question/type/pmatch/question.php');
+require_once($CFG->dirroot . '/question/type/patternessay/question.php');
 
 /**
  * Question type: Pattern match: Test responses class.
@@ -38,7 +38,7 @@ require_once($CFG->dirroot . '/question/type/pmatch/question.php');
  */
 class testquestion_responses {
 
-    /** @var \qtype_pmatch_question the question the test responses relate to. */
+    /** @var \qtype_patternessay_question the question the test responses relate to. */
     protected $questionobj = null;
 
     /**
@@ -67,7 +67,7 @@ class testquestion_responses {
     /**
      * Create an instance of this class representing the saved test responses of a given question.
      *
-     * @param \qtype_pmatch_question $questionobj the quiz.
+     * @param \qtype_patternessay_question $questionobj the quiz.
      * @return testquestion_responses newly creted instance.
      */
     public static function create_for_question($questionobj) {
@@ -87,7 +87,7 @@ class testquestion_responses {
      */
     public static function get_responses_by_questionid($questionid) {
         global $DB;
-        $responses = $DB->get_records('qtype_pmatch_test_responses', array('questionid' => $questionid), 'id ASC');
+        $responses = $DB->get_records('qtype_patternessay_test_responses', array('questionid' => $questionid), 'id ASC');
         return self::data_to_responses($responses);
     }
 
@@ -99,7 +99,7 @@ class testquestion_responses {
      */
     public static function get_graded_responses_by_questionid($questionid) {
         global $DB;
-        $sqlgraded = "SELECT * FROM {qtype_pmatch_test_responses} WHERE questionid = ? " .
+        $sqlgraded = "SELECT * FROM {qtype_patternessay_test_responses} WHERE questionid = ? " .
                 self::SQLGRADED . " ORDER BY id ASC";
         $responses = $DB->get_records_sql($sqlgraded, array('questionid' => $questionid));
         return self::data_to_responses($responses);
@@ -112,7 +112,7 @@ class testquestion_responses {
      */
     public static function get_responses_by_ids($responseids) {
         global $DB;
-        $responses = $DB->get_records_list('qtype_pmatch_test_responses', 'id', $responseids, 'id ASC');
+        $responses = $DB->get_records_list('qtype_patternessay_test_responses', 'id', $responseids, 'id ASC');
         return self::data_to_responses($responses);
     }
 
@@ -161,7 +161,7 @@ class testquestion_responses {
             $count++;
             // There could be matching responses in the DB. Ugly to have a DB call in a for loop.
             // but seemed best compromise since this is a rare function.
-            $id = $DB->get_field_select('qtype_pmatch_test_responses', 'id', 'response=? AND questionid=?',
+            $id = $DB->get_field_select('qtype_patternessay_test_responses', 'id', 'response=? AND questionid=?',
                     array($response->response, $response->questionid));
             // Check for duplicates.
             if ($id) {
@@ -171,7 +171,7 @@ class testquestion_responses {
             }
 
             // Save unique response.
-            $DB->insert_record('qtype_pmatch_test_responses', $response);
+            $DB->insert_record('qtype_patternessay_test_responses', $response);
             $feedback->saved++;
         }
         return $feedback;
@@ -184,7 +184,7 @@ class testquestion_responses {
      */
     public static function update_response($response) {
         global $DB;
-        return $DB->update_record('qtype_pmatch_test_responses', $response);
+        return $DB->update_record('qtype_patternessay_test_responses', $response);
     }
 
     /**
@@ -194,8 +194,8 @@ class testquestion_responses {
      */
     public static function delete_responses_by_ids ($responseids) {
         global $DB;
-        $DB->delete_records_list('qtype_pmatch_rule_matches', 'testresponseid', $responseids);
-        return $DB->delete_records_list('qtype_pmatch_test_responses', 'id', $responseids);
+        $DB->delete_records_list('qtype_patternessay_rule_matches', 'testresponseid', $responseids);
+        return $DB->delete_records_list('qtype_patternessay_test_responses', 'id', $responseids);
     }
 
     /**
@@ -224,7 +224,7 @@ class testquestion_responses {
      *
      * We use the constant self::SQLGRADED to keep this check in one place and easy to manage.
      *
-     * @param \qtype_pmatch_question $question the question.
+     * @param \qtype_patternessay_question $question the question.
      * @return \stdClass $counts as above.
      */
     public static function get_question_grade_summary_counts($question) {
@@ -232,24 +232,24 @@ class testquestion_responses {
         $counts = new \stdClass();
 
         // Get graded count.
-        $sqlgraded = "SELECT COUNT(1) FROM {qtype_pmatch_test_responses}
+        $sqlgraded = "SELECT COUNT(1) FROM {qtype_patternessay_test_responses}
                 WHERE questionid = ? " . self::SQLGRADED;
         $params = array('questionid' => $question->id);
 
         // Get total responses.
-        $counts->total = $DB->count_records('qtype_pmatch_test_responses', $params);
+        $counts->total = $DB->count_records('qtype_patternessay_test_responses', $params);
         // Get correct responses.
         $counts->correct = $DB->count_records_sql($sqlgraded . " AND expectedfraction = gradedfraction", $params);
 
         // Get Miss Positive.
         $params['expectedfraction'] = 0;
         $params['gradedfraction'] = 1;
-        $counts->misspositive = $DB->count_records('qtype_pmatch_test_responses', $params);
+        $counts->misspositive = $DB->count_records('qtype_patternessay_test_responses', $params);
 
         // Get Miss Negative.
         $params['expectedfraction'] = 1;
         $params['gradedfraction'] = 0;
-        $counts->missnegative = $DB->count_records('qtype_pmatch_test_responses', $params);
+        $counts->missnegative = $DB->count_records('qtype_patternessay_test_responses', $params);
 
         $counts->accuracy = 0;
         if ($counts->total) {
@@ -263,7 +263,7 @@ class testquestion_responses {
      *
      * This method is called several times, which is not good for performance :-(
      *
-     * @param \qtype_pmatch_question $question the question.
+     * @param \qtype_patternessay_question $question the question.
      * @return bool true if it does.
      */
     public static function has_responses($question) {
@@ -273,14 +273,14 @@ class testquestion_responses {
         }
 
         // Get total responses.
-        return $DB->record_exists('qtype_pmatch_test_responses', ['questionid' => $question->id]);
+        return $DB->record_exists('qtype_patternessay_test_responses', ['questionid' => $question->id]);
     }
 
     /**
      * Grade the given response with the given question.
      *
      * @param testquestion_response $response response object to grade
-     * @param \qtype_pmatch_question $question to do the grading
+     * @param \qtype_patternessay_question $question to do the grading
      */
     public static function grade_response($response, $question) {
         list($actualmark) = $question->grade_response(array('answer' => $response->response));
@@ -293,7 +293,7 @@ class testquestion_responses {
      *
      * @param testquestion_response[] $responses response objects to grade
      * @param \question_answer $rule Answer object containing the rule to grade with
-     * @param \qtype_pmatch_question $question to do the grading
+     * @param \qtype_patternessay_question $question to do the grading
      */
     public static function grade_responses_by_rule($responses, $rule, $question) {
         foreach ($responses as $response) {
@@ -341,7 +341,7 @@ class testquestion_responses {
     public static function get_rule_accuracy_counts(&$responses, $rule, $matches) {
 
         $accuracy = [
-                'class' => 'qtype_pmatch-selftest',
+                'class' => 'qtype_patternessay-selftest',
                 'responseneedmatch' => count($responses),
                 'responsestillprocess' => 0,
                 'correctlymatched' => 0,
@@ -387,7 +387,7 @@ class testquestion_responses {
     /**
      * Save a record of of each match between a rule and a graded test response.
      *
-     * @param \qtype_pmatch_question $question to do the grading
+     * @param \qtype_patternessay_question $question to do the grading
      * @param array $responseids an array of response ids that need rule matching.
      */
     public static function save_rule_matches($question, $responseids=array()) {
@@ -401,7 +401,7 @@ class testquestion_responses {
             self::delete_rule_matches($question, $responseids);
             $responses = self::get_responses_by_ids($responseids);
         }
-        // Grade a response and save results to the qtype_pmatch_rule_matches table.
+        // Grade a response and save results to the qtype_patternessay_rule_matches table.
         foreach ($responses as $response) {
             // Do not re-grade responses that have not already been graded.
             if (!is_double($response->gradedfraction) || !is_double($response->expectedfraction)) {
@@ -420,7 +420,7 @@ class testquestion_responses {
                     $rulematch['answerid'] = $rule->id;
                     $rulematch['testresponseid'] = $response->id;
                     $rulematch['questionid'] = $question->id;
-                    $DB->insert_record('qtype_pmatch_rule_matches', (object)$rulematch);
+                    $DB->insert_record('qtype_patternessay_rule_matches', (object)$rulematch);
                 }
             }
         }
@@ -429,7 +429,7 @@ class testquestion_responses {
     /**
      * Grade all responses and save rule matches for a question.
      *
-     * @param \qtype_pmatch_question $question
+     * @param \qtype_patternessay_question $question
      */
     public static function grade_responses_and_save_matches($question) {
         $responses = self::get_responses_by_questionid($question->id);
@@ -442,7 +442,7 @@ class testquestion_responses {
     /**
      * Method providing results for trying a rule on a response set for a question,
      * without storing anything back into the database.
-     * @param \qtype_pmatch_question $question
+     * @param \qtype_patternessay_question $question
      * @param string $ruletxt
      * @param number $fraction 1 or 0.
      * @return string
@@ -450,18 +450,18 @@ class testquestion_responses {
     public static function try_rule($question, $ruletxt, $fraction) {
         $id = 0;
         $answer = new \question_answer($id, $ruletxt, $fraction, '', 1);
-        $expression = new \pmatch_expression($answer->answer);
+        $expression = new \patternessay_expression($answer->answer);
         if ($expression->is_valid()) {
             $answer->answer = $expression->get_formatted_expression_string();
         } else {
-            return \html_writer::div(get_string('tryrulenovalidrule', 'qtype_pmatch'));
+            return \html_writer::div(get_string('tryrulenovalidrule', 'qtype_patternessay'));
         }
         $responses = self::get_graded_responses_by_questionid($question->id);
         if (empty($responses)) {
-            return \html_writer::div(get_string('tryrulenogradedresponses', 'qtype_pmatch'));
+            return \html_writer::div(get_string('tryrulenogradedresponses', 'qtype_patternessay'));
         }
         $accuracy = [
-                'class' => 'qtype_pmatch-selftest',
+                'class' => 'qtype_patternessay-selftest',
                 'responseneedmatch' => count($responses),
                 'responsestillprocess' => 0,
                 'correctlymatched' => 0,
@@ -493,11 +493,11 @@ class testquestion_responses {
                 }
             } else {
                 if ($response->expectedfraction) {
-                    $responsematches[] = '<span class="qtype_pmatch-selftest-missed-negative">' .
+                    $responsematches[] = '<span class="qtype_patternessay-selftest-missed-negative">' .
                             $response->id . ': ' . $response->response .
                             '</span>';
                 } else {
-                    $responsematches[] = '<span class="qtype_pmatch-selftest-missed-positive">' .
+                    $responsematches[] = '<span class="qtype_patternessay-selftest-missed-positive">' .
                             $response->id . ': ' . $response->response .
                             '</span>';
                 }
@@ -516,11 +516,11 @@ class testquestion_responses {
         $accuracy['responsestillprocess'] = count($responses);
         // Prepare output.
         if (empty($responsematches)) {
-            return \html_writer::div(get_string('tryrulenomatch', 'qtype_pmatch'));
+            return \html_writer::div(get_string('tryrulenomatch', 'qtype_patternessay'));
         } else {
-            $out = \html_writer::div(get_string('ruleaccuracylabel', 'qtype_pmatch'));
-            $out .= \html_writer::div(get_string('ruleaccuracy', 'qtype_pmatch', $accuracy));
-            $out .= \html_writer::div(get_string('tryrulecoverage', 'qtype_pmatch'));
+            $out = \html_writer::div(get_string('ruleaccuracylabel', 'qtype_patternessay'));
+            $out .= \html_writer::div(get_string('ruleaccuracy', 'qtype_patternessay', $accuracy));
+            $out .= \html_writer::div(get_string('tryrulecoverage', 'qtype_patternessay'));
             $out .= \html_writer::start_div();
             $out .= \html_writer::alist($responsematches);
             $out .= \html_writer::end_div();
@@ -530,17 +530,17 @@ class testquestion_responses {
 
     /**
      * Delete the record of each match between a rule and test response for a given question.s
-     * @param \qtype_pmatch_question $question
+     * @param \qtype_patternessay_question $question
      * @param array $responseids Optional array of response ids
      */
     public static function delete_rule_matches($question, $responseids=array()) {
         global $DB;
         if (empty($responseids)) {
-            $DB->delete_records('qtype_pmatch_rule_matches', array('questionid' => $question->id));
+            $DB->delete_records('qtype_patternessay_rule_matches', array('questionid' => $question->id));
         } else {
             list ($sql, $params) = $DB->get_in_or_equal($responseids);
             $params[] = $question->id;
-            $DB->delete_records_select('qtype_pmatch_rule_matches',
+            $DB->delete_records_select('qtype_patternessay_rule_matches',
                     "testresponseid $sql AND questionid = ?", $params);
         }
     }
@@ -566,7 +566,7 @@ class testquestion_responses {
         }
 
         // Get the response ids for the question.
-        $sql = "SELECT id, testresponseid, answerid FROM {qtype_pmatch_rule_matches}
+        $sql = "SELECT id, testresponseid, answerid FROM {qtype_patternessay_rule_matches}
                     WHERE questionid='" . $questionid . "'
                     AND testresponseid IN(". implode(',', $responseids) . ")
                     ORDER BY testresponseid ASC";
@@ -765,7 +765,7 @@ class testquestion_responses {
                 // csv file are not wanted. Often a comma will exist within a students answer,
                 // and tutors are expected to wrap those answers within speech marks for this
                 // upload. See e.g. in fixtures/shortanswerquestion_webserviceresponses.csv.
-                $problems[] = get_string('testquestionuploadrowhastwoitems', 'qtype_pmatch',
+                $problems[] = get_string('testquestionuploadrowhastwoitems', 'qtype_patternessay',
                                     array('row' => $row, 'items' => count($data)));
                 $problem = true;
             }
@@ -804,7 +804,7 @@ class testquestion_responses {
     public static function check_duplicate_response($questionid, $response) {
         global $DB;
 
-        return $DB->record_exists_select('qtype_pmatch_test_responses', 'response = ? AND questionid = ?',
+        return $DB->record_exists_select('qtype_patternessay_test_responses', 'response = ? AND questionid = ?',
                 ['response' => $response, 'questionid' => $questionid]);
     }
 

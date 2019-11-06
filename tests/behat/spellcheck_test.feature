@@ -1,5 +1,5 @@
-@ou @ou_vle @qtype @qtype_pmatch @_switch_window @javascript
-Feature: Test spelling check of a pmatch question
+@ou @ou_vle @qtype @qtype_patternessay @_switch_window @javascript
+Feature: Test spelling check of a patternessay question
   In order to support multi language for spell check
   As an admin
   I need to be able to select which language for Question to check the spelling
@@ -13,12 +13,12 @@ Feature: Test spelling check of a pmatch question
       | Course       | C1        | Test questions |
     And the following "questions" exist:
       | questioncategory | qtype  | name                            | template |
-      | Test questions   | pmatch | My first pattern match question | listen   |
+      | Test questions   | patternessay | My first pattern match question | listen   |
     And I setup the available dictionaries for the pattern-match question type
 
   Scenario: Spell checking with Spell checking library is set to No spell checking available
     Given the following config values are set as admin:
-      | spellchecker | null | qtype_pmatch |
+      | spellchecker | null | qtype_patternessay |
     And I log in as "admin"
     And I am on "Course 1" course homepage
     And I navigate to "Question bank" in current page administration
@@ -36,7 +36,7 @@ Feature: Test spelling check of a pmatch question
     And I navigate to "Question bank" in current page administration
     And the following config values are set as admin:
       | config       | value  | plugin       |
-      | spellchecker | pspell | qtype_pmatch |
+      | spellchecker | pspell | qtype_patternessay |
     And I click on "Edit" "link" in the "My first pattern match question" "table_row"
     When I expand all fieldsets
     Then I should see "Spell checking"
@@ -53,7 +53,7 @@ Feature: Test spelling check of a pmatch question
     And I navigate to "Question bank" in current page administration
     And the following config values are set as admin:
       | config       | value   | plugin       |
-      | spellchecker | enchant | qtype_pmatch |
+      | spellchecker | enchant | qtype_patternessay |
     And I click on "Edit" "link" in the "My first pattern match question" "table_row"
     When I expand all fieldsets
     Then I should see "Spell checking"
@@ -64,14 +64,14 @@ Feature: Test spelling check of a pmatch question
     And the "Add these words to dictionary" "field" should be disabled
     And I press "Cancel"
 
-  Scenario: Question author/administrator will see warning when edit an Pmatch question with missing dictionary
+  Scenario: Question author/administrator will see warning when edit an patternessay question with missing dictionary
     Given I check the "enchant" spell checking library already installed
     And the following "questions" exist:
       | questioncategory | qtype  | name                                      | template | applydictionarycheck |
-      | Test questions   | pmatch | Missing dictionary pattern match question | listen   | vi                   |
+      | Test questions   | patternessay | Missing dictionary pattern match question | listen   | vi                   |
     And the following config values are set as admin:
       | config       | value   | plugin       |
-      | spellchecker | enchant | qtype_pmatch |
+      | spellchecker | enchant | qtype_patternessay |
     And I log in as "admin"
     And I am on "Course 1" course homepage
     And I navigate to "Question bank" in current page administration
@@ -80,14 +80,14 @@ Feature: Test spelling check of a pmatch question
     Then I should see "Spell checking"
     And I should see "Vietnamese (Warning! Dictionary not installed on this server)"
 
-  Scenario: Question author/administrator will see warning when preview/attempt an Pmatch question with missing dictionary
+  Scenario: Question author/administrator will see warning when preview/attempt an patternessay question with missing dictionary
     Given I check the "enchant" spell checking library already installed
     And the following "questions" exist:
       | questioncategory | qtype  | name                                      | template | applydictionarycheck |
-      | Test questions   | pmatch | Missing dictionary pattern match question | listen   | vi                   |
+      | Test questions   | patternessay | Missing dictionary pattern match question | listen   | vi                   |
     And the following config values are set as admin:
       | config       | value   | plugin       |
-      | spellchecker | enchant | qtype_pmatch |
+      | spellchecker | enchant | qtype_patternessay |
     And I log in as "admin"
     And I am on "Course 1" course homepage
     And I navigate to "Question bank" in current page administration
@@ -99,10 +99,10 @@ Feature: Test spelling check of a pmatch question
     Given I check the "enchant" spell checking library already installed
     And the following "questions" exist:
       | questioncategory | qtype  | name                                       | template | applydictionarycheck |
-      | Test questions   | pmatch | English Spell Check pattern match question | listen   | en_GB                |
+      | Test questions   | patternessay | English Spell Check pattern match question | listen   | en_GB                |
     And the following config values are set as admin:
       | config       | value   | plugin       |
-      | spellchecker | enchant | qtype_pmatch |
+      | spellchecker | enchant | qtype_patternessay |
     And I log in as "admin"
     And I am on "Course 1" course homepage
     And I navigate to "Question bank" in current page administration

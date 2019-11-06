@@ -17,7 +17,7 @@
 /**
  * Behat steps definitions for pattern match questions.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @category  test
  * @copyright 2016 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -28,7 +28,7 @@
 require_once(__DIR__ . '/../../../../../lib/behat/behat_base.php');
 
 use Behat\Mink\Exception\ExpectationException as ExpectationException;
-use qtype_pmatch\local\spell\qtype_pmatch_spell_checker;
+use qtype_patternessay\local\spell\qtype_patternessay_spell_checker;
 
 /**
  * Steps definitions related with the pattern match question type.
@@ -36,7 +36,7 @@ use qtype_pmatch\local\spell\qtype_pmatch_spell_checker;
  * @copyright 2016 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class behat_qtype_pmatch extends behat_base {
+class behat_qtype_patternessay extends behat_base {
 
     public static $responsesfilepath = "fixtures/myfirstquestion_responses.csv";
 
@@ -48,7 +48,7 @@ class behat_qtype_pmatch extends behat_base {
     public function i_am_on_pattern_match_test_responses_page($questionname) {
         $question = $this->get_question_by_name($questionname);
         $this->getSession()->visit($this->locate_path(
-                '/question/type/pmatch/testquestion.php?id=' . $question->id));
+                '/question/type/patternessay/testquestion.php?id=' . $question->id));
     }
 
     /**
@@ -64,7 +64,7 @@ class behat_qtype_pmatch extends behat_base {
 
     /**
      * Load a csv file into an array of response objects reporting feedback
-     * @param qtype_pmatch_question $question (optional) question to associate responses with.
+     * @param qtype_patternessay_question $question (optional) question to associate responses with.
      * @return array $responses, $problems
      */
     protected function load_responses($question, $pathtoresponses = null) {
@@ -75,12 +75,12 @@ class behat_qtype_pmatch extends behat_base {
         $pathtoresponses = $pathtoresponses ? $pathtoresponses : self::$responsesfilepath;
         $responsesfile = dirname(__FILE__) . '/../' . $pathtoresponses;
 
-        return qtype_pmatch\testquestion_responses::load_responses_from_file($responsesfile, $question);
+        return qtype_patternessay\testquestion_responses::load_responses_from_file($responsesfile, $question);
     }
 
     /**
-     * Create a default pmatch question object
-     * @return qtype_pmatch_question
+     * Create a default patternessay question object
+     * @return qtype_patternessay_question
      */
     protected function get_question_by_name($name) {
         global $DB;
@@ -91,7 +91,7 @@ class behat_qtype_pmatch extends behat_base {
 
     /**
      * load the default result set and store in the database.
-     * @return array \qtype_pmatch\test_response
+     * @return array \qtype_patternessay\test_response
      */
     protected function intialise_default_responses($questionname, $pathtoresponses = null) {
         global $DB;
@@ -100,7 +100,7 @@ class behat_qtype_pmatch extends behat_base {
         list($responses, $problems) = $this->load_responses($question, $pathtoresponses);
 
         // Add responses.
-        \qtype_pmatch\testquestion_responses::add_responses($responses);
+        \qtype_patternessay\testquestion_responses::add_responses($responses);
     }
 
     /**
@@ -130,9 +130,9 @@ class behat_qtype_pmatch extends behat_base {
      */
     public function set_default_spell_check_dictionary() {
         $defaultlanguage = get_string('iso6391', 'langconfig');
-        $availablelangs = qtype_pmatch_spell_checker::get_available_languages();
-        $matched = qtype_pmatch_spell_checker::get_default_spell_check_dictionary($defaultlanguage, $availablelangs);
-        set_config('spellcheck_languages', $matched, 'qtype_pmatch');
+        $availablelangs = qtype_patternessay_spell_checker::get_available_languages();
+        $matched = qtype_patternessay_spell_checker::get_default_spell_check_dictionary($defaultlanguage, $availablelangs);
+        set_config('spellcheck_languages', $matched, 'qtype_patternessay');
     }
 
     /**

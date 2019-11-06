@@ -16,7 +16,7 @@
 /**
  * This class provides functionality for the testquestion response updater.
  *
- * @module    qtype_pmatch
+ * @module    qtype_patternessay
  * @class     updater
  * @package   question
  * @copyright 2016 The Open University
@@ -24,7 +24,7 @@
  */
 define(['jquery', 'core/notification'], function($, Notification) {
     /**
-     * @alias qtype_pmatch/updater
+     * @alias qtype_patternessay/updater
      */
     var t = {
         baseUrl: '',
@@ -34,7 +34,7 @@ define(['jquery', 'core/notification'], function($, Notification) {
         /**
          *  The string need to be replaced to get correct row.
          */
-        REPLACESTRING: /qtype-pmatch-testquestion_r/g,
+        REPLACESTRING: /qtype-patternessay-testquestion_r/g,
         /**
          * Initialise the updater.
          */
@@ -73,7 +73,7 @@ define(['jquery', 'core/notification'], function($, Notification) {
             body.on('updatefailed', '[data-inplaceeditable]', function(e) {
                 var exception = e.exception;
                 e.preventDefault();
-                Notification.alert(M.util.get_string('error:title', 'qtype_pmatch'),
+                Notification.alert(M.util.get_string('error:title', 'qtype_patternessay'),
                     exception.message, M.util.get_string('ok', 'moodle'));
             });
             body.on('updated', '[data-inplaceeditable]', function(e) {
@@ -85,7 +85,7 @@ define(['jquery', 'core/notification'], function($, Notification) {
          * If there is no row in table, bind core/inplace_editable to the page.
          */
         bindInplaceEditEvent: function() {
-            if ($('#qtype-pmatch-testquestion_r0').hasClass('emptyrow')) {
+            if ($('#qtype-patternessay-testquestion_r0').hasClass('emptyrow')) {
                 require(['core/inplace_editable']);
             }
         },
@@ -125,7 +125,7 @@ define(['jquery', 'core/notification'], function($, Notification) {
                     tr.addClass(result.rowclass);
                     tr.find('td[class="c3"]').text(result.gf);
                     // Update the grade summary.
-                    var c = M.util.get_string('testquestionresultssummary', 'qtype_pmatch', result.counts);
+                    var c = M.util.get_string('testquestionresultssummary', 'qtype_patternessay', result.counts);
                     $('#testquestion_gradesummary').html(c);
                 } else {
                     // Developer debugging - failure states are in api/updater.php.

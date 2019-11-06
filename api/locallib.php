@@ -17,7 +17,7 @@
 /**
  * Local library supporting the API.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2016 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Try a rule against the data for a question.
  *
- * @param qtype_pmatch_question $question
+ * @param qtype_patternessay_question $question
  * @return string
  */
 function try_rule($question) {
@@ -35,12 +35,12 @@ function try_rule($question) {
     $fraction = unformat_float(optional_param('fraction', '1.0', PARAM_RAW));
     if (empty($ruletxt)) {
         $return = 'The rule is empty, please add a rule in the Answer textbox above.';
-    } else if (!\qtype_pmatch\testquestion_responses::has_responses($question)) {
+    } else if (!\qtype_patternessay\testquestion_responses::has_responses($question)) {
         $return = 'There are no responses, please upload a set of human marked responses.';
     } else if ($fraction != '1.0' && $fraction != '0.0') {
-        $return = get_string('tryrulegradeerror', 'qtype_pmatch');
+        $return = get_string('tryrulegradeerror', 'qtype_patternessay');
     } else {
-        $return = \qtype_pmatch\testquestion_responses::try_rule($question, $ruletxt, $fraction);
+        $return = \qtype_patternessay\testquestion_responses::try_rule($question, $ruletxt, $fraction);
     }
     return $return;
 }

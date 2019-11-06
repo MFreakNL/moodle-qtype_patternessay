@@ -1,4 +1,4 @@
-@ou @ou_vle @qtype @qtype_pmatch
+@ou @ou_vle @qtype @qtype_patternessay
 Feature: Import and export pattern match questions
   As a teacher
   In order to reuse my pattern match questions
@@ -22,7 +22,7 @@ Feature: Import and export pattern match questions
     # Import sample file.
     When I navigate to "Question bank > Import" in current page administration
     And I set the field "id_format_xml" to "1"
-    And I upload "question/type/pmatch/tests/fixtures/testquestion.moodle.xml" file to "Import" filemanager
+    And I upload "question/type/patternessay/tests/fixtures/testquestion.moodle.xml" file to "Import" filemanager
     And I press "id_submitbutton"
     Then I should see "Parsing questions from import file."
     And I should see "Importing 1 questions from file"

@@ -17,7 +17,7 @@
 /**
  * Mobile plugin.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2019 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,20 +25,20 @@
 defined('MOODLE_INTERNAL') || die();
 
 $addons = [
-    'qtype_pmatch' => [
+    'qtype_patternessay' => [
         'handlers' => [
-            'pmatch' => [
+            'patternessay' => [
                 'delegate' => 'CoreQuestionDelegate',
-                'method' => 'pmatch_view',
+                'method' => 'patternessay_view',
                 'styles' => [
-                    'url' => $CFG->wwwroot . '/question/type/pmatch/mobileapp.css',
+                    'url' => $CFG->wwwroot . '/question/type/patternessay/mobileapp.css',
                     'version' => 2019032204
                 ],
-                'init' => 'pmatch_view'
+                'init' => 'patternessay_view'
             ],
         ],
         'lang' => [ // Language strings to be used.
-            ['err_ousupsubnotsupportedonmobile', 'qtype_pmatch']
+            ['err_ousupsubnotsupportedonmobile', 'qtype_patternessay']
         ]
     ]
 ];

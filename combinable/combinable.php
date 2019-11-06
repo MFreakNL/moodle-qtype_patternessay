@@ -15,23 +15,23 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Defines the hooks necessary to make the pmatch question type combinable
+ * Defines the hooks necessary to make the patternessay question type combinable
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright  2013 The Open University
  * @author     Jamie Pratt <me@jamiep.org>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use qtype_pmatch\local\spell\qtype_pmatch_spell_checker;
+use qtype_patternessay\local\spell\qtype_patternessay_spell_checker;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/question/type/pmatch/pmatchlib.php');
+require_once($CFG->dirroot.'/question/type/patternessay/patternessaylib.php');
 
-class qtype_combined_combinable_type_pmatch extends qtype_combined_combinable_type_base {
+class qtype_combined_combinable_type_patternessay extends qtype_combined_combinable_type_base {
 
-    protected $identifier = 'pmatch';
+    protected $identifier = 'patternessay';
 
     protected function extra_question_properties() {
         return array('forcelength' => '0');
@@ -55,7 +55,7 @@ class qtype_combined_combinable_type_pmatch extends qtype_combined_combinable_ty
 }
 
 
-class qtype_combined_combinable_pmatch extends qtype_combined_combinable_text_entry {
+class qtype_combined_combinable_patternessay extends qtype_combined_combinable_text_entry {
 
     /**
      * @param moodleform      $combinedform
@@ -66,43 +66,43 @@ class qtype_combined_combinable_pmatch extends qtype_combined_combinable_text_en
     public function add_form_fragment(moodleform $combinedform, MoodleQuickForm $mform, $repeatenabled) {
         $susubels = array();
         $susubels[] = $mform->createElement('selectyesno', $this->form_field_name('allowsubscript'),
-                                            get_string('allowsubscript', 'qtype_pmatch'));
+                                            get_string('allowsubscript', 'qtype_patternessay'));
         $susubels[] = $mform->createElement('selectyesno', $this->form_field_name('allowsuperscript'),
-                                            get_string('allowsuperscript', 'qtype_pmatch'));
-        $mform->addGroup($susubels, $this->form_field_name('susubels'), get_string('allowsubscript', 'qtype_pmatch'),
+                                            get_string('allowsuperscript', 'qtype_patternessay'));
+        $mform->addGroup($susubels, $this->form_field_name('susubels'), get_string('allowsubscript', 'qtype_patternessay'),
                                                                     '',
                                                                     false);
         $menu = array(
-            get_string('caseno', 'qtype_pmatch'),
-            get_string('caseyes', 'qtype_pmatch')
+            get_string('caseno', 'qtype_patternessay'),
+            get_string('caseyes', 'qtype_patternessay')
         );
         $casedictels = array();
         $casedictels[] = $mform->createElement('select', $this->form_field_name('usecase'),
-                                               get_string('casesensitive', 'qtype_pmatch'), $menu);
-        list ($options, $disable) = qtype_pmatch_spell_checker::get_spell_checker_language_options($this->questionrec);
+                                               get_string('casesensitive', 'qtype_patternessay'), $menu);
+        list ($options, $disable) = qtype_patternessay_spell_checker::get_spell_checker_language_options($this->questionrec);
         if ($disable) {
             $casedictels[] = $mform->createElement('select', $this->form_field_name('applydictionarycheck'),
-                    get_string('applydictionarycheck', 'qtype_pmatch'), $options, ['disabled' => 'disabled']);
+                    get_string('applydictionarycheck', 'qtype_patternessay'), $options, ['disabled' => 'disabled']);
         } else {
             $casedictels[] = $mform->createElement('select', $this->form_field_name('applydictionarycheck'),
-                    get_string('applydictionarycheck', 'qtype_pmatch'), $options);
+                    get_string('applydictionarycheck', 'qtype_patternessay'), $options);
             $mform->setDefault('applydictionarycheck', get_string('iso6391', 'langconfig'));
         }
         $mform->addGroup($casedictels, $this->form_field_name('casedictels'),
-                                                                        get_string('casesensitive', 'qtype_pmatch'), '', false);
+                                                                        get_string('casesensitive', 'qtype_patternessay'), '', false);
 
-        $mform->addElement('textarea', $this->form_field_name('extenddictionary'), get_string('extenddictionary', 'qtype_pmatch'),
+        $mform->addElement('textarea', $this->form_field_name('extenddictionary'), get_string('extenddictionary', 'qtype_patternessay'),
             array('rows' => '3', 'cols' => '57'));
         $mform->disabledIf($this->form_field_name('extenddictionary'),
                 $this->form_field_name('applydictionarycheck'),
-                'eq', qtype_pmatch_spell_checker::DO_NOT_CHECK_OPTION);
+                'eq', qtype_patternessay_spell_checker::DO_NOT_CHECK_OPTION);
 
-        $mform->addElement('text', $this->form_field_name('sentencedividers'), get_string('sentencedividers', 'qtype_pmatch'));
+        $mform->addElement('text', $this->form_field_name('sentencedividers'), get_string('sentencedividers', 'qtype_patternessay'));
         $mform->setDefault($this->form_field_name('sentencedividers'), '.?!');
-        $mform->addElement('text', $this->form_field_name('converttospace'), get_string('converttospace', 'qtype_pmatch'));
+        $mform->addElement('text', $this->form_field_name('converttospace'), get_string('converttospace', 'qtype_patternessay'));
         $mform->setDefault($this->form_field_name('converttospace'), ',;:');
-        $mform->addElement('text', $this->form_field_name('modelanswer'), get_string('modelanswer', 'qtype_pmatch'));
-        \qtype_pmatch\form_utils::add_synonyms($combinedform, $mform, $this->questionrec, false,
+        $mform->addElement('text', $this->form_field_name('modelanswer'), get_string('modelanswer', 'qtype_patternessay'));
+        \qtype_patternessay\form_utils::add_synonyms($combinedform, $mform, $this->questionrec, false,
                 $this->form_field_name('synonymsdata'), 1, 0);
 
         $mform->addElement('textarea', $this->form_field_name('answer[0]'), get_string('answer', 'question'),
@@ -141,28 +141,28 @@ class qtype_combined_combinable_pmatch extends qtype_combined_combinable_text_en
         $trimmedanswer = $this->formdata->answer[0];
         $answerok = true;
         if ('' !== $trimmedanswer) {
-            $expression = new pmatch_expression($trimmedanswer);
+            $expression = new patternessay_expression($trimmedanswer);
             if (!$expression->is_valid()) {
                 $errors[$this->form_field_name('answer[0]')] = $expression->get_parse_error();
                 $answerok = false;
             }
         } else {
-            $errors[$this->form_field_name('answer[0]')] = get_string('err_providepmatchexpression', 'qtype_pmatch');
+            $errors[$this->form_field_name('answer[0]')] = get_string('err_providepatternessayexpression', 'qtype_patternessay');
             $answerok = false;
         }
 
         // Check whether any chars of sentencedividers field exists in converttospace field.
         if (!empty($this->formdata->sentencedividers)) {
-            if ($charfound = \qtype_pmatch\form_utils::find_char_in_both_strings($this->formdata->sentencedividers, $this->formdata->converttospace)) {
-                $errors[$this->form_field_name('converttospace')] = get_string('sentencedividers_noconvert', 'qtype_pmatch', $charfound);
+            if ($charfound = \qtype_patternessay\form_utils::find_char_in_both_strings($this->formdata->sentencedividers, $this->formdata->converttospace)) {
+                $errors[$this->form_field_name('converttospace')] = get_string('sentencedividers_noconvert', 'qtype_patternessay', $charfound);
             }
         }
-        // Check whether the modelanswer is a correct match (For pmatch as subquestion of a combined question, we pass ['0' => 1.0] as $grades).
-        if ($answerok && !\qtype_pmatch\form_utils::validate_modelanswer($this->formdata->answer, ['0' => 1.0], $this->formdata->modelanswer)) {
-            $errors[$this->form_field_name('modelanswer')] = get_string('modelanswererror', 'qtype_pmatch', $this->formdata->modelanswer);
+        // Check whether the modelanswer is a correct match (For patternessay as subquestion of a combined question, we pass ['0' => 1.0] as $grades).
+        if ($answerok && !\qtype_patternessay\form_utils::validate_modelanswer($this->formdata->answer, ['0' => 1.0], $this->formdata->modelanswer)) {
+            $errors[$this->form_field_name('modelanswer')] = get_string('modelanswererror', 'qtype_patternessay', $this->formdata->modelanswer);
         }
 
-        $errors += \qtype_pmatch\form_utils::validate_synonyms((array)$this->formdata, $this->form_field_name('synonymsdata'));
+        $errors += \qtype_patternessay\form_utils::validate_synonyms((array)$this->formdata, $this->form_field_name('synonymsdata'));
 
         return $errors;
     }

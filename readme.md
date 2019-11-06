@@ -1,8 +1,8 @@
-# Pattern match question type [![Build Status](https://travis-ci.org/moodleou/moodle-qtype_pmatch.svg?branch=master)](https://travis-ci.org/moodleou/moodle-qtype_pmatch)
+# Pattern match question type [![Build Status](https://travis-ci.org/moodleou/moodle-qtype_patternessay.svg?branch=master)](https://travis-ci.org/moodleou/moodle-qtype_patternessay)
 
 Students can enter a response of up to 20 words, which is then graded by matching
 it against various model answers expressed using a sophisticated patten
-matching algorithm. See http://docs.moodle.org/dev/The_OU_PMatch_algorithm
+matching algorithm. See http://docs.moodle.org/dev/The_OU_patternessay_algorithm
 
 
 ## Acknowledgements
@@ -22,15 +22,15 @@ available.
 ### Install from the plugins database
 
 Install from the Moodle plugins database
-* https://moodle.org/plugins/qtype_pmatch
+* https://moodle.org/plugins/qtype_patternessay
 * https://moodle.org/plugins/editor_ousupsub
 
 ### Install using git
 
 Or you can install using git. Type this commands in the root of your Moodle install
 
-    git clone https://github.com/moodleou/moodle-qtype_pmatch.git question/type/pmatch
-    echo /question/type/pmatch/ >> .git/info/exclude
+    git clone https://github.com/moodleou/moodle-qtype_patternessay.git question/type/patternessay
+    echo /question/type/patternessay/ >> .git/info/exclude
     git clone https://github.com/moodleou/moodle-editor_ousupsub.git lib/editor/ousupsub
     echo /lib/editor/ousupsub/ >> .git/info/exclude
 

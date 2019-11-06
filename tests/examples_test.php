@@ -16,9 +16,9 @@
 
 
 /**
- * This file contains of the pmatch library using files of examples.
+ * This file contains of the patternessay library using files of examples.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2012 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,18 +26,18 @@
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/question/type/pmatch/pmatchlib.php');
+require_once($CFG->dirroot . '/question/type/patternessay/patternessaylib.php');
 
 
 /**
- * Test driver class that tests the pmatch library by loading examples from
+ * Test driver class that tests the patternessay library by loading examples from
  * text files in the examples folder.
  *
  * @copyright 2012 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @group     qtype_pmatch
+ * @group     qtype_patternessay
  */
-class qtype_pmatch_examples_test extends basic_testcase {
+class qtype_patternessay_examples_test extends basic_testcase {
     /** @var string where to look for examples. */
     protected $examplesdir = 'examples';
 
@@ -79,7 +79,7 @@ class qtype_pmatch_examples_test extends basic_testcase {
      * @param string one of the paths returned by {@link get_examples_list()}.
      */
     protected function run_tests_from($name) {
-        $expression = new pmatch_expression(file_get_contents($name . '.rules.txt'));
+        $expression = new patternessay_expression(file_get_contents($name . '.rules.txt'));
         if (!$expression->is_valid()) {
             $this->fail('Error parsing match rules in ' . $name . '.rules.txt' .
                     '. Error message: ' . $expression->get_parse_error());
@@ -108,7 +108,7 @@ class qtype_pmatch_examples_test extends basic_testcase {
                             '(file ' . $name . '.responses.csv, line ' . ($row + 1) . ').');
                 continue;
             }
-            $options = new pmatch_options();
+            $options = new patternessay_options();
             switch (count($data)) {
                 case 5 :
                     $options->worddividers = $data[4];
@@ -118,7 +118,7 @@ class qtype_pmatch_examples_test extends basic_testcase {
                     (bool)$options->ignorecase = $data[2];
             }
 
-            $string = new pmatch_parsed_string($data[0], $options);
+            $string = new patternessay_parsed_string($data[0], $options);
             $this->assertEquals((bool) trim($data[1]), $expression->matches($string),
                     'File ' . $name . '.responses.csv, line ' . ($row + 1) .
                     ' "' . s($data[0]) . '", %s');

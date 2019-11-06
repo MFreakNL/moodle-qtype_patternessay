@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * This file contains of the pmatch library using files of examples.
+ * This file contains of the patternessay library using files of examples.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2016 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/question/type/pmatch/tests/testquestion_testcase.php');
+require_once($CFG->dirroot . '/question/type/patternessay/tests/testquestion_testcase.php');
 require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
 require_once($CFG->dirroot . '/question/format/xml/format.php');
 
@@ -34,9 +34,9 @@ require_once($CFG->dirroot . '/question/format/xml/format.php');
  *
  * @copyright 2016 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @group     qtype_pmatch
+ * @group     qtype_patternessay
  */
-class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion_testcase {
+class qtype_patternessay_testquestion_responses_test extends qtype_patternessay_testquestion_testcase {
 
     /**
      * Test basic instantiation of the test_response class.
@@ -44,7 +44,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
     public function test_intialise_test_response() {
         $this->resetAfterTest();
         // No data returns null.
-        $testresponse = \qtype_pmatch\testquestion_response::create();
+        $testresponse = \qtype_patternessay\testquestion_response::create();
         $this->assertEquals($testresponse, null);
 
         // Initialise a test_response object with proper data.
@@ -54,7 +54,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $data->expectedfraction = 0;
         $data->gradedfraction = 0;
         $data->response = 0;
-        $testresponse = \qtype_pmatch\testquestion_response::create($data);
+        $testresponse = \qtype_patternessay\testquestion_response::create($data);
 
         // No contents.
         $this->assertEquals($testresponse->id, $data->id);
@@ -73,7 +73,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         // Fraction fields contain floating numbers.
         $data->expectedfraction = 0.9999;
         $data->gradedfraction = 0.0001;
-        $testresponse = \qtype_pmatch\testquestion_response::create($data);
+        $testresponse = \qtype_patternessay\testquestion_response::create($data);
 
         $this->assertEquals($testresponse->expectedfraction, 1);
         $this->assertEquals($testresponse->gradedfraction, 0);
@@ -85,7 +85,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
     public function test_data_to_responses() {
         $this->resetAfterTest();
         // Empty array.
-        $responses = \qtype_pmatch\testquestion_responses::data_to_responses(array());
+        $responses = \qtype_patternessay\testquestion_responses::data_to_responses(array());
         $this->assertEquals($responses, array());
 
         // One class with all fields filled out.
@@ -96,7 +96,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $data->gradedfraction = 1;
         $data->response = 'one two';
 
-        $responses = \qtype_pmatch\testquestion_responses::data_to_responses(array($data));
+        $responses = \qtype_patternessay\testquestion_responses::data_to_responses(array($data));
         $testresponse = array_pop($responses);
 
         // No contents.
@@ -117,11 +117,11 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $generator = $this->getDataGenerator()->get_plugin_generator('core_question');
 
         // An example not using the DB.
-        $question = qtype_pmatch_test_helper::make_a_pmatch_question();
+        $question = qtype_patternessay_test_helper::make_a_patternessay_question();
 
         // Before we test the DB.
-        $testresponse = \qtype_pmatch\testquestion_responses::create_for_question($question);
-        $this->assertEquals(get_class($testresponse), 'qtype_pmatch\testquestion_responses');
+        $testresponse = \qtype_patternessay\testquestion_responses::create_for_question($question);
+        $this->assertEquals(get_class($testresponse), 'qtype_patternessay\testquestion_responses');
     }
 
     /**
@@ -130,7 +130,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
     public function test_get_responses_by_ids() {
         global $DB;
         $this->resetAfterTest();
-        $generator = $this->getDataGenerator()->get_plugin_generator('qtype_pmatch');
+        $generator = $this->getDataGenerator()->get_plugin_generator('qtype_patternessay');
 
         // Create responses.
         $responses = array();
@@ -139,13 +139,13 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
             $responses[$response->id] = $response;
         }
 
-        $responses = \qtype_pmatch\testquestion_responses::data_to_responses($responses);
+        $responses = \qtype_patternessay\testquestion_responses::data_to_responses($responses);
 
         // Get an array of the ids.
         $responseids = array_keys($responses);
 
         // Get responses udsing the ids array.
-        $dbresponses = \qtype_pmatch\testquestion_responses::get_responses_by_ids($responseids);
+        $dbresponses = \qtype_patternessay\testquestion_responses::get_responses_by_ids($responseids);
         $this->assertEquals($responses, $dbresponses);
     }
 
@@ -161,8 +161,8 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         list($responses, $problems) = $this->load_responses($question);
 
         // Add responses to an empty DB table and get feedback.
-        $feedback = \qtype_pmatch\testquestion_responses::add_responses($responses);
-        $dbresponses = $DB->get_records('qtype_pmatch_test_responses');
+        $feedback = \qtype_patternessay\testquestion_responses::add_responses($responses);
+        $dbresponses = $DB->get_records('qtype_patternessay_test_responses');
 
         // Check results.
         $this->assertEquals(count($dbresponses), 18);
@@ -170,8 +170,8 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertEquals(count($feedback->duplicates), 0);
 
         // Test for duplicates by adding responses for the second time.
-        $feedback = \qtype_pmatch\testquestion_responses::add_responses($responses);
-        $dbresponses = $DB->get_records('qtype_pmatch_test_responses');
+        $feedback = \qtype_patternessay\testquestion_responses::add_responses($responses);
+        $dbresponses = $DB->get_records('qtype_patternessay_test_responses');
 
         // Check results.
         $this->assertEquals(count($dbresponses), 18);
@@ -182,8 +182,8 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $response = $responses[0];
         $response->questionid = 2;
 
-        $feedback = \qtype_pmatch\testquestion_responses::add_responses(array($response));
-        $dbresponses = $DB->get_records('qtype_pmatch_test_responses');
+        $feedback = \qtype_patternessay\testquestion_responses::add_responses(array($response));
+        $dbresponses = $DB->get_records('qtype_patternessay_test_responses');
 
         // Check results.
         $this->assertEquals(count($dbresponses), 19);
@@ -204,11 +204,11 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $response = array_pop($responses);
         $response->gradedfraction = 1;
         $response->response = "this is updated";
-        $updated = \qtype_pmatch\testquestion_responses::update_response($response);
+        $updated = \qtype_patternessay\testquestion_responses::update_response($response);
 
-        $dbresponse = $DB->get_record('qtype_pmatch_test_responses', array('id' => $response->id));
+        $dbresponse = $DB->get_record('qtype_patternessay_test_responses', array('id' => $response->id));
         // Convert to test_response object.
-        $dbresponse = \qtype_pmatch\testquestion_response::create($dbresponse);
+        $dbresponse = \qtype_patternessay\testquestion_response::create($dbresponse);
 
         // Confirm the updated response is returned from the db.
         $this->assertEquals($response, $dbresponse);
@@ -226,10 +226,10 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
 
         // Get one response and delete it.
         $response = array_pop($responses);
-        \qtype_pmatch\testquestion_responses::delete_responses_by_ids(array($response->id));
+        \qtype_patternessay\testquestion_responses::delete_responses_by_ids(array($response->id));
 
         // Confirm only the correct response was deleted.
-        $dbresponseids = array_keys($DB->get_records('qtype_pmatch_test_responses'));
+        $dbresponseids = array_keys($DB->get_records('qtype_patternessay_test_responses'));
         $responseids = array_keys($responses);
         $this->assertEquals($responseids, $dbresponseids);
     }
@@ -251,7 +251,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $expectedcounts->accuracy = 0;
 
         // Get current grade counts.
-        $actualcounts = \qtype_pmatch\testquestion_responses::get_question_grade_summary_counts($this->currentquestion);
+        $actualcounts = \qtype_patternessay\testquestion_responses::get_question_grade_summary_counts($this->currentquestion);
 
         // Confirm counts for unmarked grades.
         $this->assertEquals($expectedcounts, $actualcounts);
@@ -271,7 +271,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $expectedcounts->accuracy = 44.0;
 
         // Get current grade counts.
-        $actualcounts = \qtype_pmatch\testquestion_responses::get_question_grade_summary_counts($this->currentquestion);
+        $actualcounts = \qtype_patternessay\testquestion_responses::get_question_grade_summary_counts($this->currentquestion);
 
         // Confirm counts for grades now they have been marked by the computer.
         $this->assertEquals($expectedcounts, $actualcounts);
@@ -296,9 +296,9 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
             }
         }
         $expectedcomputergrade = 1;
-        \qtype_pmatch\testquestion_responses::grade_response($response, $this->currentquestion);
+        \qtype_patternessay\testquestion_responses::grade_response($response, $this->currentquestion);
 
-        $dbresponses = \qtype_pmatch\testquestion_responses::get_responses_by_ids(array($response->id));
+        $dbresponses = \qtype_patternessay\testquestion_responses::get_responses_by_ids(array($response->id));
         $dbresponse = array_shift($dbresponses);
         $actualcomputergrade = $dbresponse->gradedfraction;
 
@@ -307,9 +307,9 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
 
         // Test grading for a wrong response.
         $expectedcomputergrade = 0;
-        \qtype_pmatch\testquestion_responses::grade_response($wrongresponse, $this->currentquestion);
+        \qtype_patternessay\testquestion_responses::grade_response($wrongresponse, $this->currentquestion);
 
-        $dbresponses = \qtype_pmatch\testquestion_responses::get_responses_by_ids(array($wrongresponse->id));
+        $dbresponses = \qtype_patternessay\testquestion_responses::get_responses_by_ids(array($wrongresponse->id));
         $dbresponse = array_pop($dbresponses);
         $actualcomputergrade = $dbresponse->gradedfraction;
 
@@ -323,7 +323,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
      */
     public function test_load_responses_from_file() {
         $this->resetAfterTest();
-        $question = qtype_pmatch_test_helper::make_a_pmatch_question();
+        $question = qtype_patternessay_test_helper::make_a_patternessay_question();
         $question->id = 1;
         $responsesfile = 'fixtures/myfirstquestion_responses.csv';
         list($responses, $problems) = $this->load_responses($question, $responsesfile);
@@ -346,7 +346,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         );
         $expectedresponses = array();
         foreach ($data as $datarow) {
-            $response = new \qtype_pmatch\testquestion_response();
+            $response = new \qtype_patternessay\testquestion_response();
             $response->questionid = $question->id;
             $response->response = $datarow[1];
             $response->expectedfraction = $datarow[0];
@@ -372,40 +372,40 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->resetAfterTest();
         $responses = $this->load_default_responses();
         foreach ($responses as $response) {
-            \qtype_pmatch\testquestion_responses::grade_response($response, $this->currentquestion);
+            \qtype_patternessay\testquestion_responses::grade_response($response, $this->currentquestion);
         }
         $ruletxt = 'match_w(A non existant bit of text)';
         $grade = 1;
-        $try = \qtype_pmatch\testquestion_responses::try_rule($this->currentquestion, $ruletxt, $grade);
+        $try = \qtype_patternessay\testquestion_responses::try_rule($this->currentquestion, $ruletxt, $grade);
         $expected = '<div>This rule does not match any graded responses.</div>';
         $this->assertEquals($expected, $try);
         $ruletxt = 'match_w(Tom)';
-        $try = \qtype_pmatch\testquestion_responses::try_rule($this->currentquestion, $ruletxt, $grade);
+        $try = \qtype_patternessay\testquestion_responses::try_rule($this->currentquestion, $ruletxt, $grade);
         // Note at this point try will contain ids that could change, and will look something like:
         // '<div><div>Effect on sample responses</div><div>Responses not matched above: 5 <br> Correctly matched by this rule: 1,
-        // <span class="qtype_pmatch-selftest-missed-positive">Incorrectly matched: 0</span> <br>
+        // <span class="qtype_patternessay-selftest-missed-positive">Incorrectly matched: 0</span> <br>
         // Responses still to be processed below: 4</div><div>Coverage</div><div><ul><li>' .
         //
         // '<span>133000: Tom Dick or Harry</span></li><li>' .
-        // '<span class="qtype_pmatch-selftest-missed-positive">133001: Tom</span></li><li>' .
+        // '<span class="qtype_patternessay-selftest-missed-positive">133001: Tom</span></li><li>' .
         // '<span>133004: Tom was janes companion</span></li></ul></div>'.
         // So lets just look for some elements of text.
         $effectresponses = 'Responses not matched above: 15 <br> Correctly matched by this rule: 2, ' .
-                '<span class="qtype_pmatch-selftest-missed-positive">Incorrectly matched: 1</span> ' .
+                '<span class="qtype_patternessay-selftest-missed-positive">Incorrectly matched: 1</span> ' .
                 '<br> Responses still to be processed below: 12';
         $this->assertTrue(strpos($try, $effectresponses) !== false);
         $this->assertTrue(strpos($try, 'Tom Dick or Harry') !== false);
         $this->assertTrue(strpos($try, 'Tom was janes companion') !== false);
-        $this->assertTrue(strpos($try, 'qtype_pmatch-selftest-missed-positive') !== false);
+        $this->assertTrue(strpos($try, 'qtype_patternessay-selftest-missed-positive') !== false);
     }
 
     /**
      * Test grading a response by a rule.
      *
      * Explore which method is used to grade a response to a specific rule.
-     * question/type/questionbase.php::grade_response() the root method used by pmatch
+     * question/type/questionbase.php::grade_response() the root method used by patternessay
      * grade_response calles grading strategy question_first_matching_answer_grading_strategy::grade()
-     * which uses pmatch/question.php::compare_response_with_answer()
+     * which uses patternessay/question.php::compare_response_with_answer()
      */
     public function test_grade_rule_with_response() {
         $this->resetAfterTest();
@@ -441,7 +441,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $responses = $this->load_default_responses();
 
         $responseids = array_keys($responses);
-        $compareresponses = \qtype_pmatch\testquestion_responses::get_responses_by_ids($responseids);
+        $compareresponses = \qtype_patternessay\testquestion_responses::get_responses_by_ids($responseids);
         $responsestoruleids = array(
                 'Tom Dick or Harry' => array(13),
                 'Tom' => array(13),
@@ -456,7 +456,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         }
 
         // Test grading for a correct response.
-        \qtype_pmatch\testquestion_responses::grade_responses_by_rule($responses, $rule, $this->currentquestion);
+        \qtype_patternessay\testquestion_responses::grade_responses_by_rule($responses, $rule, $this->currentquestion);
 
         $this->assertEquals($compareresponses, $responses);
     }
@@ -473,14 +473,14 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $responses = $this->load_default_responses();
         // Update computer marked grade from fixture and saved to DB.
         $this->update_response_grades_from_file($responses, 'fixtures/testresponsesgraded.csv');
-        // Grade a response and save results to the qtype_pmatch_rule_matches table.
-        \qtype_pmatch\testquestion_responses::save_rule_matches($this->currentquestion);
+        // Grade a response and save results to the qtype_patternessay_rule_matches table.
+        \qtype_patternessay\testquestion_responses::save_rule_matches($this->currentquestion);
 
         $responseids = array_keys($responses);
-        $matches = \qtype_pmatch\testquestion_responses::get_rule_matches_for_responses($responseids, $this->currentquestion->id);
+        $matches = \qtype_patternessay\testquestion_responses::get_rule_matches_for_responses($responseids, $this->currentquestion->id);
 
         $compareaccuracy = [
-                'class' => 'qtype_pmatch-selftest-missed-positive',
+                'class' => 'qtype_patternessay-selftest-missed-positive',
                 'responseneedmatch' => 18,
                 'responsestillprocess' => 14,
                 'correctlymatched' => 0,
@@ -489,13 +489,13 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $responsesnegative = $responses;
         $responsespostive = $responses;
         // Test grading for a correct response.
-        $accuracy = \qtype_pmatch\testquestion_responses::get_rule_accuracy_counts($responsespostive, $rule, $matches);
+        $accuracy = \qtype_patternessay\testquestion_responses::get_rule_accuracy_counts($responsespostive, $rule, $matches);
 
         $this->assertEquals($compareaccuracy, $accuracy);
         $rule->fraction = 0;
-        $compareaccuracy['class'] = 'qtype_pmatch-selftest-missed-negative';
+        $compareaccuracy['class'] = 'qtype_patternessay-selftest-missed-negative';
         // Test grading for a correct response.
-        $accuracy = \qtype_pmatch\testquestion_responses::get_rule_accuracy_counts($responsesnegative, $rule, $matches);
+        $accuracy = \qtype_patternessay\testquestion_responses::get_rule_accuracy_counts($responsesnegative, $rule, $matches);
         $this->assertEquals($compareaccuracy, $accuracy);
     }
 
@@ -526,7 +526,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
 
         // Update computer marked grades to 1.0 using a fixture.
         $this->update_response_grades_from_file($responses, 'fixtures/testresponsesgraded.csv');
-        $dbresponses = $DB->get_records('qtype_pmatch_test_responses');
+        $dbresponses = $DB->get_records('qtype_patternessay_test_responses');
         foreach ($dbresponses as $r) {
             if ($r->response == 'Tom Dick or Harry') {
                 $tomdickharry = $r->gradedfraction;
@@ -539,8 +539,8 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertEquals(1.0, $tomcat); // Note fixture file has computer mark incorrect.
 
         // Grade a response and check the computer marked grades are now correct.
-        \qtype_pmatch\testquestion_responses::grade_responses_and_save_matches($this->currentquestion);
-        $dbresponses = $DB->get_records('qtype_pmatch_test_responses');
+        \qtype_patternessay\testquestion_responses::grade_responses_and_save_matches($this->currentquestion);
+        $dbresponses = $DB->get_records('qtype_patternessay_test_responses');
         foreach ($dbresponses as $r) {
             if ($r->response == 'Tom Dick or Harry') {
                 $tomdickharry = $r->gradedfraction;
@@ -556,8 +556,8 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $rules = $this->currentquestion->get_answers();
         $rules[13]->answer = 'match_w(Tomcat)';
         $this->currentquestion->answers = $rules;
-        \qtype_pmatch\testquestion_responses::grade_responses_and_save_matches($this->currentquestion);
-        $dbresponses = $DB->get_records('qtype_pmatch_test_responses');
+        \qtype_patternessay\testquestion_responses::grade_responses_and_save_matches($this->currentquestion);
+        $dbresponses = $DB->get_records('qtype_patternessay_test_responses');
         foreach ($dbresponses as $r) {
             if ($r->response == 'Tom Dick or Harry') {
                 $tomdickharry = $r->gradedfraction;
@@ -601,11 +601,11 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
                         'match_w(Felicity)' => array(0 => "Felicity"),
                 )
         );
-        // Grade a response and save results to the qtype_pmatch_rule_matches table.
-        \qtype_pmatch\testquestion_responses::save_rule_matches($this->currentquestion);
+        // Grade a response and save results to the qtype_patternessay_rule_matches table.
+        \qtype_patternessay\testquestion_responses::save_rule_matches($this->currentquestion);
 
-        // Determine which rules match which response using data from table qtype_pmatch_rule_matches.
-        $rulematches = \qtype_pmatch\testquestion_responses::get_rule_matches_for_responses($responseids,
+        // Determine which rules match which response using data from table qtype_patternessay_rule_matches.
+        $rulematches = \qtype_patternessay\testquestion_responses::get_rule_matches_for_responses($responseids,
                 $this->currentquestion->id);
 
         // Translate the rule and response ids into responses and rules to test.
@@ -616,7 +616,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
 
         // Delete a rule.
         // Delete existing rule matches for the question.
-        \qtype_pmatch\testquestion_responses::delete_rule_matches($this->currentquestion);
+        \qtype_patternessay\testquestion_responses::delete_rule_matches($this->currentquestion);
 
         // Set new expectations.
         $deletedrulecomparerulematches = array(
@@ -638,11 +638,11 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         // Update the question rules.
         $this->currentquestion->answers = $rules;
 
-        // Grade a response and save results to the qtype_pmatch_rule_matches table.
-        \qtype_pmatch\testquestion_responses::save_rule_matches($this->currentquestion);
+        // Grade a response and save results to the qtype_patternessay_rule_matches table.
+        \qtype_patternessay\testquestion_responses::save_rule_matches($this->currentquestion);
 
-        // Determine which rules match which response using data from table qtype_pmatch_rule_matches.
-        $rulematches = \qtype_pmatch\testquestion_responses::get_rule_matches_for_responses($responseids,
+        // Determine which rules match which response using data from table qtype_patternessay_rule_matches.
+        $rulematches = \qtype_patternessay\testquestion_responses::get_rule_matches_for_responses($responseids,
                 $this->currentquestion->id);
 
         // Translate the rule and response ids into responses and rules to test.
@@ -652,7 +652,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
 
         // Add the rule back
         // Delete existing rule matches for the question.
-        \qtype_pmatch\testquestion_responses::delete_rule_matches($this->currentquestion);
+        \qtype_patternessay\testquestion_responses::delete_rule_matches($this->currentquestion);
 
         // Restore the deleted rule.
         array_push($rules, $deletedrule);
@@ -660,11 +660,11 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         // Update the question rules.
         $this->currentquestion->answers = $rules;
 
-        // Grade a response and save results to the qtype_pmatch_rule_matches table.
-        \qtype_pmatch\testquestion_responses::save_rule_matches($this->currentquestion);
+        // Grade a response and save results to the qtype_patternessay_rule_matches table.
+        \qtype_patternessay\testquestion_responses::save_rule_matches($this->currentquestion);
 
-        // Determine which rules match which response using data from table qtype_pmatch_rule_matches.
-        $rulematches = \qtype_pmatch\testquestion_responses::get_rule_matches_for_responses($responseids,
+        // Determine which rules match which response using data from table qtype_patternessay_rule_matches.
+        $rulematches = \qtype_patternessay\testquestion_responses::get_rule_matches_for_responses($responseids,
                 $this->currentquestion->id);
 
         // Translate the rule and response ids into responses and rules to test.
@@ -680,7 +680,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->resetAfterTest();
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_json_error_1.json';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -688,7 +688,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertTrue($errcase['columnless']);
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_json_error_2.json';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -696,7 +696,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertTrue($errcase['row']);
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_json_error_3.json';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -704,7 +704,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertTrue($errcase['columnbigger']);
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_json_normal.json';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -718,7 +718,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->resetAfterTest();
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_html_error_1.html';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -726,7 +726,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertTrue($errcase['columnless']);
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_html_error_2.html';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -734,7 +734,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertTrue($errcase['row']);
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_html_error_3.html';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -742,7 +742,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertTrue($errcase['columnbigger']);
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_html_normal.html';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -756,7 +756,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->resetAfterTest();
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_csv_error_1.csv';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -764,7 +764,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertTrue($errcase['columnless']);
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_csv_error_2.csv';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -772,7 +772,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertTrue($errcase['row']);
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_csv_error_3.csv';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -780,7 +780,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertTrue($errcase['columnbigger']);
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_csv_normal.csv';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -798,7 +798,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->resetAfterTest();
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_xlsx_error_1.xlsx';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -806,7 +806,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertTrue($errcase['columnless']);
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_xlsx_error_2.xlsx';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -814,7 +814,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertTrue($errcase['row']);
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_xlsx_error_3.xlsx';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -822,7 +822,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertTrue($errcase['columnbigger']);
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_xlsx_normal.xlsx';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -840,7 +840,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->resetAfterTest();
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_ods_error_1.ods';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -848,7 +848,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertTrue($errcase['columnless']);
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_ods_error_2.ods';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -856,7 +856,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertTrue($errcase['row']);
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_ods_error_3.ods';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -864,7 +864,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $this->assertTrue($errcase['columnbigger']);
 
         $responsesfile = dirname(__FILE__) . '/' . 'fixtures/testreponses_ods_normal.ods';
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $errcase = $importer->validate();
@@ -886,7 +886,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
      */
     public function test_get_responses($responsesfile, $expectedtotalrows, $expectedrows) {
         $this->resetAfterTest();
-        $testquestionimporthelper = new \qtype_pmatch\testquestion_import_helper($responsesfile);
+        $testquestionimporthelper = new \qtype_patternessay\testquestion_import_helper($responsesfile);
         $importer = $testquestionimporthelper->import_factory();
         $importer->open($responsesfile);
         $content = $importer->get_responses();
@@ -954,13 +954,13 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
     }
 
     /**
-     * Test export function for qtype_pmatch
+     * Test export function for qtype_patternessay
      */
     public function test_xml_export() {
         global $CFG;
         $this->resetAfterTest();
 
-        $qdata = test_question_maker::get_question_data('pmatch', 'test0');
+        $qdata = test_question_maker::get_question_data('patternessay', 'test0');
 
         $testresponse = [];
         $data = new stdClass();
@@ -969,21 +969,21 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $data->expectedfraction = '0';
         $data->gradedfraction = '0';
         $data->response = 'one two';
-        $testresponse[] = \qtype_pmatch\testquestion_response::create($data);
+        $testresponse[] = \qtype_patternessay\testquestion_response::create($data);
         $data = new stdClass();
         $data->id = 1001;
         $data->questionid = $qdata->id;
         $data->expectedfraction = '1';
         $data->gradedfraction = '1';
         $data->response = 'one two three';
-        $testresponse[] = \qtype_pmatch\testquestion_response::create($data);
-        \qtype_pmatch\testquestion_responses::add_responses($testresponse);
+        $testresponse[] = \qtype_patternessay\testquestion_response::create($data);
+        \qtype_patternessay\testquestion_responses::add_responses($testresponse);
 
         $exporter = new qformat_xml();
         $xml = $exporter->writequestion($qdata);
         if ($CFG->branch > 35) {
             $expectedxml = '<!-- question: 1  -->
-  <question type="pmatch">
+  <question type="patternessay">
     <name>
       <text>test-0</text>
     </name>
@@ -1058,7 +1058,7 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
 ';
         } else {
             $expectedxml = '<!-- question: 1  -->
-  <question type="pmatch">
+  <question type="patternessay">
     <name>
       <text>test-0</text>
     </name>
@@ -1135,13 +1135,13 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
     }
 
     /**
-     * Test import function for qtype_pmatch
+     * Test import function for qtype_patternessay
      */
     public function test_xml_import() {
         global $CFG;
         $this->resetAfterTest();
         $xml = '<!-- question: 0  -->
-  <question type="pmatch">
+  <question type="patternessay">
     <name>
       <text>test-0</text>
     </name>
@@ -1217,10 +1217,10 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $xmldata = xmlize($xml);
 
         $importer = new qformat_xml();
-        $q = $importer->try_importing_using_qtypes($xmldata['question'], null, null, 'pmatch');
+        $q = $importer->try_importing_using_qtypes($xmldata['question'], null, null, 'patternessay');
 
         $expectedq = new stdClass();
-        $expectedq->qtype = 'pmatch';
+        $expectedq->qtype = 'patternessay';
         $expectedq->name = 'test-0';
         if ($CFG->branch > 35) {
             // Question idnumber only available since Moodle 3.6.
@@ -1236,14 +1236,14 @@ class qtype_pmatch_testquestion_responses_test extends qtype_pmatch_testquestion
         $expectedq->generalfeedbackformat = FORMAT_HTML;
         $expectedq->applydictionarycheck = 'en_GB';
 
-        $response = new \qtype_pmatch\testquestion_response();
+        $response = new \qtype_patternessay\testquestion_response();
         $response->response = 'one two';
         $response->expectedfraction = '0';
         $response->gradedfraction = '0';
 
         $expectedq->responsesdata[] = $response;
 
-        $response = new \qtype_pmatch\testquestion_response();
+        $response = new \qtype_patternessay\testquestion_response();
         $response->response = 'one two three';
         $response->expectedfraction = '1';
         $response->gradedfraction = '1';

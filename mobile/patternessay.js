@@ -8,7 +8,7 @@ var result = {
         // There are also other useful objects with question like infoHtml which is used by the
         // page to display the question state, but with which we need do nothing.
         // This code just prepares bits of this.question.html storing it in the question object ready for
-        // passing to the template (pmatch.html).
+        // passing to the template (patternessay.html).
         // Note this is written in 'standard' javascript rather than ES6. Both work.
 
         if (!this.question) {
@@ -51,11 +51,11 @@ var result = {
         if (ousupsub !== null) {
             // Replace the ousupsub editor with with a placeholder.
             if (ablock !== null) {
-                this.question.ablock = this.question.ablock.replace(ousupsub.outerHTML, '<Span class="pmatch-ousupsub-box"></Span>');
+                this.question.ablock = this.question.ablock.replace(ousupsub.outerHTML, '<Span class="patternessay-ousupsub-box"></Span>');
             } else {
-                this.question.text = this.question.text.replace(ousupsub.outerHTML, '<Span class="pmatch-ousupsub-box"></Span>');
+                this.question.text = this.question.text.replace(ousupsub.outerHTML, '<Span class="patternessay-ousupsub-box"></Span>');
             }
-            // This is used to provide error message (<ion-item text-wrap *ngIf="question.ousupsub" class="core-danger-item"> in pmatch.html.
+            // This is used to provide error message (<ion-item text-wrap *ngIf="question.ousupsub" class="core-danger-item"> in patternessay.html.
             this.question.ousupsub = ousupsub;
         }
         return true;
@@ -74,7 +74,7 @@ var result = {
         var ousupsub = div.querySelector('.answer-supsub');
 
         if (ousupsub !== null) {
-            return 'plugin.qtype_pmatch.err_ousupsubnotsupportedonmobile';
+            return 'plugin.qtype_patternessay.err_ousupsubnotsupportedonmobile';
         }
     }
 };

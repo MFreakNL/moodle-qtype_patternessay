@@ -17,14 +17,14 @@
 /**
  * Render methods.
  *
- * @package    qtype_pmatch
+ * @package    qtype_patternessay
  * @copyright  2016 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-class qtype_pmatch_testquestion_renderer extends plugin_renderer_base {
+class qtype_patternessay_testquestion_renderer extends plugin_renderer_base {
 
     public function get_display_options_form($controller) {
         return $controller->handle_display_options_form();
@@ -35,15 +35,15 @@ class qtype_pmatch_testquestion_renderer extends plugin_renderer_base {
     }
 
     public function get_uploadresponses_link($question) {
-        $link = new moodle_url('/question/type/pmatch/uploadresponses.php', ['id' => $question->id]);
+        $link = new moodle_url('/question/type/patternessay/uploadresponses.php', ['id' => $question->id]);
 
         return html_writer::tag('button',
-                get_string('testquestionuploadresponses', 'qtype_pmatch'),
+                get_string('testquestionuploadresponses', 'qtype_patternessay'),
                 ['type' => 'button', "onclick" => "window.location.href = '" . $link->out(false) . "'"]);
     }
 
     public function get_responses_heading($question) {
-        return html_writer::tag('h3', get_string('showingresponsesforquestion', 'qtype_pmatch', $question->name));
+        return html_writer::tag('h3', get_string('showingresponsesforquestion', 'qtype_patternessay', $question->name));
     }
 
     /**
@@ -54,8 +54,8 @@ class qtype_pmatch_testquestion_renderer extends plugin_renderer_base {
      * @throws coding_exception\
      */
     public function get_grade_summary($question) {
-        $counts = \qtype_pmatch\testquestion_responses::get_question_grade_summary_counts($question);
-        return html_writer::tag('p', get_string('testquestionresultssummary', 'qtype_pmatch', $counts),
+        $counts = \qtype_patternessay\testquestion_responses::get_question_grade_summary_counts($question);
+        return html_writer::tag('p', get_string('testquestionresultssummary', 'qtype_patternessay', $counts),
                 array('id' => 'testquestion_gradesummary'));
     }
 
@@ -69,7 +69,7 @@ class qtype_pmatch_testquestion_renderer extends plugin_renderer_base {
             $html .= html_writer::start_div('', array('id' => 'commands'));
             $html = \html_writer::start_tag('p', ['id' => 'wrapperactionresponse']);
             $html .= html_writer::tag('button',
-                    get_string('testquestionformnewresponsebutton', 'qtype_pmatch'),
+                    get_string('testquestionformnewresponsebutton', 'qtype_patternessay'),
                     ['id' => 'newresponsebutton', 'class' => 'btn btn-secondary']);
             $html .= $this->get_uploadresponses_link($question);
             $html .= \html_writer::end_tag('p');
@@ -77,22 +77,22 @@ class qtype_pmatch_testquestion_renderer extends plugin_renderer_base {
             $html .= html_writer::empty_tag('br');
             // Delete responses.
             $html .= '<input type="submit" id="deleteresponsesbutton" class="btn btn-secondary" name="delete" value="' .
-                get_string('testquestionformdeletesubmit', 'qtype_pmatch') . '"/> ';
+                get_string('testquestionformdeletesubmit', 'qtype_patternessay') . '"/> ';
             // Test responses.
             $html .= '<input type="submit" id="testresponsesbutton" class="btn btn-secondary" name="test" value="' .
-                    get_string('testquestionformtestsubmit', 'qtype_pmatch') . '"/> ';
+                    get_string('testquestionformtestsubmit', 'qtype_patternessay') . '"/> ';
             $this->page->requires->event_handler('#deleteresponsesbutton', 'click', 'M.util.show_confirm_dialog',
-                    array('message' => get_string('testquestionformdeletecheck', 'qtype_pmatch')));
+                    array('message' => get_string('testquestionformdeletecheck', 'qtype_patternessay')));
             $html .= html_writer::end_div();
             // Add ajax updater.
-            $this->page->requires->js_call_amd('qtype_pmatch/updater', 'init');
+            $this->page->requires->js_call_amd('qtype_patternessay/updater', 'init');
             // Add ajax create response.
-            $this->page->requires->js_call_amd('qtype_pmatch/creator', 'init');
+            $this->page->requires->js_call_amd('qtype_patternessay/creator', 'init');
 
             $this->page->requires->strings_for_js(['ok', 'selectall', 'deselectall'], 'moodle');
             $this->page->requires->strings_for_js(['error:title', 'testquestionresultssummary',
                     'testquestionformsaveresponsebutton',
-                    'testquestionformcancelresponsebutton'], 'qtype_pmatch');
+                    'testquestionformcancelresponsebutton'], 'qtype_patternessay');
         }
         return $html;
     }

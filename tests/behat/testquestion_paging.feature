@@ -1,4 +1,4 @@
-@ou @ou_vle @qtype @qtype_pmatch
+@ou @ou_vle @qtype @qtype_patternessay
 Feature: Test the paging functionality of the test this question feature of this question type
   In order to manage the large number of test responses used to test this question
   As an teacher
@@ -19,7 +19,7 @@ Feature: Test the paging functionality of the test this question feature of this
       | Course       | C1        | Test questions |
     And the following "questions" exist:
       | questioncategory | qtype    | name         | template |
-      | Test questions   | pmatch   | My first pattern match question | listen    |
+      | Test questions   | patternessay   | My first pattern match question | listen    |
     And the default question test responses exist for question "My first pattern match question"
     And I log in as "teacher"
 

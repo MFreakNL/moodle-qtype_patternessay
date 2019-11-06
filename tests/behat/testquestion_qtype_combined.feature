@@ -1,4 +1,4 @@
-@ou @ou_vle @qtype @qtype_pmatch
+@ou @ou_vle @qtype @qtype_patternessay
 Feature: Test the basic functionality of Test Question Link when preview combined Pattern Match question type
   In order to evaluate students responses, As a teacher I need to
   Create and preview combined (Combined) Pattern Match question type.
@@ -22,21 +22,21 @@ Feature: Test the basic functionality of Test Question Link when preview combine
     And I click on "Add" "button" in the "Choose a question type to add" "dialogue"
     Then I should see "Adding a combined question"
     And I set the field "Question name" to "Combined 001"
-    And I set the field "Question text" to " What 5 + 5 ? [[1:pmatch:__10__]]. <br/>What is the IUPAC name of the molecule? [[2:pmatch:__20__]]. <br/>What is the pH of a 0.1M solution? [[3:numeric:__10__]]"
+    And I set the field "Question text" to " What 5 + 5 ? [[1:patternessay:__10__]]. <br/>What is the IUPAC name of the molecule? [[2:patternessay:__20__]]. <br/>What is the pH of a 0.1M solution? [[3:numeric:__10__]]"
     Then I set the field "General feedback" to "The molecule is ethanoic acid which is more commonly known as acetic acid or in dilute solution as vinegar. The constituent elements are carbon (grey), hydrogen (white) and oxygen (red). A 0.1M solution has a pH of 2.88 and when a solution is combined with oil the result is a vinaigrette."
     And I press "Verify the question text and update the form"
-    Then I follow "'pmatch' input '1'"
+    Then I follow "'patternessay' input '1'"
     And I set the following fields to these values:
-      | id_subqpmatch1defaultmark     | 50%                                |
+      | id_subqpatternessay1defaultmark     | 50%                                |
       | Spell checking                | Do not check spelling of student   |
-      | id_subqpmatch1answer_0        | match_mw (ethanoic acid)           |
-      | id_subqpmatch1generalfeedback | You have the incorrect IUPAC name. |
-    Then I follow "'pmatch' input '2'"
+      | id_subqpatternessay1answer_0        | match_mw (ethanoic acid)           |
+      | id_subqpatternessay1generalfeedback | You have the incorrect IUPAC name. |
+    Then I follow "'patternessay' input '2'"
     And I set the following fields to these values:
-      | id_subqpmatch2defaultmark     | 25%                                |
+      | id_subqpatternessay2defaultmark     | 25%                                |
       | Spell checking                | Do not check spelling of student   |
-      | id_subqpmatch2answer_0        | match_m (10)                       |
-      | id_subqpmatch2generalfeedback | You have the incorrect IUPAC name. |
+      | id_subqpatternessay2answer_0        | match_m (10)                       |
+      | id_subqpatternessay2generalfeedback | You have the incorrect IUPAC name. |
     Then I follow "'numeric' input '3'"
     And I set the following fields to these values:
       | id_subqnumeric3defaultmark     | 25%                                     |
@@ -60,7 +60,7 @@ Feature: Test the basic functionality of Test Question Link when preview combine
     And I click on "Save" "button"
     Then I should see "New test response"
     # Check Delete response.
-    And I set the field with xpath "//form[@id='attemptsform']//table[@id='responses']//td[@id='qtype-pmatch-testquestion_r50_c0']//input" to "1"
+    And I set the field with xpath "//form[@id='attemptsform']//table[@id='responses']//td[@id='qtype-patternessay-testquestion_r50_c0']//input" to "1"
     And I click on "Delete" "button"
     And I press "Yes"
     And I press "Continue"

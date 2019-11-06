@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace qtype_pmatch;
+namespace qtype_patternessay;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -23,7 +23,7 @@ require_once($CFG->libdir . '/tablelib.php');
 /**
  * class for the table used by the test question feature.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2016 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -44,11 +44,11 @@ class testquestion_table extends \table_sql {
     /**
      * Constructor
      * @param object $question
-     * @param \qtype_pmatch\testquestion_responses $testresponses
-     * @param \qtype_pmatch\testquestion_options $options
+     * @param \qtype_patternessay\testquestion_responses $testresponses
+     * @param \qtype_patternessay\testquestion_options $options
      */
-    public function __construct($question, $testresponses, \qtype_pmatch\testquestion_options $options) {
-        $this->uniqueid = 'qtype-pmatch-testquestion';
+    public function __construct($question, $testresponses, \qtype_patternessay\testquestion_options $options) {
+        $this->uniqueid = 'qtype-patternessay-testquestion';
         parent::__construct($this->uniqueid);
         $this->question = $question;
         $this->testresponses = $testresponses;
@@ -82,7 +82,7 @@ class testquestion_table extends \table_sql {
             return \html_writer::tag('a',
                     $response->expectedfraction,
                     ['class' => 'updater-ef', 'data-id' => $response->id, 'id' => 'updater-ef_' . $response->id, 'href' => '#',
-                            'title' => get_string('testquestionchangescore', 'qtype_pmatch') ]);
+                            'title' => get_string('testquestionchangescore', 'qtype_patternessay') ]);
         } else {
             // Two spaces looks better than one.
             return '&nbsp;&nbsp;';
@@ -104,10 +104,10 @@ class testquestion_table extends \table_sql {
      * @return string HTML content to go inside the td.
      */
     public function col_rules($response) {
-        if (\qtype_pmatch\testquestion_responses::has_rule_match_for_response(
+        if (\qtype_patternessay\testquestion_responses::has_rule_match_for_response(
                     $this->testresponses->rulematches, $response->id)) {
             return implode(',',
-                    \qtype_pmatch\testquestion_responses::get_matching_rule_indexes_for_response(
+                    \qtype_patternessay\testquestion_responses::get_matching_rule_indexes_for_response(
                             $this->testresponses, $response->id));
         } else {
             return '';
@@ -120,7 +120,7 @@ class testquestion_table extends \table_sql {
      * @return string added to the class="" attribute of the tr.
      */
     public function get_row_class($response) {
-        $class = 'qtype_pmatch-selftest-';
+        $class = 'qtype_patternessay-selftest-';
         if ($response->expectedfraction === $response->gradedfraction) {
             $class .= 'ok';
         } else if (is_null($response->gradedfraction)) {
@@ -141,17 +141,17 @@ class testquestion_table extends \table_sql {
     public function base_sql() {
         global $DB;
 
-        $from = '{qtype_pmatch_test_responses}';
+        $from = '{qtype_patternessay_test_responses}';
         $fields = 'id, expectedfraction, gradedfraction, response';
         $params = array('questionid' => $this->question->id);
         $where = 'questionid = '.$this->question->id;
 
         if ($this->options->states) {
             $statesqllist = array(
-                   \qtype_pmatch\testquestion_response::MATCHED => '(expectedfraction = gradedfraction)',
-                   \qtype_pmatch\testquestion_response::MISSED_POSITIVE => '(gradedfraction = 0 AND expectedfraction = 1)',
-                   \qtype_pmatch\testquestion_response::MISSED_NEGATIVE => '(gradedfraction = 1 AND expectedfraction = 0)',
-                   \qtype_pmatch\testquestion_response::UNGRADED => '(gradedfraction IS NULL)'
+                   \qtype_patternessay\testquestion_response::MATCHED => '(expectedfraction = gradedfraction)',
+                   \qtype_patternessay\testquestion_response::MISSED_POSITIVE => '(gradedfraction = 0 AND expectedfraction = 1)',
+                   \qtype_patternessay\testquestion_response::MISSED_NEGATIVE => '(gradedfraction = 1 AND expectedfraction = 0)',
+                   \qtype_patternessay\testquestion_response::UNGRADED => '(gradedfraction IS NULL)'
             );
             $statesql = ' AND (';
             $count = 0;
@@ -196,8 +196,8 @@ class testquestion_table extends \table_sql {
         if ($this->is_downloading()) {
             return $response->response;
         }
-        $editresponse = get_string('testquestioneditresponse', 'qtype_pmatch');
-        $tmpl = new \core\output\inplace_editable('qtype_pmatch', 'responsetable', $response->id,
+        $editresponse = get_string('testquestioneditresponse', 'qtype_patternessay');
+        $tmpl = new \core\output\inplace_editable('qtype_patternessay', 'responsetable', $response->id,
                 true, $response->response, $response->response, $editresponse, $editresponse);
         $out = $OUTPUT->render($tmpl);
 
@@ -208,7 +208,7 @@ class testquestion_table extends \table_sql {
      * Format the data into test responses classes.
      */
     protected function format_data() {
-        $this->rawdata = \qtype_pmatch\testquestion_responses::data_to_responses($this->rawdata);
+        $this->rawdata = \qtype_patternessay\testquestion_responses::data_to_responses($this->rawdata);
     }
 
     /**
@@ -237,7 +237,7 @@ class testquestion_table extends \table_sql {
         if ($this->is_downloading() || !$this->includecheckboxes) {
             return;
         }
-        $output = $PAGE->get_renderer('qtype_pmatch', 'testquestion');
+        $output = $PAGE->get_renderer('qtype_patternessay', 'testquestion');
         echo $output->get_table_bottom_buttons($this->question);
         // Close the form.
         echo '</form></div>';
@@ -257,16 +257,16 @@ class testquestion_table extends \table_sql {
                 $this->column_nosort[] = 'checkbox';
             }
             $columns[] = 'id';
-            $headers[] = get_string('testquestionidlabel', 'qtype_pmatch');
+            $headers[] = get_string('testquestionidlabel', 'qtype_patternessay');
             $columns[] = 'rules';
-            $headers[] = get_string('testquestionruleslabel', 'qtype_pmatch');
+            $headers[] = get_string('testquestionruleslabel', 'qtype_patternessay');
             $columns[] = 'gradedfraction';
-            $headers[] = get_string('testquestionactualmark', 'qtype_pmatch');
+            $headers[] = get_string('testquestionactualmark', 'qtype_patternessay');
         }
         $columns[] = 'expectedfraction';
-        $headers[] = get_string('testquestionexpectedfraction', 'qtype_pmatch');
+        $headers[] = get_string('testquestionexpectedfraction', 'qtype_patternessay');
         $columns[] = 'response';
-        $headers[] = get_string('testquestionresponse', 'qtype_pmatch');
+        $headers[] = get_string('testquestionresponse', 'qtype_patternessay');
     }
 
     /**

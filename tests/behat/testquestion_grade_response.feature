@@ -1,4 +1,4 @@
-@ou @ou_vle @qtype @qtype_pmatch
+@ou @ou_vle @qtype @qtype_patternessay
 Feature: Grade a test response for a pattern match question
   In order evaluate the accuracy of a question
   As a teacher
@@ -19,7 +19,7 @@ Feature: Grade a test response for a pattern match question
       | Course       | C1        | Test questions |
     And the following "questions" exist:
       | questioncategory | qtype    | name         | template |
-      | Test questions   | pmatch   | My first pattern match question | listen    |
+      | Test questions   | patternessay   | My first pattern match question | listen    |
     And the default question test responses exist for question "My first pattern match question"
     And I log in as "teacher"
 
@@ -27,8 +27,8 @@ Feature: Grade a test response for a pattern match question
   Scenario: Grade an existing test response for pattern match question.
     # Check responses are listed correctly
     Given I am on the pattern match test responses page for question "My first pattern match question"
-    Then I should see "testing one two three four" in the "#qtype-pmatch-testquestion_r0_c5" "css_element"
-    When I set the field with xpath "//form[@id='attemptsform']//table[@id='responses']//td[@id='qtype-pmatch-testquestion_r0_c0']//input" to "1"
+    Then I should see "testing one two three four" in the "#qtype-patternessay-testquestion_r0_c5" "css_element"
+    When I set the field with xpath "//form[@id='attemptsform']//table[@id='responses']//td[@id='qtype-patternessay-testquestion_r0_c0']//input" to "1"
     And I press "Test selected responses"
     Then I should see "Pattern-match question testing tool: Testing question: My first pattern match question"
     And I should see "Processing response 1 of 1: testing one two three four."
@@ -39,11 +39,11 @@ Feature: Grade a test response for a pattern match question
     And I should see "Computed mark greater than human mark: 0 (missed positive)"
     And I should see "Computed mark less than human mark: 0 (missed negative)"
     # Confirm the computer mark
-    And I should see "1" in the "#qtype-pmatch-testquestion_r0_c3" "css_element"
+    And I should see "1" in the "#qtype-patternessay-testquestion_r0_c3" "css_element"
     # Confirm the response
-    And I should see "testing one two three four" in the "#qtype-pmatch-testquestion_r0_c5" "css_element"
+    And I should see "testing one two three four" in the "#qtype-patternessay-testquestion_r0_c5" "css_element"
 
     # Now test changing the human mark
-    And I should see "1" in the "#qtype-pmatch-testquestion_r0_c4" "css_element"
-    When I click on "//form[@id='attemptsform']//table[@id='responses']//td[@id='qtype-pmatch-testquestion_r0_c4']//a" "xpath_element"
-    Then I should see "0" in the "#qtype-pmatch-testquestion_r0_c4" "css_element"
+    And I should see "1" in the "#qtype-patternessay-testquestion_r0_c4" "css_element"
+    When I click on "//form[@id='attemptsform']//table[@id='responses']//td[@id='qtype-patternessay-testquestion_r0_c4']//a" "xpath_element"
+    Then I should see "0" in the "#qtype-patternessay-testquestion_r0_c4" "css_element"

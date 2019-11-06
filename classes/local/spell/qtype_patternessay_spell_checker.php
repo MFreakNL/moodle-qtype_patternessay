@@ -17,27 +17,27 @@
 /**
  * This file contains an API for accessing spell-checking back-ends.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2019 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace qtype_pmatch\local\spell;
+namespace qtype_patternessay\local\spell;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * Object that provides spell-checking, to make it easy to support different back-ends.
  *
- * Which back-end to use is controlled by get_config('qtype_pmatch', 'spellchecker').
+ * Which back-end to use is controlled by get_config('qtype_patternessay', 'spellchecker').
  * Create an instance of this class using
- * $spellchecker = qtype_pmatch_spell_checker::make(); then test
+ * $spellchecker = qtype_patternessay_spell_checker::make(); then test
  * words using $spellchecker->is_in_dictionary($word);
  */
-abstract class qtype_pmatch_spell_checker {
+abstract class qtype_patternessay_spell_checker {
 
     /**
-     * @var array lang code => qtype_pmatch_spell_checker, so we only load each dictionary once.
+     * @var array lang code => qtype_patternessay_spell_checker, so we only load each dictionary once.
      * We were experiencing incomprehensible errors if we loaded the same dictionaries
      * repeatedly (it just died on enchant_broker_request_dict with no error message).
      * Using this cache avoids that.
@@ -64,10 +64,10 @@ abstract class qtype_pmatch_spell_checker {
      * Factory method create a new spell-checker object for a given language.
      *
      * @param string $lang the language code. If null, defaults to get_string('iso6391', 'langconfig').
-     * @return qtype_pmatch_spell_checker the requested object.
+     * @return qtype_patternessay_spell_checker the requested object.
      */
-    public static function make($lang = null): qtype_pmatch_spell_checker {
-        $spellchecker = get_config('qtype_pmatch', 'spellchecker');
+    public static function make($lang = null): qtype_patternessay_spell_checker {
+        $spellchecker = get_config('qtype_patternessay', 'spellchecker');
 
         if ($lang === null) {
             $lang = 'en_GB';
@@ -102,10 +102,10 @@ abstract class qtype_pmatch_spell_checker {
     /**
      * Helper method used by {@link make()} when a real dictionary can't be found.
      * @param string $lang a language code.
-     * @return qtype_pmatch_null_spell_checker
+     * @return qtype_patternessay_null_spell_checker
      */
     protected static function make_null_checker($lang) {
-        self::$checkers[$lang] = new qtype_pmatch_null_spell_checker($lang);
+        self::$checkers[$lang] = new qtype_patternessay_null_spell_checker($lang);
         return self::$checkers[$lang];
     }
 
@@ -114,9 +114,9 @@ abstract class qtype_pmatch_spell_checker {
      */
     public static function get_known_backends() {
         return array(
-                'null'    => 'qtype_pmatch\local\spell\qtype_pmatch_null_spell_checker',
-                'pspell'  => 'qtype_pmatch\local\spell\qtype_pmatch_pspell_spell_checker',
-                'enchant' => 'qtype_pmatch\local\spell\qtype_pmatch_enchant_spell_checker',
+                'null'    => 'qtype_patternessay\local\spell\qtype_patternessay_null_spell_checker',
+                'pspell'  => 'qtype_patternessay\local\spell\qtype_patternessay_pspell_spell_checker',
+                'enchant' => 'qtype_patternessay\local\spell\qtype_patternessay_enchant_spell_checker',
         );
     }
 
@@ -140,7 +140,7 @@ abstract class qtype_pmatch_spell_checker {
      * @return array List of available languages.
      */
     public static function get_available_languages(): array {
-        $spellchecker = get_config('qtype_pmatch', 'spellchecker');
+        $spellchecker = get_config('qtype_patternessay', 'spellchecker');
         $backends = self::get_known_backends();
         $classname = $backends[$spellchecker];
         $availablelanguages = $classname::available_languages();
@@ -250,11 +250,11 @@ abstract class qtype_pmatch_spell_checker {
         $disable = false;
         $options = [];
 
-        $options[self::DO_NOT_CHECK_OPTION] = get_string('apply_spellchecker_label', 'qtype_pmatch');
+        $options[self::DO_NOT_CHECK_OPTION] = get_string('apply_spellchecker_label', 'qtype_patternessay');
 
-        $spellchecklanguagesdata = get_config('qtype_pmatch', 'spellcheck_languages');
+        $spellchecklanguagesdata = get_config('qtype_patternessay', 'spellcheck_languages');
         if (!$spellchecklanguagesdata ||
-                get_config('qtype_pmatch', 'spellchecker') == self::NULL_SPELL_CHECK) {
+                get_config('qtype_patternessay', 'spellchecker') == self::NULL_SPELL_CHECK) {
             $disable = true;
             return [$options, $disable];
         }
@@ -264,7 +264,7 @@ abstract class qtype_pmatch_spell_checker {
             $language = new \stdClass();
             $language->name = self::get_display_name_for_language_code($availablelang);
             $language->code = $availablelang;
-            $options[$availablelang] = get_string('apply_spellchecker_select', 'qtype_pmatch', $language);
+            $options[$availablelang] = get_string('apply_spellchecker_select', 'qtype_patternessay', $language);
         }
 
         if (isset($question->options)) {
@@ -273,7 +273,7 @@ abstract class qtype_pmatch_spell_checker {
                     !in_array($originallanguage, $availablelangs)) {
                 $missinglangname = self::get_display_name_for_language_code($originallanguage);
                 $options[$originallanguage] =
-                        get_string('apply_spellchecker_missing_language_select', 'qtype_pmatch', $missinglangname);
+                        get_string('apply_spellchecker_missing_language_select', 'qtype_patternessay', $missinglangname);
             }
         }
         ksort($options);

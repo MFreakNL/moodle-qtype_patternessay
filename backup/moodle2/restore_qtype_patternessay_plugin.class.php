@@ -17,7 +17,7 @@
 /**
  * Restore code for the pattern-match questoin type.
  *
- * @package    qtype_pmatch
+ * @package    qtype_patternessay
  * @copyright  2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -32,7 +32,7 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class restore_qtype_pmatch_plugin extends restore_qtype_plugin {
+class restore_qtype_patternessay_plugin extends restore_qtype_plugin {
 
     /**
      * Returns the paths to be handled by the plugin at question level.
@@ -45,8 +45,8 @@ class restore_qtype_pmatch_plugin extends restore_qtype_plugin {
         $this->add_question_question_answers($paths);
 
         // Add own qtype stuff.
-        $elename = 'pmatch';
-        $elepath = $this->get_pathfor('/pmatch'); // We used get_recommended_name() so this works.
+        $elename = 'patternessay';
+        $elepath = $this->get_pathfor('/patternessay'); // We used get_recommended_name() so this works.
         $paths[] = new restore_path_element($elename, $elepath);
 
         $elename = 'synonym';
@@ -65,11 +65,11 @@ class restore_qtype_pmatch_plugin extends restore_qtype_plugin {
     }
 
     /**
-     * Process the qtype/pmatch element.
+     * Process the qtype/patternessay element.
      *
      * @param array $data the data from the backup file.
      */
-    public function process_pmatch($data) {
+    public function process_patternessay($data) {
         global $DB;
 
         $data = (object)$data;
@@ -80,14 +80,14 @@ class restore_qtype_pmatch_plugin extends restore_qtype_plugin {
         $newquestionid   = $this->get_new_parentid('question');
         $questioncreated = $this->get_mappingid('question_created', $oldquestionid) ? true : false;
 
-        // If the question has been created by restore, we need to create its qtype_pmatch too.
+        // If the question has been created by restore, we need to create its qtype_patternessay too.
         if ($questioncreated) {
             // Adjust some columns.
             $data->questionid = $newquestionid;
             // Insert record.
-            $newitemid = $DB->insert_record('qtype_pmatch', $data);
+            $newitemid = $DB->insert_record('qtype_patternessay', $data);
             // Create mapping.
-            $this->set_mapping('qtype_pmatch', $oldid, $newitemid);
+            $this->set_mapping('qtype_patternessay', $oldid, $newitemid);
         }
     }
 
@@ -108,12 +108,12 @@ class restore_qtype_pmatch_plugin extends restore_qtype_plugin {
         $questioncreated = $this->get_mappingid('question_created', $oldquestionid) ? true : false;
 
         // If the question has been created by restore,
-        // we need to create its qtype_pmatch_synonyms too.
+        // we need to create its qtype_patternessay_synonyms too.
         if ($questioncreated) {
             // Adjust some columns.
             $data->questionid = $newquestionid;
             // Insert record.
-            $newitemid = $DB->insert_record('qtype_pmatch_synonyms', $data);
+            $newitemid = $DB->insert_record('qtype_patternessay_synonyms', $data);
         }
     }
 
@@ -134,7 +134,7 @@ class restore_qtype_pmatch_plugin extends restore_qtype_plugin {
 
         if ($questioncreated) {
             $data->questionid = $newquestionid;
-            $newitemid = $DB->insert_record('qtype_pmatch_test_responses', $data);
+            $newitemid = $DB->insert_record('qtype_patternessay_test_responses', $data);
             // A mapping is required by the rule_match process below.
             $this->set_mapping('test_response', $oldid, $newitemid);
         }
@@ -158,7 +158,7 @@ class restore_qtype_pmatch_plugin extends restore_qtype_plugin {
             $data->questionid = $newquestionid;
             $data->testresponseid = $this->get_new_parentid('test_response');
             $data->answerid = $this->get_mappingid('question_answer', $data->answerid);
-            $newitemid = $DB->insert_record('qtype_pmatch_rule_matches', $data);
+            $newitemid = $DB->insert_record('qtype_patternessay_rule_matches', $data);
         }
     }
 }

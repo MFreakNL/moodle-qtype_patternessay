@@ -15,24 +15,24 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Defines the \qtype_pmatch\test rules class.
+ * Defines the \qtype_patternessay\test rules class.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2016 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace qtype_pmatch;
+namespace qtype_patternessay;
 defined('MOODLE_INTERNAL') || die();
-require_once($CFG->dirroot . '/question/type/pmatch/question.php');
-require_once($CFG->dirroot . '/question/type/pmatch/pmatchlib.php');
+require_once($CFG->dirroot . '/question/type/patternessay/question.php');
+require_once($CFG->dirroot . '/question/type/patternessay/patternessaylib.php');
 
 /**
  * Question type: Pattern match: Test rules class.
  *
  * Manages the test rules associated with a given question.
  *
- * The key part of translating AMATI rules into pmatch rules is to break the AMATI rules
+ * The key part of translating AMATI rules into patternessay rules is to break the AMATI rules
  * into their constituent subrules and these sub rules into consitutent paramenters. I
  * found command, operator and word to be good (not perfect) parameters to use.
  *
@@ -40,7 +40,7 @@ require_once($CFG->dirroot . '/question/type/pmatch/pmatchlib.php');
  * * Term expects exact word matches
  * * Template Expects an exact for the first few letters then any characters for the rest of the word
  * * Precedes expects the first word to appear before the second. In AMATI the match can be across
- * sentences, in pmatch it is only with a sentence.
+ * sentences, in patternessay it is only with a sentence.
  * * Closely precedes expects the first word to be a maximum of two words before the second word
  *
  * Operators add or exclude a phrase from a match or provide an alternate and include add, esclude and or
@@ -71,7 +71,7 @@ class amati_rule_suggestion {
      */
     public static function load_suggested_rules_from_amati_webservice($url, $responses) {
         \core_php_time_limit::raise(300);// 300 seconds = 5 minutes.
-        $responses = \qtype_pmatch\testquestion_responses::responses_to_data($responses);
+        $responses = \qtype_patternessay\testquestion_responses::responses_to_data($responses);
         $post = array('service' => 'generate_rules', 'responses' => json_encode($responses), '');
         $header[] = "Content-Type: multipart/form-data";
         $ch = curl_init();
@@ -117,7 +117,7 @@ class amati_rule_suggestion {
 
     /**
      * Break an amati rule into separate subrules and parameters to make translation so
-     * we can make a matching pmatch rule from the parameters.
+     * we can make a matching patternessay rule from the parameters.
      * @param string $rule amati rule
      * @return array Array of subrules broken down into parameters
      */
@@ -222,23 +222,23 @@ class amati_rule_suggestion {
      * parameters of the give subrules
      *
      * AMATI rules are broken down into commands, operators and words. We determine
-     * the commands and words to use in self:get_pmatch_sub_rule_from_parameters and
+     * the commands and words to use in self:get_patternessay_sub_rule_from_parameters and
      * also the operator NOT.
      *
      * Here we wrap each sub rule in the operator correct operator using match_all for
      * ADD  and match_any for OR.
      *
      * @param \stdClass[] $subrules Sub rules converted to consyituent parameteres
-     * @return string valid pmatch rule
+     * @return string valid patternessay rule
      */
-    public static function get_pmatch_rule_from_subrules($subrulesasparameters) {
+    public static function get_patternessay_rule_from_subrules($subrulesasparameters) {
 
         // If there are no subrules return early.
         if (!count($subrulesasparameters)) {
             return '';
         }
 
-        // In pmatch The OR and ADD operator wrap the sub rule so we must add them now.
+        // In patternessay The OR and ADD operator wrap the sub rule so we must add them now.
         // Start with default match operator (ADD).
         $rule = 'match_all';
         // Should the match operator be an OR? Check the operator of the first subrule.
@@ -247,11 +247,11 @@ class amati_rule_suggestion {
         }
         $rule .= '(';
         $count = 0;
-        // Loop through the array of subrule parameters creating a pmatch rule
+        // Loop through the array of subrule parameters creating a patternessay rule
         // from each parameter object.
         foreach ($subrulesasparameters as $parameters) {
             $rule = $count ? $rule . ' ' : $rule;
-            $rule .= self::get_pmatch_sub_rule_from_parameters($parameters);
+            $rule .= self::get_patternessay_sub_rule_from_parameters($parameters);
             $count++;
         }
 
@@ -260,21 +260,21 @@ class amati_rule_suggestion {
     }
 
     /**
-     * Return a valid pmatch rule from the given parameters of an AMATI sub rule.
+     * Return a valid patternessay rule from the given parameters of an AMATI sub rule.
      *
      * AMATI rules are forumlated from commands, operators and words as explained at the root
-     * of this class. The equivalent pmatch rules were determined through unit tests in
-     * qtype_pmatch_testquestion_amati_rule_suggestion::test_find_pmatch_equivalents_to_amati_commands()
+     * of this class. The equivalent patternessay rules were determined through unit tests in
+     * qtype_patternessay_testquestion_amati_rule_suggestion::test_find_patternessay_equivalents_to_amati_commands()
      *
-     * Commands are the most complicated rule to translate from amati to pmatch. The four commands are achieved:
+     * Commands are the most complicated rule to translate from amati to patternessay. The four commands are achieved:
      * * Term: An exact match on a word
      * * Template: an exact for the given letters then any characters for the rest of the word
      * * Precedes expects the first word to appear before the second. In AMATI the match can be across
-     * sentences, in pmatch it is only with a sentence and uses space ' ' to achieve the match.
+     * sentences, in patternessay it is only with a sentence and uses space ' ' to achieve the match.
      * * Closely precedes expects the first word to be a maximum of two words before the second word
      * and uses an underscore '_' to achieve the match.
      *
-     * Operators are achieved by using the pmatch rules match_all for ADD, match_any for OR and not when
+     * Operators are achieved by using the patternessay rules match_all for ADD, match_any for OR and not when
      * required.
      * Words are the sequence of alphanumeric characters being matched. Spaces are not allowed so each is an
      * invidiual word, not a collection of words.
@@ -282,7 +282,7 @@ class amati_rule_suggestion {
      * @param \stdClass $parameters parameters of an AMATI sub rule
      * @return string the new subrule
      */
-    public static function get_pmatch_sub_rule_from_parameters($parameters) {
+    public static function get_patternessay_sub_rule_from_parameters($parameters) {
         $rule = '';
 
         // Make the basic rule based on the command and word(s).
@@ -318,54 +318,54 @@ class amati_rule_suggestion {
     }
 
     /**
-     * Translate an AMATI rule into an equivalent pmatch rule.
-     * @param string $rule amati rule to translate to pmatch
-     * @return string translated pmatch rule
+     * Translate an AMATI rule into an equivalent patternessay rule.
+     * @param string $rule amati rule to translate to patternessay
+     * @return string translated patternessay rule
      */
-    public static function get_pmatch_rule_from_amati_rule ($rule) {
+    public static function get_patternessay_rule_from_amati_rule ($rule) {
         // Translate each rule into an array of parameter objects that describe
         // the AMATI rule.
         $subrulesasparameters = self::get_parameters_from_amati_rule($rule);
 
-        // Convert the parameter objects into equivalent pmatch rules.
-        return self::get_pmatch_rule_from_subrules ($subrulesasparameters);
+        // Convert the parameter objects into equivalent patternessay rules.
+        return self::get_patternessay_rule_from_subrules ($subrulesasparameters);
     }
 
     /**
-     * Translate an array of AMATI rules into an equivalent pmatch rules.
-     * @param string[] $rule amati rules to translate to pmatch
-     * @return string[] translated pmatch rules
+     * Translate an array of AMATI rules into an equivalent patternessay rules.
+     * @param string[] $rule amati rules to translate to patternessay
+     * @return string[] translated patternessay rules
      */
-    public static function get_pmatch_rules_from_amati_rules ($amatirules) {
+    public static function get_patternessay_rules_from_amati_rules ($amatirules) {
         $rules = array();
         foreach ($amatirules as $rule) {
-            $pmatchrule = self::get_pmatch_rule_from_amati_rule($rule->rule);
-            $rules[$rule->id] = $pmatchrule;
+            $patternessayrule = self::get_patternessay_rule_from_amati_rule($rule->rule);
+            $rules[$rule->id] = $patternessayrule;
         }
 
         return $rules;
     }
 
     /**
-     * Suggest pmatch rules using the AMATI rule suggestion service.
+     * Suggest patternessay rules using the AMATI rule suggestion service.
      *
      * Submits marked responses to the AMATI web service and translates the received rules
-     * into equivalent pmatch rules.
+     * into equivalent patternessay rules.
      * @param object $mform question object from a moodle form.
      * @param object $question
      * @return string[]
      */
     public static function suggest_rules($mform, $question) {
-        $config = get_config('qtype_pmatch');
+        $config = get_config('qtype_patternessay');
         $responses = null;
 
         if ((!$responses || !count($responses)) && $question->id) {
-            $responses = \qtype_pmatch\testquestion_responses::get_responses_by_questionid($question->id);
+            $responses = \qtype_patternessay\testquestion_responses::get_responses_by_questionid($question->id);
         }
 
         // Are there any responses?
         if (!$responses || !count($responses)) {
-            throw new \moodle_exception('testthisquestionnoresponsesfound', 'qtype_pmatch');
+            throw new \moodle_exception('testthisquestionnoresponsesfound', 'qtype_patternessay');
         }
 
         // Are there enough responses?
@@ -373,7 +373,7 @@ class amati_rule_suggestion {
             $counts = new \stdClass();
             $counts->required = $config->minresponses;
             $counts->existing = count($responses);
-            throw new \moodle_exception('testthisquestionnoresmoreponsesrequired', 'qtype_pmatch', '', $counts);
+            throw new \moodle_exception('testthisquestionnoresmoreponsesrequired', 'qtype_patternessay', '', $counts);
         }
 
         // Get suggested rules from AMATI web service.
@@ -385,8 +385,8 @@ class amati_rule_suggestion {
             return array();
         }
 
-        // Translate the amati rules into pmatch equivalents.
-        $suggestedrules = self::get_pmatch_rules_from_amati_rules($amatirules);
+        // Translate the amati rules into patternessay equivalents.
+        $suggestedrules = self::get_patternessay_rules_from_amati_rules($amatirules);
         // Ensure the translated rules:
         // - are formatted correctly
         // - are valid
@@ -401,11 +401,11 @@ class amati_rule_suggestion {
     }
 
     /**
-     * Prepared suggested pmatch rules from the AMATI rule suggestion service for use in pmatch
+     * Prepared suggested patternessay rules from the AMATI rule suggestion service for use in patternessay
      * questions.
      *
      * Removes invalid rules, duplicate rules that already exist in the supplied question, and
-     * formats the remaining rules in pmatch style.
+     * formats the remaining rules in patternessay style.
      * @param object $question question object from a moodle form.
      * @param array $suggestedrules rules returned from the amati suggestion service.
      * @return string[]
@@ -414,7 +414,7 @@ class amati_rule_suggestion {
 
         // Format valid rules correctly and remove invalid rules.
         foreach ($suggestedrules as $key => $suggestedrule) {
-            $suggestedexpression = new \pmatch_expression($suggestedrule);
+            $suggestedexpression = new \patternessay_expression($suggestedrule);
             if (!$suggestedexpression->is_valid()) {
                 unset($suggestedrules[$key]);
                 continue;
@@ -430,7 +430,7 @@ class amati_rule_suggestion {
                 continue;
             }
 
-            $expression = new \pmatch_expression($answer);
+            $expression = new \patternessay_expression($answer);
             if ($expression->is_valid()) {
                 $answer = $expression->get_formatted_expression_string();
             }
@@ -455,7 +455,7 @@ class amati_rule_suggestion {
      * we add the suggested rules to the end of the existing answers array to the question->options
      * property.
      *
-     * This must be done in qtype_pmatch_edit_form:: add_per_answer_fields before the edit question
+     * This must be done in qtype_patternessay_edit_form:: add_per_answer_fields before the edit question
      * form answer fields are created.
      * @param object $question
      * @param string[]
@@ -475,7 +475,7 @@ class amati_rule_suggestion {
             );
 
             // Add the new rules/answer to the $question->options->answers object so that
-            // pmatch can add them to the form ready to be saved if needed.
+            // patternessay can add them to the form ready to be saved if needed.
             $question->options->answers[] = $newrule;
         }
     }

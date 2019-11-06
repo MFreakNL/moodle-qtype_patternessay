@@ -16,7 +16,7 @@
 /**
  * This class provides functionality for the testquestion response creator.
  *
- * @module    qtype_pmatch
+ * @module    qtype_patternessay
  * @class     creator
  * @package   question
  * @copyright 2018 The Open University
@@ -24,7 +24,7 @@
  */
 define(['jquery', 'core/str', 'core/ajax', 'core/templates', 'core/key_codes'], function($, Str, Ajax, Templates, KeyCodes) {
     /**
-     * @alias qtype_pmatch/creator
+     * @alias qtype_patternessay/creator
      */
     var t = {
         /**
@@ -50,8 +50,8 @@ define(['jquery', 'core/str', 'core/ajax', 'core/templates', 'core/key_codes'], 
             $('#newresponsebutton').click(function(e) {
                 e.preventDefault();
                 t.idxLastRow++;
-                t.newRowId = 'qtype-pmatch-new-response_' + t.idxLastRow;
-                Templates.render('qtype_pmatch/newresponse', {newrowid: t.newRowId})
+                t.newRowId = 'qtype-patternessay-new-response_' + t.idxLastRow;
+                Templates.render('qtype_patternessay/newresponse', {newrowid: t.newRowId})
                     .done(function(html) {
                         t.table.append(html);
                         $('html, body').animate({
@@ -113,7 +113,7 @@ define(['jquery', 'core/str', 'core/ajax', 'core/templates', 'core/key_codes'], 
             if (response !== '') {
                 var mark = $('.new-expectedfraction').is(':checked') ? 1 : 0;
                 var promises = Ajax.call([{
-                    methodname: 'qtype_pmatch_create_response',
+                    methodname: 'qtype_patternessay_create_response',
                     args: {questionid: t.questionId, expectedfraction: mark, response: response, curentrow: t.idxLastRow}
                 }], true);
                 promises[0]
@@ -124,7 +124,7 @@ define(['jquery', 'core/str', 'core/ajax', 'core/templates', 'core/key_codes'], 
                             t.disableControlButtons(false);
                             $('#' + t.newRowId).detach();
                             t.table.append($(result.html));
-                            var resultssummary = M.util.get_string('testquestionresultssummary', 'qtype_pmatch', result.counts);
+                            var resultssummary = M.util.get_string('testquestionresultssummary', 'qtype_patternessay', result.counts);
                             $('#testquestion_gradesummary').html(resultssummary);
                         }
                     })
@@ -155,7 +155,7 @@ define(['jquery', 'core/str', 'core/ajax', 'core/templates', 'core/key_codes'], 
          */
         checkResponse: function(response) {
             var promises = Ajax.call([{
-                methodname: 'qtype_pmatch_check_response',
+                methodname: 'qtype_patternessay_check_response',
                 args: {questionid: t.questionId, response: response}
             }], true);
             promises[0]

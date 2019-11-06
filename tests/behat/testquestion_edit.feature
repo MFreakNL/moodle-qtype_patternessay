@@ -1,4 +1,4 @@
-@ou @ou_vle @qtype @qtype_pmatch
+@ou @ou_vle @qtype @qtype_patternessay
 Feature: Test answer accuracy and response coverage
   In order to find out whether an answer rule is accurate and covers the responses
   As an teacher
@@ -19,7 +19,7 @@ Feature: Test answer accuracy and response coverage
       | Course       | C1        | Test questions |
     And the following "questions" exist:
       | questioncategory | qtype    | name                            | template |
-      | Test questions   | pmatch   | My first pattern match question | listen   |
+      | Test questions   | patternessay   | My first pattern match question | listen   |
     And the default question test responses exist for question "My first pattern match question"
     And I log in as "teacher"
     And I am on "Course 1" course homepage

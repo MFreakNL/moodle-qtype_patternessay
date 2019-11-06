@@ -16,75 +16,75 @@
 
 
 /**
- * This file contains tests of the student response parsing in the pmatch library.
+ * This file contains tests of the student response parsing in the patternessay library.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2012 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use qtype_pmatch\local\spell\qtype_pmatch_spell_checker;
+use qtype_patternessay\local\spell\qtype_patternessay_spell_checker;
 
 defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
-require_once($CFG->dirroot . '/question/type/pmatch/tests/helper.php');
-require_once($CFG->dirroot . '/question/type/pmatch/pmatchlib.php');
+require_once($CFG->dirroot . '/question/type/patternessay/tests/helper.php');
+require_once($CFG->dirroot . '/question/type/patternessay/patternessaylib.php');
 
 /**
- * Tests of the student response parsing in the pmatch library.
+ * Tests of the student response parsing in the patternessay library.
  *
  * @copyright 2012 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @group     qtype_pmatch
+ * @group     qtype_patternessay
  */
-class qtype_pmatch_parse_string_test extends basic_testcase {
-    public function test_pmatch_parse_string() {
-        $options = new pmatch_options();
+class qtype_patternessay_parse_string_test extends basic_testcase {
+    public function test_patternessay_parse_string() {
+        $options = new patternessay_options();
 
-        $parsedstring = new pmatch_parsed_string('abc.def', $options);
+        $parsedstring = new patternessay_parsed_string('abc.def', $options);
         $this->assertEquals($parsedstring->get_words(), array('abc.', 'def'));
 
-        $parsedstring = new pmatch_parsed_string('abc def', $options);
+        $parsedstring = new patternessay_parsed_string('abc def', $options);
         $this->assertEquals($parsedstring->get_words(), array('abc', 'def'));
 
-        $parsedstring = new pmatch_parsed_string('abc<sup>3</sup>', $options);
+        $parsedstring = new patternessay_parsed_string('abc<sup>3</sup>', $options);
         $this->assertEquals($parsedstring->get_words(), array('abc<sup>3</sup>'));
 
-        $parsedstring = new pmatch_parsed_string('123<sup>3</sup>', $options);
+        $parsedstring = new patternessay_parsed_string('123<sup>3</sup>', $options);
         $this->assertEquals($parsedstring->get_words(), array('123<sup>3</sup>'));
 
-        $parsedstring = new pmatch_parsed_string('123<sup>3</sup>?456<sup>3</sup>', $options);
+        $parsedstring = new patternessay_parsed_string('123<sup>3</sup>?456<sup>3</sup>', $options);
         $this->assertEquals($parsedstring->get_words(),
                                                 array('123<sup>3</sup>?', '456<sup>3</sup>'));
 
-        $parsedstring = new pmatch_parsed_string('123<sup>3</sup>!456<sup>3</sup>', $options);
+        $parsedstring = new patternessay_parsed_string('123<sup>3</sup>!456<sup>3</sup>', $options);
         $this->assertEquals($parsedstring->get_words(),
                                                 array('123<sup>3</sup>!', '456<sup>3</sup>'));
 
-        $parsedstring = new pmatch_parsed_string('1.23', $options);
+        $parsedstring = new patternessay_parsed_string('1.23', $options);
         $this->assertEquals($parsedstring->get_words(), array('1.23'));
 
-        $parsedstring = new pmatch_parsed_string('1.23e-10', $options);
+        $parsedstring = new patternessay_parsed_string('1.23e-10', $options);
         $this->assertEquals($parsedstring->get_words(), array('1.23e-10'));
 
-        $parsedstring = new pmatch_parsed_string('1.23x10<sup>3</sup>', $options);
+        $parsedstring = new patternessay_parsed_string('1.23x10<sup>3</sup>', $options);
         $this->assertEquals($parsedstring->get_words(), array('1.23x10<sup>3</sup>'));
 
-        $parsedstring = new pmatch_parsed_string('123<sup>3</sup>', $options);
+        $parsedstring = new patternessay_parsed_string('123<sup>3</sup>', $options);
         $this->assertEquals($parsedstring->get_words(), array('123<sup>3</sup>'));
 
-        $parsedstring = new pmatch_parsed_string('cat. dog', $options);
+        $parsedstring = new patternessay_parsed_string('cat. dog', $options);
         $this->assertEquals($parsedstring->get_words(), array('cat.', 'dog'));
 
-        $parsedstring = new pmatch_parsed_string('cat? dog', $options);
+        $parsedstring = new patternessay_parsed_string('cat? dog', $options);
         $this->assertEquals($parsedstring->get_words(), array('cat?', 'dog'));
 
-        $parsedstring = new pmatch_parsed_string('Test?', $options);
+        $parsedstring = new patternessay_parsed_string('Test?', $options);
         $this->assertEquals(['Test?'], $parsedstring->get_words());
     }
 
-    public function pmatch_spelling_testcases() {
+    public function patternessay_spelling_testcases() {
         return [
             [[], 'e.g. tool'],                         // Default extra dictionary word & normal word.
             [[], 'e.g.. tool.'],                       // Trailing punctuation is skipped.
@@ -93,11 +93,11 @@ class qtype_pmatch_parse_string_test extends basic_testcase {
             [['awerawefaw'], 'awerawefaw awerawefaw'], // Wrong words only reported once.
             [['awerawefaw'], 'awerawefaw, test'],      // Not a word. Punctuation stripped.
             [[], 'e.g. tool. queek queek abcde fghij', // Synonyms automatically OK.
-                    pmatch_options::make(['synonyms' => ['queek' => 'abcde|fghij']])],
+                    patternessay_options::make(['synonyms' => ['queek' => 'abcde|fghij']])],
             [[], 'queeking',                           // Synonyms may include * wild card.
-                    pmatch_options::make(['synonyms' => ['queek*' => 'abcde|fghij']])],
+                    patternessay_options::make(['synonyms' => ['queek*' => 'abcde|fghij']])],
             [['queenking'], 'queenking',
-                    pmatch_options::make(['synonyms' => ['queek*' => 'abcde|fghij']])],
+                    patternessay_options::make(['synonyms' => ['queek*' => 'abcde|fghij']])],
             [[], 'Frog-toad'],                         // Any hyphenated group of real words is fine.
             [[], '"Frog-toad"'],                       // Even if surrounded.
             [['frog"-"toad'], '"Frog"-"toad"'],        // But not if the bits have extra punctuation.
@@ -106,24 +106,24 @@ class qtype_pmatch_parse_string_test extends basic_testcase {
     }
 
     /**
-     * @dataProvider pmatch_spelling_testcases
+     * @dataProvider patternessay_spelling_testcases
      *
      * @param array $misspelledwords
      * @param $string
      * @param null $options
      */
-    public function test_pmatch_spelling(array $misspelledwords, $string, $options = null) {
+    public function test_patternessay_spelling(array $misspelledwords, $string, $options = null) {
         if ($options === null) {
-            $options = new pmatch_options();
+            $options = new patternessay_options();
         }
 
         if (empty($options->lang)) {
             $options->lang = 'en_GB';
         }
 
-        qtype_pmatch_test_helper::skip_test_if_no_spellcheck($this, $options->lang);
+        qtype_patternessay_test_helper::skip_test_if_no_spellcheck($this, $options->lang);
 
-        $parsedstring = new pmatch_parsed_string($string, $options);
+        $parsedstring = new patternessay_parsed_string($string, $options);
         $ok = $parsedstring->is_spelled_correctly();
 
         $this->assertEquals($misspelledwords, $parsedstring->get_spelling_errors());
@@ -146,9 +146,9 @@ class qtype_pmatch_parse_string_test extends basic_testcase {
      */
     public function test_get_display_name_for_language_code($langcode, $expectedlangname, $expecteddisplayname) {
         $language = new stdClass();
-        $language->name = qtype_pmatch_spell_checker::get_display_name_for_language_code($langcode);
+        $language->name = qtype_patternessay_spell_checker::get_display_name_for_language_code($langcode);
         $language->code = $langcode;
-        $displayname = get_string('apply_spellchecker_select', 'qtype_pmatch', $language);
+        $displayname = get_string('apply_spellchecker_select', 'qtype_patternessay', $language);
 
         $this->assertEquals($expectedlangname, $language->name);
         $this->assertEquals($expecteddisplayname, $displayname);
@@ -183,7 +183,7 @@ class qtype_pmatch_parse_string_test extends basic_testcase {
      * @param string $expectedmatch Expected language match
      */
     public function test_get_default_spell_check_dictionary($checklanguage, $availablelangs, $expectedmatch) {
-        $matched = qtype_pmatch_spell_checker::get_default_spell_check_dictionary($checklanguage, $availablelangs);
+        $matched = qtype_patternessay_spell_checker::get_default_spell_check_dictionary($checklanguage, $availablelangs);
         $this->assertEquals($expectedmatch, $matched);
     }
 

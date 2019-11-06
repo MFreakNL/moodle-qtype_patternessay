@@ -16,12 +16,12 @@
 /**
  * Defines the testquestion_import_helper class.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2019 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace qtype_pmatch;
+namespace qtype_patternessay;
 
 use Box\Spout\Common\Helper\GlobalFunctionsHelper;
 
@@ -30,7 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Defines the testquestion_import_helper class.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2019 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -58,26 +58,26 @@ class testquestion_import_helper {
     /**
      * This creates an instance of the appropriate import, given the type of the file to be read
      *
-     * @return qtype_pmatch_importer|qtype_pmatch_spout_importer Importer
+     * @return qtype_patternessay_importer|qtype_patternessay_spout_importer Importer
      */
     public function import_factory() {
         $import = null;
 
         switch ($this->importtype) {
             case 'csv':
-                $import = new qtype_pmatch_csv_importer();
+                $import = new qtype_patternessay_csv_importer();
                 break;
             case 'xlsx':
-                $import = new qtype_pmatch_xlsx_importer();
+                $import = new qtype_patternessay_xlsx_importer();
                 break;
             case 'ods':
-                $import = new qtype_pmatch_ods_importer();
+                $import = new qtype_patternessay_ods_importer();
                 break;
             case 'json':
-                $import = new qtype_pmatch_json_importer();
+                $import = new qtype_patternessay_json_importer();
                 break;
             case 'html':
-                $import = new qtype_pmatch_html_importer();
+                $import = new qtype_patternessay_html_importer();
                 break;
             default:
                 throw new \coding_exception('Invalid file type.');
@@ -90,11 +90,11 @@ class testquestion_import_helper {
 /**
  * Question type: Pattern match: Import interface.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2019 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-abstract class qtype_pmatch_importer {
+abstract class qtype_patternessay_importer {
 
     /** @var string Content of the file */
     public $contents;
@@ -130,11 +130,11 @@ abstract class qtype_pmatch_importer {
 /**
  * Question type: Pattern match: Spout import interface.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2019 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-abstract class qtype_pmatch_spout_importer {
+abstract class qtype_patternessay_spout_importer {
 
     /**
      * @var \Box\Spout\Reader\AbstractReader $reader Spout Reader.
@@ -234,14 +234,14 @@ abstract class qtype_pmatch_spout_importer {
 /**
  * Question type: Pattern match: CSV Import class.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2019 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch_csv_importer extends qtype_pmatch_spout_importer {
+class qtype_patternessay_csv_importer extends qtype_patternessay_spout_importer {
 
     /**
-     * qtype_pmatch_csv_importer constructor.
+     * qtype_patternessay_csv_importer constructor.
      *
      */
     public function __construct() {
@@ -254,14 +254,14 @@ class qtype_pmatch_csv_importer extends qtype_pmatch_spout_importer {
 /**
  * Question type: Pattern match: XLSX Import class.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2019 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch_xlsx_importer extends qtype_pmatch_spout_importer {
+class qtype_patternessay_xlsx_importer extends qtype_patternessay_spout_importer {
 
     /**
-     * qtype_pmatch_xlsx_importer constructor.
+     * qtype_patternessay_xlsx_importer constructor.
      */
     public function __construct() {
         $this->reader = new \Box\Spout\Reader\XLSX\Reader();
@@ -273,14 +273,14 @@ class qtype_pmatch_xlsx_importer extends qtype_pmatch_spout_importer {
 /**
  * Question type: Pattern match: ODS Import class.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2019 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch_ods_importer extends qtype_pmatch_spout_importer {
+class qtype_patternessay_ods_importer extends qtype_patternessay_spout_importer {
 
     /**
-     * qtype_pmatch_xlsx_importer constructor.
+     * qtype_patternessay_xlsx_importer constructor.
      */
     public function __construct() {
         $this->reader = new \Box\Spout\Reader\ODS\Reader();
@@ -292,11 +292,11 @@ class qtype_pmatch_ods_importer extends qtype_pmatch_spout_importer {
 /**
  * Question type: Pattern match: JSON Import class.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2019 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch_json_importer extends qtype_pmatch_importer {
+class qtype_patternessay_json_importer extends qtype_patternessay_importer {
 
     /**
      * Get the responses from file
@@ -357,11 +357,11 @@ class qtype_pmatch_json_importer extends qtype_pmatch_importer {
 /**
  * Question type: Pattern match: HTML Import class.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2019 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch_html_importer extends qtype_pmatch_importer {
+class qtype_patternessay_html_importer extends qtype_patternessay_importer {
 
     /**
      * Get the responses from file

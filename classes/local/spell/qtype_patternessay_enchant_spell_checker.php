@@ -17,19 +17,19 @@
 /**
  * Enchant spell checker class.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2019 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace qtype_pmatch\local\spell;
+namespace qtype_patternessay\local\spell;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * Implements the {@core_spell_checker} API using enchant.
  */
-class qtype_pmatch_enchant_spell_checker extends qtype_pmatch_spell_checker {
+class qtype_patternessay_enchant_spell_checker extends qtype_patternessay_spell_checker {
 
     /** @var resource the enchant broker. */
     protected static $broker = null;
@@ -59,7 +59,7 @@ class qtype_pmatch_enchant_spell_checker extends qtype_pmatch_spell_checker {
     }
 
     public static function get_name() {
-        return get_string('spellcheckerenchant', 'qtype_pmatch');
+        return get_string('spellcheckerenchant', 'qtype_patternessay');
     }
 
     public static function is_available() {
@@ -98,7 +98,7 @@ class qtype_pmatch_enchant_spell_checker extends qtype_pmatch_spell_checker {
         }
         $availablelanguages = [];
         foreach ($dicts as $dict) {
-            if (preg_match(qtype_pmatch_spell_checker::LANGUAGE_FILTER_REGEX, $dict['lang_tag'], $m)) {
+            if (preg_match(qtype_patternessay_spell_checker::LANGUAGE_FILTER_REGEX, $dict['lang_tag'], $m)) {
                 $availablelanguages[] = $dict['lang_tag'];
             }
         }

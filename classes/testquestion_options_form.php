@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace qtype_pmatch;
+namespace qtype_patternessay;
 
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/formslib.php');
 
 /**
- * Pmatch testquestion options form.
+ * patternessay testquestion options form.
  *
  * @copyright 2016 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -33,16 +33,16 @@ class testquestion_options_form extends \moodleform {
         $mform->addElement('header', 'preferencespage', get_string('reportwhattoinclude', 'quiz'));
         $stategroup = array(
                 $mform->createElement('advcheckbox', 'statematches', '',
-                        get_string('testquestionmatches', 'qtype_pmatch')),
+                        get_string('testquestionmatches', 'qtype_patternessay')),
                 $mform->createElement('advcheckbox', 'statemissedpositive', '',
-                        get_string('testquestionincorrectlymarkedwrong', 'qtype_pmatch')),
+                        get_string('testquestionincorrectlymarkedwrong', 'qtype_patternessay')),
                 $mform->createElement('advcheckbox', 'statemissednegative', '',
-                        get_string('testquestionincorrectlymarkedrights', 'qtype_pmatch')),
+                        get_string('testquestionincorrectlymarkedrights', 'qtype_patternessay')),
                 $mform->createElement('advcheckbox', 'stateungraded', '',
-                        get_string('testquestionungraded', 'qtype_pmatch')),
+                        get_string('testquestionungraded', 'qtype_patternessay')),
         );
         $mform->addGroup($stategroup, 'stateoptions',
-                get_string('testquestionresponsesthatare', 'qtype_pmatch'), array(' '), false);
+                get_string('testquestionresponsesthatare', 'qtype_patternessay'), array(' '), false);
         $mform->setDefault('statematches', 1);
         $mform->setDefault('statemissedpositive', 1);
         $mform->setDefault('statemissednegative', 1);

@@ -14,17 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace qtype_pmatch;
+namespace qtype_patternessay;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Class to store options for {@link \qtype_pmatch\testquestion_controller}.
+ * Class to store options for {@link \qtype_patternessay\testquestion_controller}.
  * Design references are:
  * mod_quiz_attempts_report_options in mod/quiz/report/attemptsreport_options.php
  * quiz_overview_options in mod/quiz/report/overview/overview_options.php
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2016 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -34,24 +34,24 @@ class testquestion_options {
     public $question;
 
     /**
-     * @var array form field name => corresponding type_pmatch_testresponses:: state constant.
+     * @var array form field name => corresponding type_patternessay_testresponses:: state constant.
      */
     protected static $statefields = array(
-            'statematches' => \qtype_pmatch\testquestion_response::MATCHED,
-            'statemissedpositive' => \qtype_pmatch\testquestion_response::MISSED_POSITIVE,
-            'statemissednegative' => \qtype_pmatch\testquestion_response::MISSED_NEGATIVE,
-            'stateungraded' => \qtype_pmatch\testquestion_response::UNGRADED
+            'statematches' => \qtype_patternessay\testquestion_response::MATCHED,
+            'statemissedpositive' => \qtype_patternessay\testquestion_response::MISSED_POSITIVE,
+            'statemissednegative' => \qtype_patternessay\testquestion_response::MISSED_NEGATIVE,
+            'stateungraded' => \qtype_patternessay\testquestion_response::UNGRADED
     );
 
     /**
      * @var array|null of quiz_attempt::IN_PROGRESS, etc. constants. null means
      *      no restriction.
      */
-    public $states = array(\qtype_pmatch\testquestion_response::MATCHED, \qtype_pmatch\testquestion_response::MISSED_POSITIVE,
-            \qtype_pmatch\testquestion_response::MISSED_NEGATIVE, \qtype_pmatch\testquestion_response::UNGRADED);
+    public $states = array(\qtype_patternessay\testquestion_response::MATCHED, \qtype_patternessay\testquestion_response::MISSED_POSITIVE,
+            \qtype_patternessay\testquestion_response::MISSED_NEGATIVE, \qtype_patternessay\testquestion_response::UNGRADED);
 
     /** @var int Number of attempts to show per page. */
-    public $pagesize = \qtype_pmatch\testquestion_controller::DEFAULT_PAGE_SIZE;
+    public $pagesize = \qtype_patternessay\testquestion_controller::DEFAULT_PAGE_SIZE;
 
     /** @var string whether the data should be downloaded in some format, or '' to display it. */
     public $download = '';
@@ -111,7 +111,7 @@ class testquestion_options {
      * @return moodle_url the URL.
      */
     public function get_url() {
-        return new \moodle_url('/question/type/pmatch/testquestion.php', $this->get_url_params());
+        return new \moodle_url('/question/type/patternessay/testquestion.php', $this->get_url_params());
     }
 
     /**
@@ -141,7 +141,7 @@ class testquestion_options {
      * (For those settings that are backed by user-preferences).
      */
     public function setup_from_user_preferences() {
-        $this->pagesize = get_user_preferences('qtype_pmatch_testquestion_pagesize', $this->pagesize);
+        $this->pagesize = get_user_preferences('qtype_patternessay_testquestion_pagesize', $this->pagesize);
     }
 
     /**
@@ -149,7 +149,7 @@ class testquestion_options {
      * (For those settings that are backed by user-preferences).
      */
     public function update_user_preferences() {
-        set_user_preference('qtype_pmatch_testquestion_pagesize', $this->pagesize);
+        set_user_preference('qtype_patternessay_testquestion_pagesize', $this->pagesize);
     }
 
     /**
@@ -169,7 +169,7 @@ class testquestion_options {
             $this->states = null;
         }
         if ($this->pagesize < 1) {
-            $this->pagesize = \qtype_pmatch\testquestion_controller::DEFAULT_PAGE_SIZE;
+            $this->pagesize = \qtype_patternessay\testquestion_controller::DEFAULT_PAGE_SIZE;
         }
         // We only want to show the checkbox to delete attempts
         // if the user has permissions and if the report mode is showing attempts.

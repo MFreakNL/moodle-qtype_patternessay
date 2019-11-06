@@ -1,5 +1,5 @@
-@ou @ou_vle @qtype @qtype_pmatch @_switch_window @javascript
-Feature: Test the model answer functionality of pmatch question type
+@ou @ou_vle @qtype @qtype_patternessay @_switch_window @javascript
+Feature: Test the model answer functionality of patternessay question type
   In order evaluate students understanding
   As an teacher
   I need to create and preview pattern match questions.
@@ -19,8 +19,8 @@ Feature: Test the model answer functionality of pmatch question type
       | Course       | C1        | Test questions |
     And the following "questions" exist:
       | questioncategory | qtype    | name                            | template |
-      | Test questions   | pmatch   | My first pattern match question | listen   |
-      | Test questions   | pmatch   | Frog but not toad               | frogtoad |
+      | Test questions   | patternessay   | My first pattern match question | listen   |
+      | Test questions   | patternessay   | Frog but not toad               | frogtoad |
     And the default question test responses exist for question "My first pattern match question"
     And I log in as "teacher"
     And I am on "Course 1" course homepage

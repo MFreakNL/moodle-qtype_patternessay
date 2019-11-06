@@ -18,14 +18,14 @@
 /**
  * Admin settings class for generate spell-checker back-end select box.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace qtype_pmatch\admin;
+namespace qtype_patternessay\admin;
 
-use qtype_pmatch\local\spell\qtype_pmatch_spell_checker;
+use qtype_patternessay\local\spell\qtype_patternessay_spell_checker;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -34,11 +34,11 @@ require_once($CFG->libdir . '/adminlib.php');
 /**
  * Admin settings class for generate spell-checker back-end select box.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch_admin_setting_spell_checker extends \admin_setting_configselect {
+class qtype_patternessay_admin_setting_spell_checker extends \admin_setting_configselect {
 
     /**
      * This function may be used in ancestors for lazy loading of choices
@@ -54,7 +54,7 @@ class qtype_pmatch_admin_setting_spell_checker extends \admin_setting_configsele
         }
 
         $this->choices = array();
-        $backends = qtype_pmatch_spell_checker::get_installed_backends();
+        $backends = qtype_patternessay_spell_checker::get_installed_backends();
         foreach ($backends as $key => $classname) {
             $this->choices[$key] = $classname::get_name();
         }

@@ -16,18 +16,18 @@
 
 
 /**
- * This file contains the API for accessing pmatch expression interpreter and matcher.
+ * This file contains the API for accessing patternessay expression interpreter and matcher.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2011 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/question/type/pmatch/pmatch/interpreter.php');
+require_once($CFG->dirroot . '/question/type/patternessay/patternessay/interpreter.php');
 
-use qtype_pmatch\local\spell\qtype_pmatch_spell_checker;
+use qtype_patternessay\local\spell\qtype_patternessay_spell_checker;
 
 // The following is required because the xdebug library defaults to throwing a fatal error if
 // there is more than 100 nested function calls.
@@ -39,7 +39,7 @@ if (extension_loaded('xdebug')) {
 /**
  * Options that control the overall way the matching is done.
  */
-class pmatch_options {
+class patternessay_options {
 
     /** @var boolean */
     public $ignorecase;
@@ -81,17 +81,17 @@ class pmatch_options {
      * Static factory to make an options object with various values set.
      *
      * @param array $settings field name => value to set.
-     * @return pmatch_options new options object.
+     * @return patternessay_options new options object.
      */
-    public static function make(array $settings): pmatch_options {
-        $options = new pmatch_options();
+    public static function make(array $settings): patternessay_options {
+        $options = new patternessay_options();
         foreach ($settings as $name => $value) {
             if ($name === 'synonyms') {
                 foreach ($value as $word => $synonyms) {
                     $options->set_synonyms([(object) ['word' => $word, 'synonyms' => $synonyms]]);
                 }
             } else if (!property_exists($options, $name)) {
-                throw new coding_exception("pmatch_options does not have a $name field");
+                throw new coding_exception("patternessay_options does not have a $name field");
             } else {
                 $options->$name = $value;
             }
@@ -135,7 +135,7 @@ class pmatch_options {
         } else {
             // Limit the errors added to the log to one per pagee load.
             if (!$errorlogged) {
-                debugging(get_string('env_peclnormalisationmissing', 'qtype_pmatch'), DEBUG_NORMAL);
+                debugging(get_string('env_peclnormalisationmissing', 'qtype_patternessay'), DEBUG_NORMAL);
                 $errorlogged = true;
             }
             return $unicodestring;
@@ -144,7 +144,7 @@ class pmatch_options {
 
     public function words_to_ignore_patterns() {
         $words = array_merge($this->extradictionarywords, $this->nospellcheckwords);
-        $wordpatterns = array(PMATCH_NUMBER);
+        $wordpatterns = array(patternessay_NUMBER);
         foreach ($words as $word) {
             if (trim($word) === '') {
                 continue;
@@ -192,7 +192,7 @@ class pmatch_options {
     }
 
     public function character_in_word_pattern() {
-        return PMATCH_CHARACTER.'|'.PMATCH_SPECIAL_CHARACTER;
+        return patternessay_CHARACTER.'|'.patternessay_SPECIAL_CHARACTER;
     }
 
     public function pattern_options() {
@@ -230,9 +230,9 @@ class pmatch_options {
  * Represents a string that is ready for matching, and provides the method to
  * match expressions against it.
  */
-class pmatch_parsed_string {
+class patternessay_parsed_string {
 
-    /** @var pmatch_options */
+    /** @var patternessay_options */
     protected $options;
 
     /** @var array of words created by splitting $string by $options->worddividers */
@@ -246,13 +246,13 @@ class pmatch_parsed_string {
     /**
      * Constructor. Parses string.
      * @param string $string the string to match against.
-     * @param pmatch_options $options the options to use.
+     * @param patternessay_options $options the options to use.
      */
-    public function __construct($string, pmatch_options $options = null) {
+    public function __construct($string, patternessay_options $options = null) {
         if (!is_null($options)) {
             $this->options = $options;
         } else {
-            $this->options = new pmatch_options();
+            $this->options = new patternessay_options();
         }
 
         $this->words = array();
@@ -342,7 +342,7 @@ class pmatch_parsed_string {
      * This may seem a bit complicated, but you need to remember that
      * 'e.g.', 'co-operate', and 'AC/DC' are all words found in dictionaries.
      *
-     * @param qtype_pmatch_spell_checker $spellchecker
+     * @param qtype_patternessay_spell_checker $spellchecker
      * @param string $word
      * @return string|null
      */
@@ -361,7 +361,7 @@ class pmatch_parsed_string {
             }
         }
 
-        $spellchecker = qtype_pmatch_spell_checker::make($this->options->lang);
+        $spellchecker = qtype_patternessay_spell_checker::make($this->options->lang);
         if ($spellchecker->is_in_dictionary($word)) {
             return null;
         }
@@ -406,7 +406,7 @@ class pmatch_parsed_string {
     }
 
     /**
-     * @return pmatch_options the options that were used to construct this object.
+     * @return patternessay_options the options that were used to construct this object.
      */
     public function get_options() {
         return $this->options;
@@ -422,11 +422,11 @@ class pmatch_parsed_string {
 
 
 /**
- * Represents a pmatch_expression.
+ * Represents a patternessay_expression.
  */
-class pmatch_expression {
+class patternessay_expression {
 
-    /** @var pmatch_interpreter_whole_expression */
+    /** @var patternessay_interpreter_whole_expression */
     protected $interpreter;
 
     /** @var string the original expression passed to the constructor */
@@ -440,17 +440,17 @@ class pmatch_expression {
 
     /**
      * @param string $string the string to match against.
-     * @param pmatch_options $options the options to use.
+     * @param patternessay_options $options the options to use.
      */
     public function __construct($expression, $options = null) {
         if (!is_null($options)) {
             $this->options = $options;
         } else {
-            $this->options = new pmatch_options();
+            $this->options = new patternessay_options();
         }
         $expression = $this->options->unicode_normalisation($expression);
         $this->originalexpression = $expression;
-        $this->interpreter = new pmatch_interpreter_whole_expression($options);
+        $this->interpreter = new patternessay_interpreter_whole_expression($options);
         list($matched, $endofmatch) = $this->interpreter->interpret($expression);
         $this->errormessage = $this->interpreter->get_error_message();
         if ($endofmatch == core_text::strlen($expression) && $matched && $this->errormessage == '') {
@@ -458,17 +458,17 @@ class pmatch_expression {
         } else {
             $this->valid = false;
             if ($this->errormessage == '') {
-                $this->errormessage = get_string('ie_unrecognisedexpression', 'qtype_pmatch');
+                $this->errormessage = get_string('ie_unrecognisedexpression', 'qtype_patternessay');
             }
         }
     }
 
     /**
-     * Test a string with a given pmatch expression.
-     * @param pmatch_parsed_string $parsedstring the parsed string to match.
+     * Test a string with a given patternessay expression.
+     * @param patternessay_parsed_string $parsedstring the parsed string to match.
      * @return boolean whether this string matches the expression.
      */
-    public function matches(pmatch_parsed_string $parsedstring) {
+    public function matches(patternessay_parsed_string $parsedstring) {
         if (!$this->is_valid()) {
             throw new coding_exception('Oops. You called matches for an expression that is not '.
                                 'valid. You should call is_valid first. Interpreter error :'.
@@ -481,7 +481,7 @@ class pmatch_expression {
 
     /**
      * @return boolean returns false if the string passed to the constructor
-     * could not be parsed as a valid pmatch expression.
+     * could not be parsed as a valid patternessay expression.
      */
     public function is_valid() {
         return $this->valid;
@@ -496,7 +496,7 @@ class pmatch_expression {
     }
 
     /**
-     * @return pmatch_options the options that were used to construct this object.
+     * @return patternessay_options the options that were used to construct this object.
      */
     public function get_options() {
         return $this->options;

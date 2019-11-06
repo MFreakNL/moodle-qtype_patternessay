@@ -1,4 +1,4 @@
-@ou @ou_vle @qtype @qtype_pmatch
+@ou @ou_vle @qtype @qtype_patternessay
 Feature: Test the rule creation assistant
   In order to create a basic pattern match question
   As an in-experienced teacher

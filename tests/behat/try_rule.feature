@@ -1,4 +1,4 @@
-@ou @ou_vle @qtype @qtype_pmatch
+@ou @ou_vle @qtype @qtype_patternessay
 Feature: Test the try rule feature
   In order to evaluate whether a rule should be saved
   As an teacher
@@ -19,7 +19,7 @@ Feature: Test the try rule feature
       | Course       | C1        | Test questions |
     And the following "questions" exist:
       | questioncategory | qtype    | name         | template |
-      | Test questions   | pmatch   | My first pattern match question | listen    |
+      | Test questions   | patternessay   | My first pattern match question | listen    |
     And the default question test responses exist for question "My first pattern match question"
     And I log in as "teacher"
     And I am on "Course 1" course homepage
@@ -32,7 +32,7 @@ Feature: Test the try rule feature
     And I press "Continue"
 
   @javascript
-  Scenario: Test the pmatch try rule feature
+  Scenario: Test the patternessay try rule feature
     # Confirm list responses is correct.
     Then I should see "Pattern-match question testing tool: Testing question: My first pattern match question"
     And I should see "Sample responses: 13 "
@@ -52,7 +52,7 @@ Feature: Test the try rule feature
     Then I should see "Responses not matched above: 12" in the "#fitem_accuracy_0" "css_element"
     And I should see "Correctly matched by this rule: 1" in the "#fitem_accuracy_0" "css_element"
     And I should see "Incorrectly matched: 0" in the "#fitem_accuracy_0" "css_element"
-    And I should see "Incorrectly matched: 0" in the "span.qtype_pmatch-selftest" "css_element"
+    And I should see "Incorrectly matched: 0" in the "span.qtype_patternessay-selftest" "css_element"
     And I should see "Responses still to be processed below: 11" in the "#fitem_accuracy_0" "css_element"
     When I set the field "Answer 1" to "match_w(test)"
     And I take focus off "Answer 1" "field"
@@ -71,11 +71,11 @@ Feature: Test the try rule feature
     And I press "Try rule"
     Then I should see "Responses not matched above: 12" in the "div.try-rule-result" "css_element"
     And I should see "Correctly matched by this rule: 2" in the "div.try-rule-result" "css_element"
-    And I should see "Incorrectly matched: 0" in the "span.qtype_pmatch-selftest" "css_element"
+    And I should see "Incorrectly matched: 0" in the "span.qtype_patternessay-selftest" "css_element"
     And I should see "Responses still to be processed below: 10" in the "div.try-rule-result" "css_element"
 
   @javascript
-  Scenario: Test the pmatch rules response feature
+  Scenario: Test the patternessay rules response feature
     Given I am on "Course 1" course homepage
     And I navigate to "Question bank" in current page administration
     When I add a "Pattern match" question filling the form with:
@@ -96,16 +96,16 @@ Feature: Test the try rule feature
     And I click on "Add new response" "button"
     And I set the field "new-response" to "CCOO"
     When I click on "Save" "button"
-    And I should see "1" in the "#qtype-pmatch-testquestion_r50_c2" "css_element"
+    And I should see "1" in the "#qtype-patternessay-testquestion_r50_c2" "css_element"
     And I click on "Add new response" "button"
     And I set the field "new-response" to "CCO"
     When I click on "Save" "button"
-    And I should see "2" in the "#qtype-pmatch-testquestion_r51_c2" "css_element"
+    And I should see "2" in the "#qtype-patternessay-testquestion_r51_c2" "css_element"
     And I click on "Add new response" "button"
     And I set the field "new-response" to "CO"
     When I click on "Save" "button"
-    And I should see "3" in the "#qtype-pmatch-testquestion_r52_c2" "css_element"
+    And I should see "3" in the "#qtype-patternessay-testquestion_r52_c2" "css_element"
     And I click on "Add new response" "button"
     And I set the field "new-response" to "C"
     When I click on "Save" "button"
-    And I should see "" in the "#qtype-pmatch-testquestion_r53_c2" "css_element"
+    And I should see "" in the "#qtype-patternessay-testquestion_r53_c2" "css_element"

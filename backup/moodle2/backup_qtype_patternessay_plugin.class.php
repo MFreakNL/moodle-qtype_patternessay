@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Provides the information to backup pmatch questions.
+ * Provides the information to backup patternessay questions.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,12 +27,12 @@ defined('MOODLE_INTERNAL') || die();
 
 
 /**
- * Provides the information to backup pmatch questions.
+ * Provides the information to backup patternessay questions.
  *
  * @copyright 2010 onwards Eloy Lafuente (stronk7) {@link http://stronk7.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class backup_qtype_pmatch_plugin extends backup_qtype_plugin {
+class backup_qtype_patternessay_plugin extends backup_qtype_plugin {
 
     /**
      * Returns the qtype information to attach to question element.
@@ -40,7 +40,7 @@ class backup_qtype_pmatch_plugin extends backup_qtype_plugin {
     protected function define_question_plugin_structure() {
 
         // Define the virtual plugin element with the condition to fulfill.
-        $plugin = $this->get_plugin_element(null, '../../qtype', 'pmatch');
+        $plugin = $this->get_plugin_element(null, '../../qtype', 'patternessay');
 
         // Create one standard named plugin element (the visible container).
         $pluginwrapper = new backup_nested_element($this->get_recommended_name());
@@ -53,7 +53,7 @@ class backup_qtype_pmatch_plugin extends backup_qtype_plugin {
         $this->add_question_question_answers($pluginwrapper);
 
         // Now create the qtype own structures.
-        $pmatchoptions = new backup_nested_element('pmatch', array('id'), array('forcelength',
+        $patternessayoptions = new backup_nested_element('patternessay', array('id'), array('forcelength',
             'usecase', 'sentencedividers', 'converttospace', 'modelanswer', 'applydictionarycheck',
             'extenddictionary', 'allowsubscript', 'allowsuperscript'));
 
@@ -69,7 +69,7 @@ class backup_qtype_pmatch_plugin extends backup_qtype_plugin {
         $match = new backup_nested_element('rule_match', array('id'),
                 array('answerid'));
 
-        $pluginwrapper->add_child($pmatchoptions);
+        $pluginwrapper->add_child($patternessayoptions);
         $pluginwrapper->add_child($synonyms);
         $synonyms->add_child($synonym);
         $pluginwrapper->add_child($responses);
@@ -79,13 +79,13 @@ class backup_qtype_pmatch_plugin extends backup_qtype_plugin {
         $matches->add_child($match);
 
         // Set source to populate the data.
-        $pmatchoptions->set_source_table('qtype_pmatch',
+        $patternessayoptions->set_source_table('qtype_patternessay',
                 array('questionid' => backup::VAR_PARENTID));
-        $synonym->set_source_table('qtype_pmatch_synonyms',
+        $synonym->set_source_table('qtype_patternessay_synonyms',
                 array('questionid' => backup::VAR_PARENTID), 'id ASC');
-        $response->set_source_table('qtype_pmatch_test_responses',
+        $response->set_source_table('qtype_patternessay_test_responses',
                 array('questionid' => backup::VAR_PARENTID), 'id ASC');
-        $match->set_source_table('qtype_pmatch_rule_matches',
+        $match->set_source_table('qtype_patternessay_rule_matches',
                 array('testresponseid' => backup::VAR_PARENTID));
 
         // Don't need to annotate ids nor files.

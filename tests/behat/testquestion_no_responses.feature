@@ -1,4 +1,4 @@
-@ou @ou_vle @qtype @qtype_pmatch
+@ou @ou_vle @qtype @qtype_patternessay
 Feature: Test no test responses existing for this question
   In order to manage test responses in the test this question feature
   As a teacher
@@ -19,7 +19,7 @@ Feature: Test no test responses existing for this question
       | Course       | C1        | Test questions |
     And the following "questions" exist:
       | questioncategory | qtype    | name         | template |
-      | Test questions   | pmatch   | My first pattern match question | listen    |
+      | Test questions   | patternessay   | My first pattern match question | listen    |
     And I log in as "teacher"
 
   @javascript

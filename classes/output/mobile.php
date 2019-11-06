@@ -14,20 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace qtype_pmatch\output;
+namespace qtype_patternessay\output;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
  * Mobile output class for question type pattern match.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2019 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class mobile {
 
-    public static function pmatch_view() {
+    public static function patternessay_view() {
         global $CFG;
         // General notes:
         // If you have worked on mobile activities, there is no cmid or courseid in $args here.
@@ -38,10 +38,10 @@ class mobile {
             'templates' => [
                 [
                     'id' => 'main',
-                    'html' => file_get_contents($CFG->dirroot . '/question/type/pmatch/mobile/pmatch.html')
+                    'html' => file_get_contents($CFG->dirroot . '/question/type/patternessay/mobile/patternessay.html')
                 ],
             ],
-            'javascript' => file_get_contents($CFG->dirroot . '/question/type/pmatch/mobile/pmatch.js')
+            'javascript' => file_get_contents($CFG->dirroot . '/question/type/patternessay/mobile/patternessay.js')
         ];
     }
 }

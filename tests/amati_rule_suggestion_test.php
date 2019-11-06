@@ -18,7 +18,7 @@
 /**
  * Test the amati rule suggestion facility.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2016 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,7 +26,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
-require_once($CFG->dirroot . '/question/type/pmatch/tests/testquestion_testcase.php');
+require_once($CFG->dirroot . '/question/type/patternessay/tests/testquestion_testcase.php');
 
 
 /**
@@ -34,19 +34,19 @@ require_once($CFG->dirroot . '/question/type/pmatch/tests/testquestion_testcase.
  *
  * @copyright 2016 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @group     qtype_pmatch
+ * @group     qtype_patternessay
  */
-class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testquestion_testcase {
+class qtype_patternessay_testquestion_amati_rule_suggestion extends qtype_patternessay_testquestion_testcase {
 
     /**
-     * At first we didn't know how to write pmatch rules that were the equivalent on AMATI rules so
+     * At first we didn't know how to write patternessay rules that were the equivalent on AMATI rules so
      * we needed
-     * 1) To prove pmatch had equivalents for each AMATI rule
-     * 2) To establish a practical workflow to compare AMATI rule matches with Pmatch
+     * 1) To prove patternessay had equivalents for each AMATI rule
+     * 2) To establish a practical workflow to compare AMATI rule matches with patternessay
      *
      * So these 4 tests don't test a specific method, they prove that it is possible to write
      * Pattern match rules that are equivalent to the many variations of each AMATI rule.
-     * They establish equivalent pmatch commands for each amati command including TERM, TEMPLATE,
+     * They establish equivalent patternessay commands for each amati command including TERM, TEMPLATE,
      * PRECEDES and CLOSELY PRECEDES.
      *
      * We couldn't use amati data because that is private so we used the existing unit test data
@@ -54,31 +54,31 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
      * 1) We could Compare amati rules and the responses that match with a pattern match rule/rules that amatch
      * the same responses.
      * 2) We documented which responses weren't matched because each rule was applied to the same list of responses.
-     * 3) Where possible we could provide multiple pmatch equivalents to an AMATI rule
+     * 3) Where possible we could provide multiple patternessay equivalents to an AMATI rule
      *
      * The results are displayed with the AMATI rule used first and an array of the responses matched as found in
      * the show coverage feature.
-     * Then follow the best equivalent pmatch rules with an array of the responses they return.
+     * Then follow the best equivalent patternessay rules with an array of the responses they return.
      *
-     *  In most cases exact pmatch equivlaents were found. Occasionaliy we only got close but not exact equivalents,
+     *  In most cases exact patternessay equivlaents were found. Occasionaliy we only got close but not exact equivalents,
      *
      *  Differences
-     *  AMATI and Pmatch also handle their responses differently. During our tests we discovered these differences
-     *  in how ANATI and Pmatch store responses:
-     *  1) AMATI stores only alphanumeric data (no punctuation or syumbols) pmatch stores the raw data
-     *  2) Amati stores lower case text, pmatch stores either text in the case it is supplied
+     *  AMATI and patternessay also handle their responses differently. During our tests we discovered these differences
+     *  in how ANATI and patternessay store responses:
+     *  1) AMATI stores only alphanumeric data (no punctuation or syumbols) patternessay stores the raw data
+     *  2) Amati stores lower case text, patternessay stores either text in the case it is supplied
      */
-    public function test_find_pmatch_equivalents_to_amati_commands() {
-        $this->find_pmatch_equivalents_to_amati_term_command();
-        $this->find_pmatch_equivalents_to_amati_template_command();
-        $this->find_pmatch_equivalents_to_amati_precedes_command();
-        $this->find_pmatch_equivalents_to_amati_closely_precedes_command();
+    public function test_find_patternessay_equivalents_to_amati_commands() {
+        $this->find_patternessay_equivalents_to_amati_term_command();
+        $this->find_patternessay_equivalents_to_amati_template_command();
+        $this->find_patternessay_equivalents_to_amati_precedes_command();
+        $this->find_patternessay_equivalents_to_amati_closely_precedes_command();
     }
 
     /**
-     * Find pmatch commands to match the AMATI term command and related operators.
+     * Find patternessay commands to match the AMATI term command and related operators.
      */
-    public function find_pmatch_equivalents_to_amati_term_command() {
+    public function find_patternessay_equivalents_to_amati_term_command() {
         $this->resetAfterTest();
 
         // First we test with 10 responses against basic  AMATI term rules usiong the Add, Not and
@@ -92,7 +92,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
                 // |       2 => 'tom',
                 // |       7 => 'tom was janes companion'
                 // |   )
-                // The best match in Pmatch.
+                // The best match in patternessay.
                 'match_w(tom)' => array(
                         0 => 'Tom Dick or Harry',
                         1 => 'Tom',
@@ -103,7 +103,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
                 // |       1 => 'tom dick or harry',
                 // |       6 => 'harry'
                 // |   )
-                // The best match in Pmatch.
+                // The best match in patternessay.
                 'match_w(harry)' => array(
                         0 => 'Tom Dick or Harry',
                         1 => 'Harry'
@@ -119,7 +119,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
                 // |       9 => 'felicity',
                 // |       10 => '',
                 // |   ),
-                // The pmatch equivalent with matches.
+                // The patternessay equivalent with matches.
                 // Notes:AMATI only stores alphanumeric responses '€£¥©®™±≠≤≥÷×∞µαβπΩ∑' became '' so
                 // these are equivlanet matches.
                 'not(match_w(tom))' => array(
@@ -137,7 +137,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
                 // |       3 => 'dick',
                 // |       9 => 'felicity'
                 // |   ),
-                // The pmatch equivalent with matches.
+                // The patternessay equivalent with matches.
                 'match_w(dick|felicity)' => array(
                         0 => 'Tom Dick or Harry',
                         1 => 'Dick',
@@ -156,7 +156,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
         $this->assertEquals($comparerulematches, $responseandrulematches);
 
         // Next, test with 30 responses against basic versions of Add, Not and Or.See if
-        // The pmatch commands still work.
+        // The patternessay commands still work.
         // Set correct expectation.
         $comparerulematches = array(
                 // A Single term.
@@ -198,9 +198,9 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
     }
 
     /**
-     * Find pmatch commands to match the AMATI template command and related operators.
+     * Find patternessay commands to match the AMATI template command and related operators.
      */
-    public function find_pmatch_equivalents_to_amati_template_command() {
+    public function find_patternessay_equivalents_to_amati_template_command() {
         $this->resetAfterTest();
 
          // Set correct expectation.
@@ -263,10 +263,10 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
     /**
      * Test grading responses by a precedes rule.
      *
-     *  Pmatch proximity option does not allow the matching words to be more than 4 words
+     *  patternessay proximity option does not allow the matching words to be more than 4 words
      * apart or to span sentences. So the results we expect do not match exactly those AMATI would give.
      */
-    public function find_pmatch_equivalents_to_amati_precedes_command() {
+    public function find_patternessay_equivalents_to_amati_precedes_command() {
         $this->resetAfterTest();
 
         // Set the correct expectation.
@@ -282,9 +282,9 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
                 // |       35 -> 'dick is janes most trusted confidante best friend and closest companion'
                 // |   ).
 
-                // First attempt using pmatch wp4 parameters and _ between target words to match words
+                // First attempt using patternessay wp4 parameters and _ between target words to match words
                 // with a max of 4 words apart.
-                // Pmatch misses these 2 responses because it cannot match words more than 4 words apart.
+                // patternessay misses these 2 responses because it cannot match words more than 4 words apart.
                 // 'harrriet is jane\'s most treasured friend and companion'
                 // 'Dick is jane\'s most trusted confidante, best friend and closest companion'.
                 'match_wp4(is_companion)' => array(
@@ -303,7 +303,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
                         4 => 'tim is not jane\'s favourite close companion',
                         5 => 'tim is jane\'s closest companion',
                         6 => 'Dick is jane\'s most trusted confidante, best friend and closest companion'),
-                // An extra test using syntax from translating parameters to pmatch rules.
+                // An extra test using syntax from translating parameters to patternessay rules.
                 // It's laid out in the format AMATI precedes rules are laid out with each target word
                 // in its own term or template match first then the precedes check.
                 // So I just tested this format would work correctly.
@@ -332,7 +332,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
     /**
      * Test grading responses by a closely precedes rule.
      */
-    public function find_pmatch_equivalents_to_amati_closely_precedes_command() {
+    public function find_patternessay_equivalents_to_amati_closely_precedes_command() {
         $this->resetAfterTest();
 
         // The rule should match these responses.
@@ -346,14 +346,14 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
                 // |       29 => 'harriet is janes companion',
                 // |       33 => 'tim is janes closest companion',
                 // |   )
-                // An equivalent pmatch rule using _ to which only allows 2 words between matching words.
+                // An equivalent patternessay rule using _ to which only allows 2 words between matching words.
                 // This proved that closely_precedes matches target words not more than 2 words apart.
                 'match_w(is_companion)' => array(
                         0 => 'Frederick is jane\'s companion',
                         1 => 'tom is jane\'s companion',
                         2 => 'harriet is jane\'s companion',
                         3 => 'tim is jane\'s closest companion'),
-                // An equivalent pmatch rule using the p2 parameter to achieve the same result.
+                // An equivalent patternessay rule using the p2 parameter to achieve the same result.
                 'match_wp2(is_companion)' => array(
                         0 => 'Frederick is jane\'s companion',
                         1 => 'tom is jane\'s companion',
@@ -375,18 +375,18 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
     /**
      * Test separating amati term rules from the web service into their constituent parameters.
      *
-     * With the previous tests we have determined which pmatch parameters are equivalent to each type of
+     * With the previous tests we have determined which patternessay parameters are equivalent to each type of
      * AMATI rule and therefore what each AMATI rule and parameter actually does. Next we start translating
-     * AMATI rules into Pmatch equivalents.
+     * AMATI rules into patternessay equivalents.
      *
-     * The first part of translating AMATI rules into pmatch rules is to break the AMATI rules
+     * The first part of translating AMATI rules into patternessay rules is to break the AMATI rules
      * into their constituent parts. I found command, operator and word to be good (not perfect)
      * parameters to use.
      * Commands denote the general approach to matching such as:
      * * Term expects exact word matches
      * * Template Expects an exact for the first few letters then any characters for the rest of the word
      * * Precedes expects the first word to appear before the second. In AMATI the match can be across
-     * sentences, in pmatch it is only with a sentence.
+     * sentences, in patternessay it is only with a sentence.
      * * Closely precedes expects the first word to be a maximum of two words before the second word
      *
      * Operators add or exclude a phrase from a match or provide an alternate and include add, esclude and or
@@ -602,7 +602,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
      *
      * During initial development I tried a few random rule combinations and created working tests.
      * They test multiple commands and combine several sub rules into one rules which is how AMATI and
-     * Pmatch rules are used in real life. These test go beyond the previous tests that focus on one
+     * patternessay rules are used in real life. These test go beyond the previous tests that focus on one
      * command unfortunately I only had time to provide a few. A more extenisve list would be very
      * helpful.
      */
@@ -700,24 +700,24 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
      * Test generating pattern match rules from rule parameters.
      *
      * Now that we can convert AMATI rules into arrays of parameters we can now convert
-     * the parameters into valid PMatch rules. We won't test that they match responses yet, we are just
+     * the parameters into valid patternessay rules. We won't test that they match responses yet, we are just
      * testing each part of the process before we test the whole later.
      */
-    public function test_get_pmatch_rules_from_rule_parameters() {
-        $this->get_pmatch_rule_from_term_rule_parameters();
-        $this->get_pmatch_rule_from_template_rule_parameters();
-        $this->get_pmatch_rule_from_precedes_rule_parameters();
-        $this->get_pmatch_rule_from_closely_precedes_rule_parameters();
+    public function test_get_patternessay_rules_from_rule_parameters() {
+        $this->get_patternessay_rule_from_term_rule_parameters();
+        $this->get_patternessay_rule_from_template_rule_parameters();
+        $this->get_patternessay_rule_from_precedes_rule_parameters();
+        $this->get_patternessay_rule_from_closely_precedes_rule_parameters();
     }
 
     /**
      * Test generating pattern match rules from parameters based on rules containing terms.
      */
-    public function get_pmatch_rule_from_term_rule_parameters() {
+    public function get_patternessay_rule_from_term_rule_parameters() {
 
         // Set the expectation.
         $comparerulesandparameters = [
-            // These Pmatch rules should be generated from their associated array of parameters.
+            // These patternessay rules should be generated from their associated array of parameters.
             'match_all(match_w(tom))' => [
                 0 => (object) [
                     'command' => 'term',
@@ -770,7 +770,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
             ],
         ];
 
-        $rulesandparameters = $this->get_pmatch_rules_from_parameters($comparerulesandparameters);
+        $rulesandparameters = $this->get_patternessay_rules_from_parameters($comparerulesandparameters);
 
         // Check the result matches the expected result.
         $this->assertEquals($comparerulesandparameters, $rulesandparameters);
@@ -780,11 +780,11 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
     /**
      * Test generating pattern match rules from parameters based on rules containing templates.
      */
-    public function get_pmatch_rule_from_template_rule_parameters() {
+    public function get_patternessay_rule_from_template_rule_parameters() {
 
         // Set the expectation.
         $comparerulesandparameters = [
-            // These Pmatch rules should be generated from their associated array of parameters.
+            // These patternessay rules should be generated from their associated array of parameters.
             'match_all(match_wm(tom*))' => [
                 0 => (object) [
                     'command' => 'template',
@@ -825,7 +825,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
             ],
         ];
 
-        $rulesandparameters = $this->get_pmatch_rules_from_parameters($comparerulesandparameters);
+        $rulesandparameters = $this->get_patternessay_rules_from_parameters($comparerulesandparameters);
 
         // Check the result matches the expected result.
         $this->assertEquals($comparerulesandparameters, $rulesandparameters);
@@ -834,7 +834,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
 
     protected function check_valid_rules ($rules) {
         foreach ($rules as $rule) {
-            $expression = new pmatch_expression($rule);
+            $expression = new patternessay_expression($rule);
             $this->assertTrue($expression->is_valid());
         }
     }
@@ -842,11 +842,11 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
     /**
      * Test generating pattern match rules from parameters based on rules containing precedes.
      */
-    public function get_pmatch_rule_from_precedes_rule_parameters() {
+    public function get_patternessay_rule_from_precedes_rule_parameters() {
 
         // Set the expectation.
         $comparerulesandparameters = [
-            // These Pmatch rules should be generated from their associated array of parameters.
+            // These patternessay rules should be generated from their associated array of parameters.
             "match_all(match_wm(tom*) match_wm(harry*) match_w(tom* harry*))" => [
                 0 => (object) [
                     'command' => 'template',
@@ -869,7 +869,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
             ],
         ];
 
-        $rulesandparameters = $this->get_pmatch_rules_from_parameters($comparerulesandparameters);
+        $rulesandparameters = $this->get_patternessay_rules_from_parameters($comparerulesandparameters);
 
         // Check the result matches the expected result.
         $this->assertEquals($comparerulesandparameters, $rulesandparameters);
@@ -879,11 +879,11 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
     /**
      * Test generating pattern match rules from parameters based on rules containing precedes.
      */
-    public function get_pmatch_rule_from_closely_precedes_rule_parameters() {
+    public function get_patternessay_rule_from_closely_precedes_rule_parameters() {
 
         // Set the expectation.
         $comparerulesandparameters = [
-            // These Pmatch rules should be generated from their associated array of parameters.
+            // These patternessay rules should be generated from their associated array of parameters.
             "match_all(match_wm(tom*) match_wm(harry*) match_w(tom*_harry*))" => [
                 0 => (object) [
                     'command' => 'template',
@@ -906,7 +906,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
             ],
         ];
 
-        $rulesandparameters = $this->get_pmatch_rules_from_parameters($comparerulesandparameters);
+        $rulesandparameters = $this->get_patternessay_rules_from_parameters($comparerulesandparameters);
 
         // Check the result matches the expected result.
         $this->assertEquals($comparerulesandparameters, $rulesandparameters);
@@ -917,23 +917,23 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
      * Test generating pattern match rules from amati rules containing terms.
      *
      * Now that we have tested each part of the translation process we can now test the whole
-     * We can make sure that each amati rule is correctly translated to a valid pmatch rule.
+     * We can make sure that each amati rule is correctly translated to a valid patternessay rule.
      */
-    public function test_get_pmatch_rules_from_amati_term_rules() {
-        $this->get_pmatch_rules_from_amati_term_rules();
-        $this->get_pmatch_rules_from_amati_template_rules();
-        $this->get_pmatch_rules_from_amati_precedes_rules();
-        $this->get_pmatch_rules_from_amati_closely_precedes_rules();
+    public function test_get_patternessay_rules_from_amati_term_rules() {
+        $this->get_patternessay_rules_from_amati_term_rules();
+        $this->get_patternessay_rules_from_amati_template_rules();
+        $this->get_patternessay_rules_from_amati_precedes_rules();
+        $this->get_patternessay_rules_from_amati_closely_precedes_rules();
     }
 
     /**
      * Test generating pattern match rules from amati rules containing terms.
      */
-    public function get_pmatch_rules_from_amati_term_rules() {
+    public function get_patternessay_rules_from_amati_term_rules() {
 
         // Set the expectation.
         $comparerules = [
-            // Each Pmatch rule should be generated from the AMATI rule that follows it.
+            // Each patternessay rule should be generated from the AMATI rule that follows it.
             'match_all(match_w(tom))' => "correct_response(A) :- term_in_response(A,tom).",
             "match_all(match_w(tom) match_w(harry))" =>
                 "correct_response(A) :- term_in_response(A,B,tom), term_in_response(A,C,harry).",
@@ -943,7 +943,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
                 "correct_response(A) :- term_in_response(A,B,tom); term_in_response(A,C,harry)."
         ];
 
-        $rules = $this->get_pmatch_rules_from_amati_rules($comparerules);
+        $rules = $this->get_patternessay_rules_from_amati_rules($comparerules);
 
         // Check the result matches the expected result.
         $this->assertEquals($comparerules, $rules);
@@ -953,11 +953,11 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
     /**
      * Test generating pattern match rules from amati rules containing termplates.
      */
-    public function get_pmatch_rules_from_amati_template_rules() {
+    public function get_patternessay_rules_from_amati_template_rules() {
 
         // Set the expectation.
         $comparerules = [
-            // Each Pmatch rule should be generated from the AMATI rule that follows it.
+            // Each patternessay rule should be generated from the AMATI rule that follows it.
             'match_all(match_wm(tom*))' => "correct_response(A) :- template_in_response(A,tom).",
             "match_all(match_wm(tom*) match_wm(harry*))" =>
                 "correct_response(A) :- template_in_response(A,B,tom), template_in_response(A,C,harry).",
@@ -967,7 +967,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
                 "correct_response(A) :- template_in_response(A,B,tom), not template_in_response(A,C,harry)."
         ];
 
-        $rules = $this->get_pmatch_rules_from_amati_rules($comparerules);
+        $rules = $this->get_patternessay_rules_from_amati_rules($comparerules);
 
         // Check the result matches the expected result.
         $this->assertEquals($comparerules, $rules);
@@ -977,16 +977,16 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
     /**
      * Test generating pattern match rules from amati rules containing precedes.
      */
-    public function get_pmatch_rules_from_amati_precedes_rules() {
+    public function get_patternessay_rules_from_amati_precedes_rules() {
 
             // Set the expectation.
         $comparerules = [
-            // Each Pmatch rule should be generated from the AMATI rule that follows it.
+            // Each patternessay rule should be generated from the AMATI rule that follows it.
             "match_all(match_wm(tom*) match_wm(harry*) match_w(tom* harry*))" =>
                 "correct_response(A) :- template_in_response(A,B,tom), template_in_response(A,C,harry), precedes(B, C)."
         ];
 
-        $rules = $this->get_pmatch_rules_from_amati_rules($comparerules);
+        $rules = $this->get_patternessay_rules_from_amati_rules($comparerules);
 
         // Check the result matches the expected result.
         $this->assertEquals($comparerules, $rules);
@@ -996,16 +996,16 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
     /**
      * Test generating pattern match rules from amati rules containing closely precedes.
      */
-    public function get_pmatch_rules_from_amati_closely_precedes_rules() {
+    public function get_patternessay_rules_from_amati_closely_precedes_rules() {
 
         // Set the expectation.
         $comparerules = [
-            // Each Pmatch rule should be generated from the AMATI rule that follows it.
+            // Each patternessay rule should be generated from the AMATI rule that follows it.
             "match_all(match_wm(tom*) match_wm(harry*) match_w(tom*_harry*))" =>
                 "correct_response(A) :- template_in_response(A,B,tom), template_in_response(A,C,harry), closely_precedes(B, C)."
         ];
 
-        $rules = $this->get_pmatch_rules_from_amati_rules($comparerules);
+        $rules = $this->get_patternessay_rules_from_amati_rules($comparerules);
 
         // Check the result matches the expected result.
         $this->assertEquals($comparerules, $rules);
@@ -1013,10 +1013,10 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
     }
 
     /**
-     * Prepare the suggested rules from AMATI to be added to a pmatch question.
-     * - Remove any suggested rules that duplicate the existing pmatch rules
+     * Prepare the suggested rules from AMATI to be added to a patternessay question.
+     * - Remove any suggested rules that duplicate the existing patternessay rules
      * - Remove and invalid rules
-     * - Format the rules in pmatch format
+     * - Format the rules in patternessay format
      *
      */
     public function test_prepare_suggested_rules() {
@@ -1041,7 +1041,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
                 "match_all(match_w(tom) not( match_w(harry)))",
                 'match_all(match_wm(Felicity) match_w(dick))'
         );
-        // Format comparison rules for pmatch.
+        // Format comparison rules for patternessay.
         $comparesuggestedrules = $this->format_rules($comparesuggestedrules);
 
         // Load the question.
@@ -1060,28 +1060,28 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
         $this->add_question_form_fields($this->currentquestion);
 
         // Run the test.
-        $suggestedrules = \qtype_pmatch\amati_rule_suggestion::prepare_suggested_rules($this->currentquestion, $suggestedrules);
+        $suggestedrules = \qtype_patternessay\amati_rule_suggestion::prepare_suggested_rules($this->currentquestion, $suggestedrules);
 
         // Check the results.
         $this->assertEquals($comparesuggestedrules, $suggestedrules);
         $this->check_valid_rules($suggestedrules);
     }
 
-    protected function get_pmatch_rules_from_amati_rules($comparerules) {
+    protected function get_patternessay_rules_from_amati_rules($comparerules) {
         // Translate each rule into parameters.
         $rules = array();
         foreach ($comparerules as $rule) {
-            $pmatchrule = qtype_pmatch\amati_rule_suggestion::get_pmatch_rule_from_amati_rule($rule);
-            $rules[$pmatchrule] = $rule;
+            $patternessayrule = qtype_patternessay\amati_rule_suggestion::get_patternessay_rule_from_amati_rule($rule);
+            $rules[$patternessayrule] = $rule;
         }
 
         return $rules;
     }
 
     protected function format_rules($rules) {
-        // Apply pmatch Formatting to  each rule.
+        // Apply patternessay Formatting to  each rule.
         foreach ($rules as $key => $rule) {
-            $expression = new \pmatch_expression($rule);
+            $expression = new \patternessay_expression($rule);
             if (!$expression->is_valid()) {
                 continue;
             }
@@ -1090,11 +1090,11 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
         return $rules;
     }
 
-    protected function get_pmatch_rules_from_parameters($comparerulesandparameters) {
+    protected function get_patternessay_rules_from_parameters($comparerulesandparameters) {
         // Translate each rule into parameters.
         $rulesandparameters = array();
         foreach ($comparerulesandparameters as $key => $subrules) {
-            $rule = qtype_pmatch\amati_rule_suggestion::get_pmatch_rule_from_subrules($subrules);
+            $rule = qtype_patternessay\amati_rule_suggestion::get_patternessay_rule_from_subrules($subrules);
             $rulesandparameters[$rule] = $subrules;
         }
 
@@ -1115,7 +1115,7 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
         $rulesandparameters = array();
         foreach ($comparerulesandparameters as $key => $subrules) {
             $rule = $rules[$rulestoindex[$key]];
-            $parameters = qtype_pmatch\amati_rule_suggestion::get_parameters_from_amati_rule($rule->rule);
+            $parameters = qtype_patternessay\amati_rule_suggestion::get_parameters_from_amati_rule($rule->rule);
             $rulesandparameters[$key] = $parameters;
         }
 
@@ -1155,8 +1155,8 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
     }
 
     /**
-     * Create a default pmatch question form object used in questiontype.php forms
-     * @return qtype_pmatch_question
+     * Create a default patternessay question form object used in questiontype.php forms
+     * @return qtype_patternessay_question
      */
     protected function add_question_form_fields($question) {
         // Convert answers object to separate arrays.
@@ -1184,12 +1184,12 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
             $responses = $this->load_default_responses('fixtures/testresponseslong.csv', $responsecount);
         }
         // Set correct case sensitivity.
-        $this->currentquestion->pmatchoptions->ignorecase = true;
+        $this->currentquestion->patternessayoptions->ignorecase = true;
         // Save the rules to the question.
         $this->set_question_rules(array_keys($comparerulematches), $this->currentquestion);
         $rules = $this->currentquestion->get_answers();
         foreach ($rules as $rule) {
-            \qtype_pmatch\testquestion_responses::grade_responses_by_rule($responses, $rule, $this->currentquestion);
+            \qtype_patternessay\testquestion_responses::grade_responses_by_rule($responses, $rule, $this->currentquestion);
         }
 
         return $this->get_rule_matches($responses, $rules);
@@ -1204,6 +1204,6 @@ class qtype_pmatch_testquestion_amati_rule_suggestion extends qtype_pmatch_testq
         global $CFG;
         $filepath = $filepath ? $filepath : self::$rulesfilepath;
         $filepath = dirname(__FILE__) . '/' . $filepath;
-        return qtype_pmatch\amati_rule_suggestion::load_rules_from_file($filepath);
+        return qtype_patternessay\amati_rule_suggestion::load_rules_from_file($filepath);
     }
 }

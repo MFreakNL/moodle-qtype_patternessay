@@ -17,16 +17,16 @@
 /**
  * Pattern-match question definition class.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2011 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use qtype_pmatch\local\spell\qtype_pmatch_spell_checker;
+use qtype_patternessay\local\spell\qtype_patternessay_spell_checker;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/question/type/pmatch/pmatchlib.php');
+require_once($CFG->dirroot.'/question/type/patternessay/patternessaylib.php');
 
 /**
  * Represents a pattern-match  question.
@@ -34,7 +34,7 @@ require_once($CFG->dirroot.'/question/type/pmatch/pmatchlib.php');
  * @copyright 2011 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch_question extends question_graded_by_strategy
+class qtype_patternessay_question extends question_graded_by_strategy
         implements question_response_answer_comparer {
 
     /** @var boolean whether to allow students to use subscript. */
@@ -52,8 +52,8 @@ class qtype_pmatch_question extends question_graded_by_strategy
     /** @var string to be used for 'Preview question' and 'Answer sheet' in print. */
     public $modelanswer;
 
-    /** @var pmatch_options options for pmatch expression matching. */
-    public $pmatchoptions;
+    /** @var patternessay_options options for patternessay expression matching. */
+    public $patternessayoptions;
 
     /** @var array of question_answer. */
     public $answers = array();
@@ -94,23 +94,23 @@ class qtype_pmatch_question extends question_graded_by_strategy
         $responsevalidationerrors = array();
 
         if (!array_key_exists('answer', $response) || ((!$response['answer']) && $response['answer'] !== '0')) {
-            return array(get_string('pleaseenterananswer', 'qtype_pmatch'));
+            return array(get_string('pleaseenterananswer', 'qtype_patternessay'));
         }
 
-        $parsestring = new pmatch_parsed_string($response['answer'], $this->pmatchoptions);
+        $parsestring = new patternessay_parsed_string($response['answer'], $this->patternessayoptions);
         if (!$parsestring->is_parseable()) {
             $a = $parsestring->unparseable();
-            $responsevalidationerrors[] = get_string('unparseable', 'qtype_pmatch', $a);
+            $responsevalidationerrors[] = get_string('unparseable', 'qtype_patternessay', $a);
         }
-        if ($this->applydictionarycheck != qtype_pmatch_spell_checker::DO_NOT_CHECK_OPTION &&
+        if ($this->applydictionarycheck != qtype_patternessay_spell_checker::DO_NOT_CHECK_OPTION &&
                 !$parsestring->is_spelled_correctly()) {
             $misspelledwords = $parsestring->get_spelling_errors();
             $a = join(' ', $misspelledwords);
-            $responsevalidationerrors[] = get_string('spellingmistakes', 'qtype_pmatch', $a);
+            $responsevalidationerrors[] = get_string('spellingmistakes', 'qtype_patternessay', $a);
         }
         if ($this->forcelength) {
             if ($parsestring->get_word_count() > 20) {
-                $responsevalidationerrors[] = get_string('toomanywords', 'qtype_pmatch');
+                $responsevalidationerrors[] = get_string('toomanywords', 'qtype_patternessay');
             }
         }
         return $responsevalidationerrors;
@@ -122,7 +122,7 @@ class qtype_pmatch_question extends question_graded_by_strategy
             return array_pop($errors);
         } else {
             $errorslist = html_writer::alist($errors);
-            return get_string('errors', 'qtype_pmatch', $errorslist);
+            return get_string('errors', 'qtype_patternessay', $errorslist);
         }
     }
 
@@ -139,14 +139,14 @@ class qtype_pmatch_question extends question_graded_by_strategy
         if ($answer->answer == '*') {
             return true;
         }
-        return self::compare_string_with_pmatch_expression($response['answer'],
+        return self::compare_string_with_patternessay_expression($response['answer'],
                                                             $answer->answer,
-                                                            $this->pmatchoptions);
+                                                            $this->patternessayoptions);
     }
 
-    public static function compare_string_with_pmatch_expression($string, $expression, $options) {
-        $string = new pmatch_parsed_string($string, $options);
-        $expression = new pmatch_expression($expression, $options);
+    public static function compare_string_with_patternessay_expression($string, $expression, $options) {
+        $string = new patternessay_parsed_string($string, $options);
+        $expression = new patternessay_expression($expression, $options);
         return $expression->matches($string);
     }
 
@@ -175,12 +175,12 @@ class qtype_pmatch_question extends question_graded_by_strategy
     }
 
     public function start_attempt(question_attempt_step $step, $variant) {
-        $this->pmatchoptions->lang = $this->applydictionarycheck;
-        $step->set_qt_var('_responselang', $this->pmatchoptions->lang);
+        $this->patternessayoptions->lang = $this->applydictionarycheck;
+        $step->set_qt_var('_responselang', $this->patternessayoptions->lang);
     }
 
     public function apply_attempt_state(question_attempt_step $step) {
-        $this->pmatchoptions->lang = $step->get_qt_var('_responselang');
+        $this->patternessayoptions->lang = $step->get_qt_var('_responselang');
     }
 
     public function get_context() {
@@ -214,13 +214,13 @@ class qtype_pmatch_question extends question_graded_by_strategy
      *      language dictionaries are not available.
      */
     public function is_spell_check_laguage_available() {
-        $spellchecklanguagesdata = get_config('qtype_pmatch', 'spellcheck_languages');
+        $spellchecklanguagesdata = get_config('qtype_patternessay', 'spellcheck_languages');
         if (!$spellchecklanguagesdata) {
             return false;
         }
         $availablelangs = explode(',', $spellchecklanguagesdata);
 
         return !in_array($this->applydictionarycheck, $availablelangs) &&
-                $this->applydictionarycheck !== qtype_pmatch_spell_checker::DO_NOT_CHECK_OPTION;
+                $this->applydictionarycheck !== qtype_patternessay_spell_checker::DO_NOT_CHECK_OPTION;
     }
 }

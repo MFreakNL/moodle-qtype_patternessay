@@ -1,6 +1,6 @@
-@ou @ou_vle @qtype @qtype_pmatch @_switch_window @javascript
-Feature: Test backup and restore of a pmatch question with responses and matches
-  In order to manage pmatch questions
+@ou @ou_vle @qtype @qtype_patternessay @_switch_window @javascript
+Feature: Test backup and restore of a patternessay question with responses and matches
+  In order to manage patternessay questions
   As an admin
   I need to be able to backup and restore with all testquestion data.
 
@@ -13,7 +13,7 @@ Feature: Test backup and restore of a pmatch question with responses and matches
       | Course       | C1        | Test questions |
     And the following "questions" exist:
       | questioncategory | qtype    | name         | template |
-      | Test questions   | pmatch   | My first pattern match question | listen    |
+      | Test questions   | patternessay   | My first pattern match question | listen    |
     And the default question test responses exist for question "My first pattern match question"
     And I log in as "admin"
 
@@ -50,10 +50,10 @@ Feature: Test backup and restore of a pmatch question with responses and matches
     And I follow "Test this question"
     # Final check that the marked responses have been restored properly.
     Then I should see "Pattern-match question testing tool: Testing question: My first pattern match question"
-    And I should see "testing one two three four" in the "#qtype-pmatch-testquestion_r0_c5" "css_element"
-    And I should see "1" in the "#qtype-pmatch-testquestion_r0_c4" "css_element"
-    And I should see "1" in the "#qtype-pmatch-testquestion_r0_c3" "css_element"
-    And I should see "1" in the "#qtype-pmatch-testquestion_r0_c2" "css_element"
+    And I should see "testing one two three four" in the "#qtype-patternessay-testquestion_r0_c5" "css_element"
+    And I should see "1" in the "#qtype-patternessay-testquestion_r0_c4" "css_element"
+    And I should see "1" in the "#qtype-patternessay-testquestion_r0_c3" "css_element"
+    And I should see "1" in the "#qtype-patternessay-testquestion_r0_c2" "css_element"
     And I should see "Sample responses: 13"
     And I should see "Marked correctly: 7 (54%)"
     And I should see "Computed mark greater than human mark: 0 (missed positive)"

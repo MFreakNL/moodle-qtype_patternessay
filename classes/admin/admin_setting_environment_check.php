@@ -18,15 +18,15 @@
 /**
  * Admin settings class for chosing a spell-checker back-end.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace qtype_pmatch\admin;
+namespace qtype_patternessay\admin;
 
-use qtype_pmatch\local\spell\qtype_pmatch_null_spell_checker;
-use qtype_pmatch\local\spell\qtype_pmatch_spell_checker;
+use qtype_patternessay\local\spell\qtype_patternessay_null_spell_checker;
+use qtype_patternessay\local\spell\qtype_patternessay_spell_checker;
 use stdClass;
 
 defined('MOODLE_INTERNAL') || die();
@@ -36,11 +36,11 @@ require_once($CFG->libdir . '/adminlib.php');
 /**
  * Admin settings class for chosing a spell-checker back-end.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch_admin_setting_environment_check extends \admin_setting_heading {
+class qtype_patternessay_admin_setting_environment_check extends \admin_setting_heading {
 
     /**
      * Returns an HTML string
@@ -51,29 +51,29 @@ class qtype_pmatch_admin_setting_environment_check extends \admin_setting_headin
         $results = [];
 
         if (class_exists('Normalizer')) {
-            $results[] = get_string('env_peclnormalisationok', 'qtype_pmatch');
+            $results[] = get_string('env_peclnormalisationok', 'qtype_patternessay');
         } else {
-            $results[] = get_string('env_peclnormalisationmissing', 'qtype_pmatch');
+            $results[] = get_string('env_peclnormalisationmissing', 'qtype_patternessay');
         }
 
-        $spellchecker = qtype_pmatch_spell_checker::make();
+        $spellchecker = qtype_patternessay_spell_checker::make();
         $results[] = $spellchecker->get_name();
 
-        if (!$spellchecker instanceof qtype_pmatch_null_spell_checker) {
+        if (!$spellchecker instanceof qtype_patternessay_null_spell_checker) {
             $stringmanager = get_string_manager();
-            $availablelangs = qtype_pmatch_spell_checker::get_available_languages();
+            $availablelangs = qtype_patternessay_spell_checker::get_available_languages();
             foreach (get_string_manager()->get_list_of_translations() as $lang => $humanfriendlylang) {
                 $a = new stdClass();
                 $a->lang = $lang;
                 $a->humanfriendlylang = $humanfriendlylang;
                 $langcode = $stringmanager->get_string('iso6391', 'langconfig', null, $lang);
-                $a->langforspellchecker = qtype_pmatch_spell_checker::get_default_spell_check_dictionary(
+                $a->langforspellchecker = qtype_patternessay_spell_checker::get_default_spell_check_dictionary(
                         $langcode, $availablelangs);
                 if ($a->langforspellchecker &&
-                        !(qtype_pmatch_spell_checker::make($a->langforspellchecker) instanceof qtype_pmatch_null_spell_checker)) {
-                    $results[] = get_string('env_dictok', 'qtype_pmatch', $a);
+                        !(qtype_patternessay_spell_checker::make($a->langforspellchecker) instanceof qtype_patternessay_null_spell_checker)) {
+                    $results[] = get_string('env_dictok', 'qtype_patternessay', $a);
                 } else {
-                    $results[] = get_string('env_dictmissing', 'qtype_pmatch', $a);
+                    $results[] = get_string('env_dictmissing', 'qtype_patternessay', $a);
                 }
             }
         }

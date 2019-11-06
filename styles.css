@@ -1,22 +1,22 @@
-.que.pmatch .answer {
+.que.patternessay .answer {
     padding: 0.3em;
     width: auto;
     display: inline;
 }
-.que.pmatch .qtext textarea,
-.que.pmatch .ablock textarea {
+.que.patternessay .qtext textarea,
+.que.patternessay .ablock textarea {
     max-width: 100%;
 }
 
 /* Editing form. Style repeated elements*/
-#page-question-type-pmatch .mform textarea.textareamonospace {
+#page-question-type-patternessay .mform textarea.textareamonospace {
     white-space: pre;
     font-family: Andale Mono, Monaco, Courier New, DejaVu Sans Mono, monospace;
 }
 
 /* Top */
-body#page-question-type-pmatch #id_answerhdr div.fitem.femptylabel,
-body#page-question-type-pmatch #fitem_id_addanswers + .fitem {
+body#page-question-type-patternessay #id_answerhdr div.fitem.femptylabel,
+body#page-question-type-patternessay #fitem_id_addanswers + .fitem {
     background: #eee;
     margin-top: 0;
     margin-bottom: 0;
@@ -26,22 +26,22 @@ body#page-question-type-pmatch #fitem_id_addanswers + .fitem {
     border-bottom: 0;
 }
 
-body#page-question-type-pmatch div[id^=fitem_id_][id*=_answer_] .fitemtitle,
-body#page-question-type-pmatch div.fitem.fitem_accuracy .fitemtitle,
-body#page-question-type-pmatch #fitem_id_addanswers + .fitem .fitemtitle {
+body#page-question-type-patternessay div[id^=fitem_id_][id*=_answer_] .fitemtitle,
+body#page-question-type-patternessay div.fitem.fitem_accuracy .fitemtitle,
+body#page-question-type-patternessay #fitem_id_addanswers + .fitem .fitemtitle {
     font-weight: bold;
 }
-body#page-question-type-pmatch #region-main div.fitem.femptylabel {
+body#page-question-type-patternessay #region-main div.fitem.femptylabel {
     padding: 0;
 }
-body#page-question-type-pmatch #region-main div.fitem.femptylabel .fitemtitle {
+body#page-question-type-patternessay #region-main div.fitem.femptylabel .fitemtitle {
     padding: 0;
     margin: 0;
 }
-body#page-question-type-pmatch #region-main div.fitem.femptylabel .fstatic {
+body#page-question-type-patternessay #region-main div.fitem.femptylabel .fstatic {
     margin: 0;
 }
-body#page-question-type-pmatch #region-main #fgroup_id_updatebuttonar {
+body#page-question-type-patternessay #region-main #fgroup_id_updatebuttonar {
     background: none;
     border: none;
 }
@@ -50,13 +50,13 @@ body#page-question-type-pmatch #region-main #fgroup_id_updatebuttonar {
 }
 
 /* Middle */
-body#page-question-type-pmatch div[id^=fitem_id_][id*=answer_],
-body#page-question-type-pmatch div[id^=fitem_id_][id*=fraction_],
-body#page-question-type-pmatch div.fitem.fitem_matchedresponses,
-body#page-question-type-pmatch div.fitem.fitem_accuracy,
-body#page-question-type-pmatch div.fitem.rcw,
-body#page-question-type-pmatch div.fitem.try-rule,
-body#page-question-type-pmatch #fitem_id_addanswers + .fitem + .fitem {
+body#page-question-type-patternessay div[id^=fitem_id_][id*=answer_],
+body#page-question-type-patternessay div[id^=fitem_id_][id*=fraction_],
+body#page-question-type-patternessay div.fitem.fitem_matchedresponses,
+body#page-question-type-patternessay div.fitem.fitem_accuracy,
+body#page-question-type-patternessay div.fitem.rcw,
+body#page-question-type-patternessay div.fitem.try-rule,
+body#page-question-type-patternessay #fitem_id_addanswers + .fitem + .fitem {
     background: #eee;
     margin-bottom: 0;
     margin-top: 0;
@@ -68,8 +68,8 @@ body#page-question-type-pmatch #fitem_id_addanswers + .fitem + .fitem {
 }
 
 /* Bottom */
-body#page-question-type-pmatch div[id^=fitem_id_][id*=feedback_],
-body#page-question-type-pmatch div[id^=fitem_id_][id*=otherfeedback] {
+body#page-question-type-patternessay div[id^=fitem_id_][id*=feedback_],
+body#page-question-type-patternessay div[id^=fitem_id_][id*=otherfeedback] {
     background: #eee;
     margin-bottom: 2em;
     margin-top: 0;
@@ -78,45 +78,45 @@ body#page-question-type-pmatch div[id^=fitem_id_][id*=otherfeedback] {
     border: 1px solid #bbb;
     border-top: 0;
 }
-body#page-question-type-pmatch #fitem_id_addanswers {
+body#page-question-type-patternessay #fitem_id_addanswers {
     margin-bottom: 2em;
 }
 
 /* Styles for the question-testing interface. */
 #testquestion_gradesummary span:last-child,
-.qtype_pmatch-selftest-missed-negative {
+.qtype_patternessay-selftest-missed-negative {
     font-weight: bold;
     color: #f00;
 }
 
-.qtype_pmatch-selftest-null {
+.qtype_patternessay-selftest-null {
     font-weight: bold;
     color: #b38686;
 }
 
 #testquestion_gradesummary span:nth-child(3),
-.qtype_pmatch-selftest-missed-positive {
+.qtype_patternessay-selftest-missed-positive {
     font-weight: bold;
     color: #00f;
 }
 
-body.pagelayout-embedded .que.pmatch .formulation .questiontestslink,
-body.pagelayout-embedded .que.combined .combined-pmatch-input > a {
+body.pagelayout-embedded .que.patternessay .formulation .questiontestslink,
+body.pagelayout-embedded .que.combined .combined-patternessay-input > a {
     display: none;
 }
-.que.pmatch .formulation .questiontestslink,
+.que.patternessay .formulation .questiontestslink,
 .que.combined .formulation .questiontestslink {
     float: right;
     font-size: 0.7em;
 }
 
 /* Test this question link within combined questions. */
-.combined-pmatch-input {
+.combined-patternessay-input {
     position: relative;
     white-space: nowrap;
     display: inline-block;
 }
-.combined-pmatch-input > a {
+.combined-patternessay-input > a {
     position: absolute;
     top: -4px;
     right: -4px;
@@ -125,7 +125,7 @@ body.pagelayout-embedded .que.combined .combined-pmatch-input > a {
     padding: 1px;
     line-height: 1;
 }
-.combined-pmatch-input > .answerwrap + a {
+.combined-patternessay-input > .answerwrap + a {
     top: 5px;
     right: 5px;
     padding: 2px 4px;
@@ -133,98 +133,98 @@ body.pagelayout-embedded .que.combined .combined-pmatch-input > a {
 
 }
 
-#page-question-type-pmatch .rcw input[type=submit] {
+#page-question-type-patternessay .rcw input[type=submit] {
     margin: 0 0 10px 5px;
 }
-#page-question-type-pmatch .rc-hidden {
+#page-question-type-patternessay .rc-hidden {
     display: none;
 }
 /* The missing style for the successful progress bar colour.
   This is due to theme/base/style/core.css not having this rule (though it has
   .progress-stripped etc.) Note theme/bootstrapbase/ has the full css, but our
   themes (ou, osep) are not based on it. */
-body#page-question-type-pmatch-testquestion .progress-success .bar,
-body#page-question-type-pmatch-testquestion .progress .bar-success {
+body#page-question-type-patternessay-testquestion .progress-success .bar,
+body#page-question-type-patternessay-testquestion .progress .bar-success {
     background-color: #5eb95e;
     background-image: linear-gradient(to bottom, #62c462, #57a957);
     background-repeat: repeat-x;
 }
 
 /* Align reset table preferences button */
-body#page-question-type-pmatch-testquestion .resettable {
+body#page-question-type-patternessay-testquestion .resettable {
     text-align: left;
 }
 
-#page-question-type-pmatch-testquestion #attemptsform .error {
+#page-question-type-patternessay-testquestion #attemptsform .error {
     display: block;
 }
 
-#page-question-type-pmatch-testquestion #attemptsform table input,
-#page-question-type-pmatch-testquestion #attemptsform #commands input[type=submit] {
+#page-question-type-patternessay-testquestion #attemptsform table input,
+#page-question-type-patternessay-testquestion #attemptsform #commands input[type=submit] {
     margin-bottom: 3px;
 }
 
-#page-question-type-pmatch-testquestion #attemptsform table .section-input {
+#page-question-type-patternessay-testquestion #attemptsform table .section-input {
     margin-top: 7px;
 }
 
-#page-question-type-pmatch-testquestion #attemptsform table .section-checkbox {
+#page-question-type-patternessay-testquestion #attemptsform table .section-checkbox {
     margin-top: 13px;
 }
 
-#page-question-type-pmatch-testquestion #attemptsform table .section-checkbox input[type=checkbox] {
+#page-question-type-patternessay-testquestion #attemptsform table .section-checkbox input[type=checkbox] {
     margin-top: 1px;
 }
 
-#page-question-type-pmatch-testquestion #attemptsform table .section-input .new-response {
+#page-question-type-patternessay-testquestion #attemptsform table .section-input .new-response {
     width: 300px;
 }
 
-#page-question-type-pmatch-testquestion #attemptsform table .section-input,
-#page-question-type-pmatch-testquestion #attemptsform table .section-button {
+#page-question-type-patternessay-testquestion #attemptsform table .section-input,
+#page-question-type-patternessay-testquestion #attemptsform table .section-button {
     display: inline-block;
 }
 
-#page-question-type-pmatch-testquestion #attemptsform table .generaterow td {
+#page-question-type-patternessay-testquestion #attemptsform table .generaterow td {
     vertical-align: top;
 }
 
 @media screen and (max-width: 768px) {
-    #page-question-type-pmatch-testquestion #attemptsform table .section-input,
-    #page-question-type-pmatch-testquestion #attemptsform table .section-button {
+    #page-question-type-patternessay-testquestion #attemptsform table .section-input,
+    #page-question-type-patternessay-testquestion #attemptsform table .section-button {
         display: block;
     }
 
-    #page-question-type-pmatch-testquestion #attemptsform table input[type=text] {
+    #page-question-type-patternessay-testquestion #attemptsform table input[type=text] {
         width: 100%;
     }
 }
 
-#page-question-type-pmatch-testquestion #wrapperactionresponse {
+#page-question-type-patternessay-testquestion #wrapperactionresponse {
     margin-top: 20px;
 }
 
-#page-question-type-pmatch-testquestion #newresponsebutton {
+#page-question-type-patternessay-testquestion #newresponsebutton {
     margin-top: -2px;
 }
 /* Fix for The Exemplar table is broken when table is empty because min-height is set to 10em by MDL-62884 */
-#page-question-type-pmatch-testquestion .no-overflow > .generaltable {
+#page-question-type-patternessay-testquestion .no-overflow > .generaltable {
     min-height: 40px;
 }
 
 /* Help responsive error pop up in the Examplar table */
 @media (min-device-width: 1023px) {
-    #page-question-type-pmatch-testquestion .moodle-dialogue {
+    #page-question-type-patternessay-testquestion .moodle-dialogue {
         left: calc(50% - 200px) !important; /* stylelint-disable-line declaration-no-important */
         top: auto;
         max-width: unset;
     }
     @media (max-width: 767px) {
-        #page-question-type-pmatch-testquestion .moodle-dialogue {
+        #page-question-type-patternessay-testquestion .moodle-dialogue {
             top: 50% !important; /* stylelint-disable-line declaration-no-important */
         }
     }
-    #page-question-type-pmatch-testquestion .moodle-dialogue-fullscreen {
+    #page-question-type-patternessay-testquestion .moodle-dialogue-fullscreen {
         left: 0 !important; /* stylelint-disable-line declaration-no-important */
         top: 0 !important; /* stylelint-disable-line declaration-no-important */
     }

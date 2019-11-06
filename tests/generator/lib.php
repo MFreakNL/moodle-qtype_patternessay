@@ -19,11 +19,11 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Pattern match question type test question test data generator class
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright  2015 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch_generator extends component_generator_base {
+class qtype_patternessay_generator extends component_generator_base {
 
     /**
      * @var number of created instances
@@ -37,7 +37,7 @@ class qtype_pmatch_generator extends component_generator_base {
     /**
      * Create a new test response.
      * @param array|stdClass $record
-     * @return stdClass qtype_pmatch_test_responses record.
+     * @return stdClass qtype_patternessay_test_responses record.
      */
     public function create_test_response($record = null, $question = null) {
         global $DB;
@@ -52,7 +52,7 @@ class qtype_pmatch_generator extends component_generator_base {
         );
 
         $record = $this->datagenerator->combine_defaults_and_record($defaults, $record);
-        $record['id'] = $DB->insert_record('qtype_pmatch_test_responses', $record);
+        $record['id'] = $DB->insert_record('qtype_patternessay_test_responses', $record);
         return (object) $record;
     }
 }

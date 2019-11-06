@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Unit tests for the pmatch question definition class.
+ * Unit tests for the patternessay question definition class.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2012 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,49 +27,49 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 
 require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
-require_once($CFG->dirroot . '/question/type/pmatch/tests/helper.php');
-require_once($CFG->dirroot . '/question/type/pmatch/question.php');
+require_once($CFG->dirroot . '/question/type/patternessay/tests/helper.php');
+require_once($CFG->dirroot . '/question/type/patternessay/question.php');
 
 /**
  * Unit tests for the pattern-match question definition class.
  *
  * @copyright  2012 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @group      qtype_pmatch
+ * @group      qtype_patternessay
  */
-class qtype_pmatch_question_test extends basic_testcase {
+class qtype_patternessay_question_test extends basic_testcase {
     public function test_compare_string_with_wildcard() {
         // Test case sensitive literal matches.
-        $options = new pmatch_options();
-        $this->assertTrue(qtype_pmatch_question::compare_string_with_pmatch_expression('mop',
+        $options = new patternessay_options();
+        $this->assertTrue(qtype_patternessay_question::compare_string_with_patternessay_expression('mop',
                                                                     'match_c(m)', $options));
-        $this->assertTrue(qtype_pmatch_question::compare_string_with_pmatch_expression('bomb',
+        $this->assertTrue(qtype_patternessay_question::compare_string_with_patternessay_expression('bomb',
                                                                     'match_c(m)', $options));
-        $this->assertFalse(qtype_pmatch_question::compare_string_with_pmatch_expression('car',
+        $this->assertFalse(qtype_patternessay_question::compare_string_with_patternessay_expression('car',
                                                                     'match_c(m)', $options));
-        $this->assertTrue(qtype_pmatch_question::compare_string_with_pmatch_expression('car',
+        $this->assertTrue(qtype_patternessay_question::compare_string_with_patternessay_expression('car',
                                                                     'match_c(*)', $options));
-        $this->assertFalse(qtype_pmatch_question::compare_string_with_pmatch_expression('Car',
+        $this->assertFalse(qtype_patternessay_question::compare_string_with_patternessay_expression('Car',
                                                                     'match_c(c)', $options));
 
-        $options = new pmatch_options();
+        $options = new patternessay_options();
         $options->ignorecase = true;
-        $this->assertTrue(qtype_pmatch_question::compare_string_with_pmatch_expression('Mop',
+        $this->assertTrue(qtype_patternessay_question::compare_string_with_patternessay_expression('Mop',
                                                                     'match_c(m)', $options));
-        $this->assertTrue(qtype_pmatch_question::compare_string_with_pmatch_expression('bomb',
+        $this->assertTrue(qtype_patternessay_question::compare_string_with_patternessay_expression('bomb',
                                                                     'match_c(m)', $options));
-        $this->assertFalse(qtype_pmatch_question::compare_string_with_pmatch_expression('car',
+        $this->assertFalse(qtype_patternessay_question::compare_string_with_patternessay_expression('car',
                                                                     'match_c(m)', $options));
-        $this->assertTrue(qtype_pmatch_question::compare_string_with_pmatch_expression('car',
+        $this->assertTrue(qtype_patternessay_question::compare_string_with_patternessay_expression('car',
                                                                     'match_c(*)', $options));
-        $this->assertTrue(qtype_pmatch_question::compare_string_with_pmatch_expression('Car',
+        $this->assertTrue(qtype_patternessay_question::compare_string_with_patternessay_expression('Car',
                                                                     'match_c(c)', $options));
-        $this->assertTrue(qtype_pmatch_question::compare_string_with_pmatch_expression('car',
+        $this->assertTrue(qtype_patternessay_question::compare_string_with_patternessay_expression('car',
                                                                     'match_c(C)', $options));
     }
 
     public function test_is_complete_response() {
-        $question = qtype_pmatch_test_helper::make_a_pmatch_question();
+        $question = qtype_patternessay_test_helper::make_a_patternessay_question();
 
         $this->assertFalse($question->is_complete_response(array()));
         $this->assertFalse($question->is_complete_response(array('answer' => '')));
@@ -77,7 +77,7 @@ class qtype_pmatch_question_test extends basic_testcase {
         $this->assertTrue($question->is_complete_response(array('answer' => '0.0')));
         $this->assertTrue($question->is_complete_response(array('answer' => 'x')));
 
-        $question = qtype_pmatch_test_helper::make_a_pmatch_question($this);
+        $question = qtype_patternessay_test_helper::make_a_patternessay_question($this);
 
         $this->assertTrue($question->is_complete_response(array('answer' => 'The Queen is dead.')));
         $this->assertFalse($question->is_complete_response(
@@ -88,7 +88,7 @@ class qtype_pmatch_question_test extends basic_testcase {
     }
 
     public function test_is_gradable_response() {
-        $question = qtype_pmatch_test_helper::make_a_pmatch_question();
+        $question = qtype_patternessay_test_helper::make_a_patternessay_question();
 
         $this->assertFalse($question->is_gradable_response(array()));
         $this->assertFalse($question->is_gradable_response(array('answer' => '')));
@@ -96,14 +96,14 @@ class qtype_pmatch_question_test extends basic_testcase {
         $this->assertTrue($question->is_gradable_response(array('answer' => '0.0')));
         $this->assertTrue($question->is_gradable_response(array('answer' => 'x')));
 
-        $question = qtype_pmatch_test_helper::make_a_pmatch_question($this);
+        $question = qtype_patternessay_test_helper::make_a_patternessay_question($this);
 
         $this->assertTrue($question->is_gradable_response(array('answer' => 'The Queen is dead.')));
         $this->assertTrue($question->is_gradable_response(array('answer' => 'Long kive the Kin.')));
     }
 
     public function test_grading() {
-        $question = qtype_pmatch_test_helper::make_a_pmatch_question();
+        $question = qtype_patternessay_test_helper::make_a_patternessay_question();
 
         $this->assertEquals(array(0, question_state::$gradedwrong),
                 $question->grade_response(array('answer' => 'x')));
@@ -116,7 +116,7 @@ class qtype_pmatch_question_test extends basic_testcase {
     }
 
     public function test_get_correct_response() {
-        $question = qtype_pmatch_test_helper::make_a_pmatch_question();
+        $question = qtype_patternessay_test_helper::make_a_patternessay_question();
         $this->assertEquals(array('answer' => 'Tom'), $question->get_correct_response());
 
         $question->modelanswer = '';
@@ -127,19 +127,19 @@ class qtype_pmatch_question_test extends basic_testcase {
     }
 
     public function test_get_question_summary() {
-        $sa = qtype_pmatch_test_helper::make_a_pmatch_question();
+        $sa = qtype_patternessay_test_helper::make_a_patternessay_question();
         $qsummary = $sa->get_question_summary();
         $this->assertEquals('Who was Jane\'s companion : __________', $qsummary);
     }
 
     public function test_summarise_response() {
-        $sa = qtype_pmatch_test_helper::make_a_pmatch_question();
+        $sa = qtype_patternessay_test_helper::make_a_patternessay_question();
         $summary = $sa->summarise_response(array('answer' => 'dog'));
         $this->assertEquals('dog', $summary);
     }
 
     public function test_classify_response() {
-        $sa = qtype_pmatch_test_helper::make_a_pmatch_question();
+        $sa = qtype_patternessay_test_helper::make_a_patternessay_question();
         $sa->start_attempt(new question_attempt_step(), 1);
 
         $this->assertEquals(array(

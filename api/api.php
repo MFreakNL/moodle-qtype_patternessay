@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Ajax endpoint for pmatch.
+ * Ajax endpoint for patternessay.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2016 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -57,7 +57,7 @@ try {
     die();
 }
 
-if (!$question || !is_a($question->qtype, 'qtype_pmatch')) {
+if (!$question || !is_a($question->qtype, 'qtype_patternessay')) {
     $return = 'The question id is not a pattern match question.';
     header('Content-type: application/json');
     echo json_encode($return);

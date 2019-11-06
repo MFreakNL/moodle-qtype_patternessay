@@ -1,4 +1,4 @@
-@ou @ou_vle @qtype @qtype_pmatch
+@ou @ou_vle @qtype @qtype_patternessay
 Feature: List test responses for a pattern match question
   In order to manage test responses in the test this question feature
   As a teacher
@@ -19,7 +19,7 @@ Feature: List test responses for a pattern match question
       | Course       | C1        | Test questions |
     And the following "questions" exist:
       | questioncategory | qtype    | name         | template |
-      | Test questions   | pmatch   | My first pattern match question | listen    |
+      | Test questions   | patternessay   | My first pattern match question | listen    |
     And the default question test responses exist for question "My first pattern match question"
     And I log in as "teacher"
 
@@ -35,9 +35,9 @@ Feature: List test responses for a pattern match question
     And I should see "Computed mark greater than human mark: 0 (missed positive)"
     And I should see "Computed mark less than human mark: 0 (missed negative)"
     # Confirm the human mark
-    And I should see "1" in the "#qtype-pmatch-testquestion_r0_c4" "css_element"
+    And I should see "1" in the "#qtype-patternessay-testquestion_r0_c4" "css_element"
     # Confirm the response
-    Then I should see "testing one two three four" in the "#qtype-pmatch-testquestion_r0_c5" "css_element"
+    Then I should see "testing one two three four" in the "#qtype-patternessay-testquestion_r0_c5" "css_element"
 
   @javascript
   Scenario: Able to download the test responses for a pattern match question.

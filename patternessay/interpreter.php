@@ -16,51 +16,51 @@
 
 
 /**
- * This file contains code to interpret a pmatch expression.
+ * This file contains code to interpret a patternessay expression.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2011 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/question/type/pmatch/pmatch/matcher.php');
+require_once($CFG->dirroot . '/question/type/patternessay/patternessay/matcher.php');
 
-define('PMATCH_SPECIAL_CHARACTER', '[\(\)\\\\\|\?\*_\[\]]');
+define('patternessay_SPECIAL_CHARACTER', '[\(\)\\\\\|\?\*_\[\]]');
 // All characters in many Unicode classes, but not the special ones.
-define('PMATCH_CHARACTER', '(?:(?!' . PMATCH_SPECIAL_CHARACTER . ')[\pL\pM\pN\pP\pS])');
+define('patternessay_CHARACTER', '(?:(?!' . patternessay_SPECIAL_CHARACTER . ')[\pL\pM\pN\pP\pS])');
 
-define('PMATCH_LNUM', '[0-9]+');
-define('PMATCH_DNUM', PMATCH_LNUM.'[\.]'.PMATCH_LNUM);
-define('PMATCH_HTML_EXPONENT', '[*xX]10<(sup|SUP)>([+-]?'.PMATCH_LNUM.')</(sup|SUP)>');
-define('PMATCH_EXPONENT_DNUM', '(('.PMATCH_LNUM.'|'.PMATCH_DNUM.')'.
-                            '([eE][+-]?'.PMATCH_LNUM.'|'.PMATCH_HTML_EXPONENT.'))');
-define('PMATCH_NUMBER', '((([+|-])?'.PMATCH_EXPONENT_DNUM.')'.
-                            '|(([+|-])?'.PMATCH_DNUM.')'.
-                            '|(([+|-])?'.PMATCH_LNUM.'))');
+define('patternessay_LNUM', '[0-9]+');
+define('patternessay_DNUM', patternessay_LNUM.'[\.]'.patternessay_LNUM);
+define('patternessay_HTML_EXPONENT', '[*xX]10<(sup|SUP)>([+-]?'.patternessay_LNUM.')</(sup|SUP)>');
+define('patternessay_EXPONENT_DNUM', '(('.patternessay_LNUM.'|'.patternessay_DNUM.')'.
+                            '([eE][+-]?'.patternessay_LNUM.'|'.patternessay_HTML_EXPONENT.'))');
+define('patternessay_NUMBER', '((([+|-])?'.patternessay_EXPONENT_DNUM.')'.
+                            '|(([+|-])?'.patternessay_DNUM.')'.
+                            '|(([+|-])?'.patternessay_LNUM.'))');
 
-abstract class pmatch_interpreter_item {
+abstract class patternessay_interpreter_item {
     protected $interpretererrormessage;
     public $codefragment;
 
-    /** @var pmatch_options */
-    public $pmatchoptions;
+    /** @var patternessay_options */
+    public $patternessayoptions;
 
     protected $pattern;
 
     /**
-     * @param pmatch_options $pmatchoptions
+     * @param patternessay_options $patternessayoptions
      */
-    public function __construct($pmatchoptions = null) {
-        if (is_null($pmatchoptions)) {
-            $pmatchoptions = new pmatch_options();
+    public function __construct($patternessayoptions = null) {
+        if (is_null($patternessayoptions)) {
+            $patternessayoptions = new patternessay_options();
         }
-        $this->pmatchoptions = $pmatchoptions;
+        $this->patternessayoptions = $patternessayoptions;
     }
 
     /**
-     * @param string $string a pmatch expression as a string.
+     * @param string $string a patternessay expression as a string.
      * @param int $start where to start parsing.
      */
     public function interpret($string, $start = 0) {
@@ -75,14 +75,14 @@ abstract class pmatch_interpreter_item {
     }
 
     /**
-     * Convert the $string starting at $start into a tree of object representing parts of pmatch
+     * Convert the $string starting at $start into a tree of object representing parts of patternessay
      * code. This is the default method which is often overriden. It looks for $pattern which is a
      * regex with no modifying options.
      * @param string $string
      * @param integer $start
      */
     protected function interpret_contents($string, $start) {
-        // Regex pattern to match one character of pmatch code.
+        // Regex pattern to match one character of patternessay code.
         list($found, $endofpattern, $subpatterns) = $this->find_pattern(
                 $this->pattern, $string, $start);
         return array($found, $endofpattern);
@@ -120,19 +120,19 @@ abstract class pmatch_interpreter_item {
     }
     public function set_error_message($errormessage, $codefragment) {
         $this->interpretererrormessage =
-                                get_string('ie_'.$errormessage, 'qtype_pmatch', $codefragment);
+                                get_string('ie_'.$errormessage, 'qtype_patternessay', $codefragment);
     }
 
     /**
      * Get the matcher tree for this interpreter object. Can be used from an interpreter object at
      * any point in the tree.
      *
-     * @param pmatch_options $externaloptions
-     * @return pmatch_matcher_item a tree of child classes of pmatch_matcher_item
+     * @param patternessay_options $externaloptions
+     * @return patternessay_matcher_item a tree of child classes of patternessay_matcher_item
      */
     public function get_matcher($externaloptions) {
         $thistypename = $this->get_type_name_of_interpreter_object($this);
-        $matchclassname = 'pmatch_matcher_'.$thistypename;
+        $matchclassname = 'patternessay_matcher_'.$thistypename;
         return new $matchclassname($this, $externaloptions);
     }
     public function get_type_name_of_interpreter_object($object) {
@@ -148,7 +148,7 @@ abstract class pmatch_interpreter_item {
         return str_repeat('    ', $indentlevel);
     }
 }
-abstract class pmatch_interpreter_item_with_subcontents extends pmatch_interpreter_item {
+abstract class patternessay_interpreter_item_with_subcontents extends patternessay_interpreter_item {
 
 
     protected $subcontents = array();
@@ -204,7 +204,7 @@ abstract class pmatch_interpreter_item_with_subcontents extends pmatch_interpret
      * What was the last type of sub contents found in $foundsofar
      * @param array $foundsofar
      * @return string the type of sub contents last found
-     *                (prefix with 'pmatch_interpreter_' to get classname)
+     *                (prefix with 'patternessay_interpreter_' to get classname)
      */
     protected function last_subcontent_type_found($foundsofar) {
         if (!empty($foundsofar)) {
@@ -218,7 +218,7 @@ abstract class pmatch_interpreter_item_with_subcontents extends pmatch_interpret
      * In the branch of code matched so far what could be the next type.
      * @param array $foundsofar
      * @return array the types of sub contents that could come next
-     *                (prefix with 'pmatch_interpreter_' to get classname)
+     *                (prefix with 'patternessay_interpreter_' to get classname)
      */
     protected function next_possible_subcontent($foundsofar) {
         return array();
@@ -231,8 +231,8 @@ abstract class pmatch_interpreter_item_with_subcontents extends pmatch_interpret
      * @param integer $start
      */
     protected function interpret_subcontent_item($cancontaintype, $string, $start) {
-        $cancontainclassname = 'pmatch_interpreter_'.$cancontaintype;
-        $cancontain = new $cancontainclassname($this->pmatchoptions);
+        $cancontainclassname = 'patternessay_interpreter_'.$cancontaintype;
+        $cancontain = new $cancontainclassname($this->patternessayoptions);
         list($found, $aftercontent) = $cancontain->interpret($string, $start);
         if ($found) {
             return array($cancontain, true, $aftercontent);
@@ -280,8 +280,8 @@ abstract class pmatch_interpreter_item_with_subcontents extends pmatch_interpret
 }
 
 
-abstract class pmatch_interpreter_item_with_enclosed_subcontents
-                    extends pmatch_interpreter_item_with_subcontents {
+abstract class patternessay_interpreter_item_with_enclosed_subcontents
+                    extends patternessay_interpreter_item_with_subcontents {
 
 
     protected $openingpattern;
@@ -341,7 +341,7 @@ abstract class pmatch_interpreter_item_with_enclosed_subcontents
 }
 
 
-class pmatch_interpreter_whole_expression extends pmatch_interpreter_item_with_subcontents {
+class patternessay_interpreter_whole_expression extends patternessay_interpreter_item_with_subcontents {
     protected $limitsubcontents = 1;
 
     public function interpret($string, $start = 0) {
@@ -358,7 +358,7 @@ class pmatch_interpreter_whole_expression extends pmatch_interpreter_item_with_s
 }
 
 
-class pmatch_interpreter_not extends pmatch_interpreter_item_with_enclosed_subcontents {
+class patternessay_interpreter_not extends patternessay_interpreter_item_with_enclosed_subcontents {
     protected $openingpattern = '~\s*not\s*\(\s*~';
     protected $closingpattern = '~\s*\)\s*~';
     protected $missingclosingpatternerror = 'missingclosingbracket';
@@ -374,14 +374,14 @@ class pmatch_interpreter_not extends pmatch_interpreter_item_with_enclosed_subco
 }
 
 
-class pmatch_interpreter_match extends pmatch_interpreter_item_with_enclosed_subcontents {
+class patternessay_interpreter_match extends patternessay_interpreter_item_with_enclosed_subcontents {
     protected $openingpattern = '~match([_a-z0-4]*)\s*\(\s*~';
     protected $closingpattern = '~\s*\)\s*~';
     protected $missingclosingpatternerror = 'missingclosingbracket';
 }
 
 
-class pmatch_interpreter_match_any extends pmatch_interpreter_match {
+class patternessay_interpreter_match_any extends patternessay_interpreter_match {
     protected function interpret_subpattern_in_opening($options) {
         return ($options == '_any');
     }
@@ -396,7 +396,7 @@ class pmatch_interpreter_match_any extends pmatch_interpreter_match {
 }
 
 
-class pmatch_interpreter_match_all extends pmatch_interpreter_match {
+class patternessay_interpreter_match_all extends patternessay_interpreter_match {
     protected function interpret_subpattern_in_opening($options) {
         return ($options == '_all');
     }
@@ -411,7 +411,7 @@ class pmatch_interpreter_match_all extends pmatch_interpreter_match {
 }
 
 
-class pmatch_word_level_options {
+class patternessay_word_level_options {
     protected $allowextracharacters;
     protected $misspellingallowreplacechar;
     protected $misspellingallowtransposetwochars;
@@ -515,7 +515,7 @@ class pmatch_word_level_options {
 }
 
 
-class pmatch_phrase_level_options {
+class patternessay_phrase_level_options {
     protected $allowproximityof;
     protected $allowanywordorder;
     protected $allowextrawords;
@@ -570,18 +570,18 @@ class pmatch_phrase_level_options {
 }
 
 
-class pmatch_interpreter_match_options extends pmatch_interpreter_match {
+class patternessay_interpreter_match_options extends patternessay_interpreter_match {
 
-    /** @var pmatch_word_level_options */
+    /** @var patternessay_word_level_options */
     public $wordleveloptions;
 
-    /** @var pmatch_phrase_level_options */
+    /** @var patternessay_phrase_level_options */
     public $phraseleveloptions;
 
-    public function __construct($pmatchoptions) {
-        parent::__construct($pmatchoptions);
-        $this->wordleveloptions = new pmatch_word_level_options();
-        $this->phraseleveloptions = new pmatch_phrase_level_options();
+    public function __construct($patternessayoptions) {
+        parent::__construct($patternessayoptions);
+        $this->wordleveloptions = new patternessay_word_level_options();
+        $this->phraseleveloptions = new patternessay_phrase_level_options();
     }
 
     protected function interpret_subpattern_in_opening($options) {
@@ -709,10 +709,10 @@ class pmatch_interpreter_match_options extends pmatch_interpreter_match {
     protected function interpret_subcontents($string, $start, $branchfoundsofar = array()) {
         list($found, $end) = parent::interpret_subcontents($string, $start, $branchfoundsofar);
         if (!count($branchfoundsofar)) {
-            if ($found && !empty($this->pmatchoptions->wordstoreplace)) {
+            if ($found && !empty($this->patternessayoptions->wordstoreplace)) {
                 $subcontentsstr = core_text::substr($string, $start, $end - $start);
-                $subcontentsstrwithsyn = preg_replace($this->pmatchoptions->wordstoreplace,
-                        $this->pmatchoptions->synonymtoreplacewith, $subcontentsstr);
+                $subcontentsstrwithsyn = preg_replace($this->patternessayoptions->wordstoreplace,
+                        $this->patternessayoptions->synonymtoreplacewith, $subcontentsstr);
                 if ($subcontentsstrwithsyn != $subcontentsstr) {
                     list($found, ) =
                         parent::interpret_subcontents($subcontentsstrwithsyn, 0, $branchfoundsofar);
@@ -724,7 +724,7 @@ class pmatch_interpreter_match_options extends pmatch_interpreter_match {
 }
 
 
-class pmatch_interpreter_or_list extends pmatch_interpreter_item_with_subcontents {
+class patternessay_interpreter_or_list extends patternessay_interpreter_item_with_subcontents {
     protected function next_possible_subcontent($foundsofar) {
         switch ($this->last_subcontent_type_found($foundsofar)) {
             case '':
@@ -744,7 +744,7 @@ class pmatch_interpreter_or_list extends pmatch_interpreter_item_with_subcontent
  * This is the same as an or_list but with no or_list_phrases.
  *
  */
-class pmatch_interpreter_synonym extends pmatch_interpreter_item_with_subcontents {
+class patternessay_interpreter_synonym extends patternessay_interpreter_item_with_subcontents {
     protected function next_possible_subcontent($foundsofar) {
         switch ($this->last_subcontent_type_found($foundsofar)) {
             case '':
@@ -758,12 +758,12 @@ class pmatch_interpreter_synonym extends pmatch_interpreter_item_with_subcontent
 }
 
 
-class pmatch_interpreter_or_character extends pmatch_interpreter_item {
+class patternessay_interpreter_or_character extends patternessay_interpreter_item {
     protected $pattern = '~\|~';
 }
 
 
-class pmatch_interpreter_or_list_phrase extends pmatch_interpreter_item_with_enclosed_subcontents {
+class patternessay_interpreter_or_list_phrase extends patternessay_interpreter_item_with_enclosed_subcontents {
 
     protected $openingpattern = '~\[~';
     protected $closingpattern = '~\]~';
@@ -785,7 +785,7 @@ class pmatch_interpreter_or_list_phrase extends pmatch_interpreter_item_with_enc
 }
 
 
-class pmatch_interpreter_phrase extends pmatch_interpreter_item_with_subcontents {
+class patternessay_interpreter_phrase extends patternessay_interpreter_item_with_subcontents {
     protected function next_possible_subcontent($foundsofar) {
         switch ($this->last_subcontent_type_found($foundsofar)) {
             case '':
@@ -799,17 +799,17 @@ class pmatch_interpreter_phrase extends pmatch_interpreter_item_with_subcontents
 }
 
 
-class pmatch_interpreter_word_delimiter_space extends pmatch_interpreter_item {
+class patternessay_interpreter_word_delimiter_space extends patternessay_interpreter_item {
     protected $pattern = '~\s+~';
 }
 
 
-class pmatch_interpreter_word_delimiter_proximity extends pmatch_interpreter_item {
+class patternessay_interpreter_word_delimiter_proximity extends patternessay_interpreter_item {
     protected $pattern = '~\_~';
 }
 
 
-class pmatch_interpreter_word extends pmatch_interpreter_item_with_subcontents {
+class patternessay_interpreter_word extends patternessay_interpreter_item_with_subcontents {
     protected function next_possible_subcontent($foundsofar) {
         return array('character_in_word', 'special_character_in_word',
                      'wildcard_match_multiple', 'wildcard_match_single');
@@ -817,35 +817,35 @@ class pmatch_interpreter_word extends pmatch_interpreter_item_with_subcontents {
 }
 
 
-class pmatch_interpreter_number extends pmatch_interpreter_item {
-    public function __construct($pmatchoptions) {
-        parent::__construct($pmatchoptions);
-        $this->pattern = '~'.PMATCH_NUMBER.'~';
+class patternessay_interpreter_number extends patternessay_interpreter_item {
+    public function __construct($patternessayoptions) {
+        parent::__construct($patternessayoptions);
+        $this->pattern = '~'.patternessay_NUMBER.'~';
     }
 }
 
 
-class pmatch_interpreter_character_in_word extends pmatch_interpreter_item {
-    public function __construct($pmatchoptions) {
-        parent::__construct($pmatchoptions);
-        $this->pattern = '~'.PMATCH_CHARACTER.'~';
+class patternessay_interpreter_character_in_word extends patternessay_interpreter_item {
+    public function __construct($patternessayoptions) {
+        parent::__construct($patternessayoptions);
+        $this->pattern = '~'.patternessay_CHARACTER.'~';
     }
 }
 
 
-class pmatch_interpreter_special_character_in_word extends pmatch_interpreter_item {
-    public function __construct($pmatchoptions) {
-        parent::__construct($pmatchoptions);
-        $this->pattern = '~\\\\'.PMATCH_SPECIAL_CHARACTER.'~';
+class patternessay_interpreter_special_character_in_word extends patternessay_interpreter_item {
+    public function __construct($patternessayoptions) {
+        parent::__construct($patternessayoptions);
+        $this->pattern = '~\\\\'.patternessay_SPECIAL_CHARACTER.'~';
     }
 }
 
 
-class pmatch_interpreter_wildcard_match_single extends pmatch_interpreter_item {
+class patternessay_interpreter_wildcard_match_single extends patternessay_interpreter_item {
     protected $pattern = '~\?~';
 }
 
 
-class pmatch_interpreter_wildcard_match_multiple extends pmatch_interpreter_item {
+class patternessay_interpreter_wildcard_match_multiple extends patternessay_interpreter_item {
     protected $pattern = '~\*~';
 }

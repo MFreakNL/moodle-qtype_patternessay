@@ -22,11 +22,11 @@ require_once($CFG->libdir . '/questionlib.php');
 /**
  * Pattern-match question type upgrade code.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2018 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch_external extends external_api {
+class qtype_patternessay_external extends external_api {
 
     /**
      * Describes the parameters for check_response webservice.
@@ -65,10 +65,10 @@ class qtype_pmatch_external extends external_api {
         $params = self::validate_parameters(self::check_response_parameters(), [
                 'questionid' => $questionid,
                 'response' => $response]);
-        $duplicated = \qtype_pmatch\testquestion_responses::check_duplicate_response($params['questionid'], $params['response']);
+        $duplicated = \qtype_patternessay\testquestion_responses::check_duplicate_response($params['questionid'], $params['response']);
         if ($duplicated) {
             $result['status'] = 'error';
-            $result['message'] = get_string('testquestionformduplicateresponse', 'qtype_pmatch');
+            $result['message'] = get_string('testquestionformduplicateresponse', 'qtype_patternessay');
         }
         return $result;
     }
@@ -111,8 +111,8 @@ class qtype_pmatch_external extends external_api {
      * Create pattern match test response
      *
      * @param int $questionid The question id
-     * @param int $expectedfraction The expectedfraction for qtype_pmatch_test_responses table
-     * @param string $response The response for qtype_pmatch_test_responses table
+     * @param int $expectedfraction The expectedfraction for qtype_patternessay_test_responses table
+     * @param string $response The response for qtype_patternessay_test_responses table
      * @param int $curentrow The index of curent row editing.
      *
      * @return array The status and data after created the response. If not success return the error message.
@@ -132,13 +132,13 @@ class qtype_pmatch_external extends external_api {
             $response->expectedfraction = $params['expectedfraction'];
             $response->response = $params['response'];
             $response->questionid = $params['questionid'];
-            $duplicated = \qtype_pmatch\testquestion_responses::check_duplicate_response($params['questionid'],
+            $duplicated = \qtype_patternessay\testquestion_responses::check_duplicate_response($params['questionid'],
                     $params['response']);
 
             if (!$duplicated) {
-                $rid = $DB->insert_record('qtype_pmatch_test_responses', $response);
+                $rid = $DB->insert_record('qtype_patternessay_test_responses', $response);
             } else {
-                throw new Exception(get_string('testquestionformduplicateresponse', 'qtype_pmatch'));
+                throw new Exception(get_string('testquestionformduplicateresponse', 'qtype_patternessay'));
             }
         } catch (Exception $e) {
             $result['message'] = $e->getMessage();
@@ -164,18 +164,18 @@ class qtype_pmatch_external extends external_api {
         // Now update the computed mark (though this will never change), as it allows us
         // to get the correct row class. It also means that if you change the human mark
         // of a response that has not been computer marked yet, the computed mark will be inserted.
-        $responses = \qtype_pmatch\testquestion_responses::get_responses_by_ids([$rid]);
+        $responses = \qtype_patternessay\testquestion_responses::get_responses_by_ids([$rid]);
         $response = $responses[$rid];
-        \qtype_pmatch\testquestion_responses::grade_response($response, $question);
-        \qtype_pmatch\testquestion_responses::save_rule_matches($question, [$rid]);
+        \qtype_patternessay\testquestion_responses::grade_response($response, $question);
+        \qtype_patternessay\testquestion_responses::save_rule_matches($question, [$rid]);
         // We need the table to get a row response.
-        $options = new \qtype_pmatch\testquestion_options($question);
-        $testresponsesobj = \qtype_pmatch\testquestion_responses::create_for_question($question);
-        $table = new \qtype_pmatch\testquestion_table($question, $testresponsesobj, $options);
+        $options = new \qtype_patternessay\testquestion_options($question);
+        $testresponsesobj = \qtype_patternessay\testquestion_responses::create_for_question($question);
+        $table = new \qtype_patternessay\testquestion_table($question, $testresponsesobj, $options);
         // Counts could be returned as the lang string 'testquestionresultssummary', and that
         // would mean any changes in the string would not need to be replicated in updater.js, creator.js,
         // but it was felt that just passing an object of integers is better.
-        $result['counts'] = \qtype_pmatch\testquestion_responses::get_question_grade_summary_counts($question);
+        $result['counts'] = \qtype_patternessay\testquestion_responses::get_question_grade_summary_counts($question);
         $result['html'] = $table->get_row_html_for_response_table($response, $curentrow);
         $result['status'] = 'success';
 

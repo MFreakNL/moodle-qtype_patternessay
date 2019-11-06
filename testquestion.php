@@ -30,33 +30,33 @@
  * The table of responses can be sorted, paged, and manipulated with the options in the top
  * section of the page.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2016 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 define('NO_OUTPUT_BUFFERING', true);
 
-// Login is checked in qtype_pmatch_setup_question_test_page but CodeChecker can't see that.
+// Login is checked in qtype_patternessay_setup_question_test_page but CodeChecker can't see that.
 // @codingStandardsIgnoreLine
 require_once(__DIR__ . '/../../../config.php');
 require_once($CFG->libdir . '/questionlib.php');
-require_once($CFG->dirroot . '/question/type/pmatch/lib.php');
-require_once($CFG->dirroot . '/question/type/pmatch/classes/output/testquestion_renderer.php');
+require_once($CFG->dirroot . '/question/type/patternessay/lib.php');
+require_once($CFG->dirroot . '/question/type/patternessay/classes/output/testquestion_renderer.php');
 
 $questionid = required_param('id', PARAM_INT);
 $download = optional_param('download', '', PARAM_RAW);
 $questiondata = $DB->get_record('question', array('id' => $questionid), '*', MUST_EXIST);
-if ($questiondata->qtype != 'pmatch') {
+if ($questiondata->qtype != 'patternessay') {
     throw new coding_exception('That is not a pattern-match question.');
 }
 $question = question_bank::load_question($questionid);
 
 // Process any other URL parameters, and do require_login.
-list($context, $urlparams) = qtype_pmatch_setup_question_test_page($question);
+list($context, $urlparams) = qtype_patternessay_setup_question_test_page($question);
 
-$url = new moodle_url('/question/type/pmatch/testquestion.php', array('id' => $questionid));
+$url = new moodle_url('/question/type/patternessay/testquestion.php', array('id' => $questionid));
 $PAGE->set_pagelayout('popup');
-$PAGE->set_url('/question/type/pmatch/testquestion.php', array('id' => $questionid));
+$PAGE->set_url('/question/type/patternessay/testquestion.php', array('id' => $questionid));
 
 // Check permissions after initialising $PAGE so messages (not exceptions) can be rendered.
 $canview = question_has_capability_on($questiondata, 'view');
@@ -73,11 +73,11 @@ try {
     }
 }
 
-$PAGE->set_title(get_string('testquestionformtitle', 'qtype_pmatch'));
-$PAGE->set_heading(get_string('testquestionformtitle', 'qtype_pmatch'));
+$PAGE->set_title(get_string('testquestionformtitle', 'qtype_patternessay'));
+$PAGE->set_heading(get_string('testquestionformtitle', 'qtype_patternessay'));
 
-$output = $PAGE->get_renderer('qtype_pmatch', 'testquestion');
-$controller = new \qtype_pmatch\testquestion_controller($question, $context);
+$output = $PAGE->get_renderer('qtype_patternessay', 'testquestion');
+$controller = new \qtype_patternessay\testquestion_controller($question, $context);
 
 if ($download) {
     $controller->download_data($download, format_string($questiondata->name));
@@ -85,8 +85,8 @@ if ($download) {
 }
 
 echo $output->header();
-echo $output->heading(get_string('testquestionformtitle', 'qtype_pmatch') . ': ' .
-        get_string('testquestionheader', 'qtype_pmatch', format_string($questiondata->name)));
+echo $output->heading(get_string('testquestionformtitle', 'qtype_patternessay') . ': ' .
+        get_string('testquestionheader', 'qtype_patternessay', format_string($questiondata->name)));
 
 echo $output->get_display_options_form($controller);
 

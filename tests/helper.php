@@ -15,49 +15,49 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Contains the helper class for the pmatch question type tests.
+ * Contains the helper class for the patternessay question type tests.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2013 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use qtype_pmatch\local\spell\qtype_pmatch_null_spell_checker;
-use qtype_pmatch\local\spell\qtype_pmatch_spell_checker;
+use qtype_patternessay\local\spell\qtype_patternessay_null_spell_checker;
+use qtype_patternessay\local\spell\qtype_patternessay_spell_checker;
 
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Question maker for unit tests for the pmatch question definition class.
+ * Question maker for unit tests for the patternessay question definition class.
  *
  * @copyright 2013 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch_test_helper extends question_test_helper {
+class qtype_patternessay_test_helper extends question_test_helper {
 
     public function get_test_questions() {
         return ['listen', 'test0', 'frogtoad', 'test1'];
     }
 
     /**
-     * Makes a pmatch question with correct answer 'Tom' or 'Harry', partially
+     * Makes a patternessay question with correct answer 'Tom' or 'Harry', partially
      * correct answer 'Dick' and defaultmark 1.
      *
      * @param bool|PHPUnit\Framework\TestCase $applydictionarycheck false not to check.
      *      basic_testcase ($this in the test code) to check.
-     * @return qtype_pmatch_question
+     * @return qtype_patternessay_question
      */
-    public static function make_a_pmatch_question($applydictionarycheck = false) {
+    public static function make_a_patternessay_question($applydictionarycheck = false) {
         if ($applydictionarycheck) {
             self::skip_test_if_no_spellcheck($applydictionarycheck, 'en');
         }
-        question_bank::load_question_definition_classes('pmatch');
-        $pm = new qtype_pmatch_question();
+        question_bank::load_question_definition_classes('patternessay');
+        $pm = new qtype_patternessay_question();
         test_question_maker::initialise_a_question($pm);
         $pm->name = 'Short answer question';
         $pm->questiontext = 'Who was Jane\'s companion : __________';
         $pm->generalfeedback = 'Generalfeedback: Tom, Dick or Harry are all possible answers.';
-        $pm->pmatchoptions = new pmatch_options();
+        $pm->patternessayoptions = new patternessay_options();
         $pm->modelanswer = 'Tom';
         $pm->answers = array(
             13 => new question_answer(13, 'match_w(Tom|Harry)', 1.0,
@@ -67,13 +67,13 @@ class qtype_pmatch_test_helper extends question_test_helper {
             15 => new question_answer(15,
                                       'match_w(Felicity)', 0.0, 'No, no, no! That is a bad answer.', FORMAT_HTML),
         );
-        $pm->qtype = question_bank::get_qtype('pmatch');
+        $pm->qtype = question_bank::get_qtype('patternessay');
         $pm->applydictionarycheck = $applydictionarycheck ? 'en_GB' :
-                qtype_pmatch_spell_checker::DO_NOT_CHECK_OPTION;
+                qtype_patternessay_spell_checker::DO_NOT_CHECK_OPTION;
         if ($pm->applydictionarycheck) {
             // These tests are in English,
             // no matter what the current language of the user running the tests.
-            $pm->pmatchoptions->lang = 'en';
+            $pm->patternessayoptions->lang = 'en';
         }
         return $pm;
     }
@@ -81,7 +81,7 @@ class qtype_pmatch_test_helper extends question_test_helper {
     /**
      * @return stdClass data to create a pattern match question.
      */
-    public function get_pmatch_question_form_data_listen() {
+    public function get_patternessay_question_form_data_listen() {
         global $CFG, $USER;
 
         $fromform = new stdClass();
@@ -133,7 +133,7 @@ class qtype_pmatch_test_helper extends question_test_helper {
     /**
      * @return stdClass data to create a pattern match question.
      */
-    public function get_pmatch_question_form_data_frogtoad() {
+    public function get_patternessay_question_form_data_frogtoad() {
         global $CFG, $USER;
 
         $fromform = new stdClass();
@@ -189,12 +189,12 @@ class qtype_pmatch_test_helper extends question_test_helper {
      *
      * @return stdClass the question data.
      */
-    public static function get_pmatch_question_data_test0() {
-        question_bank::load_question_definition_classes('pmatch');
+    public static function get_patternessay_question_data_test0() {
+        question_bank::load_question_definition_classes('patternessay');
         $qdata = new stdClass();
         test_question_maker::initialise_question_data($qdata);
         $qdata->id = 1;
-        $qdata->qtype = 'pmatch';
+        $qdata->qtype = 'patternessay';
         $qdata->name = 'test-0';
         $qdata->questiontext = 'Listen, translate and write';
         $qdata->generalfeedback = '';
@@ -238,8 +238,8 @@ class qtype_pmatch_test_helper extends question_test_helper {
      * @param string $lang the language required.
      */
     public static function skip_test_if_no_spellcheck(PHPUnit\Framework\TestCase $testcase, string $lang) {
-        $spellchecker = qtype_pmatch_spell_checker::make($lang);
-        if ($spellchecker instanceof qtype_pmatch_null_spell_checker) {
+        $spellchecker = qtype_patternessay_spell_checker::make($lang);
+        if ($spellchecker instanceof qtype_patternessay_null_spell_checker) {
             $testcase->markTestSkipped(
                     'Spell-checking not installed on your server. Skipping test.');
         }

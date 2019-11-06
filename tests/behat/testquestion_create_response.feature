@@ -1,4 +1,4 @@
-@ou @ou_vle @qtype @qtype_pmatch
+@ou @ou_vle @qtype @qtype_patternessay
 Feature: Create new a response for a pattern match question
 
   Background:
@@ -16,7 +16,7 @@ Feature: Create new a response for a pattern match question
       | Course       | C1        | Test questions |
     And the following "questions" exist:
       | questioncategory | qtype    | name         | template |
-      | Test questions   | pmatch   | My first pattern match question | listen    |
+      | Test questions   | patternessay   | My first pattern match question | listen    |
     And the default question test responses exist for question "My first pattern match question"
 
   @javascript
@@ -24,7 +24,7 @@ Feature: Create new a response for a pattern match question
     Given I log in as "teacher"
     And I am on the pattern match test responses page for question "My first pattern match question"
     # Check responses are listed correctly
-    And I should see "testing one two three four" in the "#qtype-pmatch-testquestion_r0_c5" "css_element"
+    And I should see "testing one two three four" in the "#qtype-patternessay-testquestion_r0_c5" "css_element"
     When I click on "Add new response" "button"
     Then the "Save" "button" should be disabled
     And the "Add new response" "button" should be disabled
@@ -37,7 +37,7 @@ Feature: Create new a response for a pattern match question
     And I should see "Marked correctly: 0 (0%)"
     And I should see "Computed mark greater than human mark: 0 (missed positive)"
     And I should see "Computed mark less than human mark: 1 (missed negative)"
-    And I should see "New test response" in the "#qtype-pmatch-testquestion_r50_c5" "css_element"
+    And I should see "New test response" in the "#qtype-patternessay-testquestion_r50_c5" "css_element"
     # Check duplicate response.
     When I click on "Add new response" "button"
     And I set the field "new-response" to "New test response"
@@ -54,5 +54,5 @@ Feature: Create new a response for a pattern match question
     And I press key "13" in the field "Correct"
     And I set the field "new-response" to "New test response 1"
     And I press key "13" in the field "new-response"
-    Then I should see "New test response 1" in the "#qtype-pmatch-testquestion_r51_c5" "css_element"
-    And I should see "1" in the "#qtype-pmatch-testquestion_r51_c4" "css_element"
+    Then I should see "New test response 1" in the "#qtype-patternessay-testquestion_r51_c5" "css_element"
+    And I should see "1" in the "#qtype-patternessay-testquestion_r51_c4" "css_element"

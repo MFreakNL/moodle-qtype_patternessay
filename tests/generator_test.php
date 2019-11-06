@@ -17,7 +17,7 @@
 /**
  * Pattern match question type data generator tests
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright  2015 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -31,16 +31,16 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2015 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch_testquestion_generator_testcase extends advanced_testcase {
+class qtype_patternessay_testquestion_generator_testcase extends advanced_testcase {
     public function test_create() {
         global $DB;
 
         $this->resetAfterTest();
-        $generator = $this->getDataGenerator()->get_plugin_generator('qtype_pmatch');
+        $generator = $this->getDataGenerator()->get_plugin_generator('qtype_patternessay');
 
-        $count = $DB->count_records('qtype_pmatch_test_responses');
+        $count = $DB->count_records('qtype_patternessay_test_responses');
         $response = $generator->create_test_response();
-        $this->assertEquals($count + 1, $DB->count_records('qtype_pmatch_test_responses'));
+        $this->assertEquals($count + 1, $DB->count_records('qtype_patternessay_test_responses'));
         $this->assertTrue(is_null($response->expectedfraction),
                 'Generator should create a default response with a null entry for expectedfraction');
         $this->assertTrue(is_null($response->gradedfraction),
@@ -58,7 +58,7 @@ class qtype_pmatch_testquestion_generator_testcase extends advanced_testcase {
             $generator->create_test_response();
         }
 
-        $this->assertEquals($count + 12, $DB->count_records('qtype_pmatch_test_responses'));
+        $this->assertEquals($count + 12, $DB->count_records('qtype_patternessay_test_responses'));
 
     }
 }

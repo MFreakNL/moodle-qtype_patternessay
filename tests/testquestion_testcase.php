@@ -18,7 +18,7 @@
 /**
  * Library for the testquestion test suite.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2016 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,8 +27,8 @@ defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 require_once($CFG->dirroot . '/question/engine/tests/helpers.php');
-require_once($CFG->dirroot . '/question/type/pmatch/tests/helper.php');
-require_once($CFG->dirroot . '/question/type/pmatch/pmatchlib.php');
+require_once($CFG->dirroot . '/question/type/patternessay/tests/helper.php');
+require_once($CFG->dirroot . '/question/type/patternessay/patternessaylib.php');
 
 
 /**
@@ -36,9 +36,9 @@ require_once($CFG->dirroot . '/question/type/pmatch/pmatchlib.php');
  *
  * @copyright 2016 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @group     qtype_pmatch
+ * @group     qtype_patternessay
  */
-class qtype_pmatch_testquestion_testcase extends question_testcase {
+class qtype_patternessay_testquestion_testcase extends question_testcase {
 
     /**
      * File path to default responses csv file.
@@ -72,7 +72,7 @@ class qtype_pmatch_testquestion_testcase extends question_testcase {
 
     /**
      * Load a csv file into an array of response objects reporting feedback.
-     * @param qtype_pmatch_question $question (optional) question to associate responses with.
+     * @param qtype_patternessay_question $question (optional) question to associate responses with.
      * @return array $responses, $problems
      */
     protected function load_responses($question = null, $pathtoresponses = null, $count=0) {
@@ -81,15 +81,15 @@ class qtype_pmatch_testquestion_testcase extends question_testcase {
         if (!$question) {
             $question = $this->create_default_question();
         }
-        return \qtype_pmatch\testquestion_responses::load_responses_from_file($responsesfile, $question, $count);
+        return \qtype_patternessay\testquestion_responses::load_responses_from_file($responsesfile, $question, $count);
     }
 
     /**
-     * Create a default pmatch question object
-     * @return qtype_pmatch_question
+     * Create a default patternessay question object
+     * @return qtype_patternessay_question
      */
     protected function create_default_question() {
-        $question = qtype_pmatch_test_helper::make_a_pmatch_question();
+        $question = qtype_patternessay_test_helper::make_a_patternessay_question();
         $question->id = 1;
         return $question;
     }
@@ -102,7 +102,7 @@ class qtype_pmatch_testquestion_testcase extends question_testcase {
      * give you the first item you might expect from the list of responses you provide.
      * @param $pathtoresponses = string file path to the required responses
      * @param $count int Number of responses to load. 0 = load all responses in file
-     * @return array \qtype_pmatch\test_response responses for the question
+     * @return array \qtype_patternessay\test_response responses for the question
      */
     protected function load_default_responses($pathtoresponses = null, $count=0) {
         global $DB;
@@ -111,9 +111,9 @@ class qtype_pmatch_testquestion_testcase extends question_testcase {
         list($responses, $problems) = $this->load_responses($this->currentquestion, $pathtoresponses, $count);
 
         // Add responses to the db.
-        \qtype_pmatch\testquestion_responses::add_responses($responses);
-        $dbresponses = $DB->get_records('qtype_pmatch_test_responses');
-        return \qtype_pmatch\testquestion_responses::data_to_responses($dbresponses);
+        \qtype_patternessay\testquestion_responses::add_responses($responses);
+        $dbresponses = $DB->get_records('qtype_patternessay_test_responses');
+        return \qtype_patternessay\testquestion_responses::data_to_responses($dbresponses);
     }
 
     /**
@@ -144,7 +144,7 @@ class qtype_pmatch_testquestion_testcase extends question_testcase {
 
     /**
      * Update the computer grade for each response using the grades in the given graded response file.
-     * @param $responses array \qtype_pmatch\test_response responses
+     * @param $responses array \qtype_patternessay\test_response responses
      * @param $pathtoresponses = string file path to the required responses
      * @return void
      */
@@ -163,7 +163,7 @@ class qtype_pmatch_testquestion_testcase extends question_testcase {
                 continue;
             }
 
-            \qtype_pmatch\testquestion_responses::update_response($response);
+            \qtype_patternessay\testquestion_responses::update_response($response);
         }
     }
 
@@ -219,7 +219,7 @@ class qtype_pmatch_testquestion_testcase extends question_testcase {
 
     protected function get_rule_matches($responses, $rules) {
         // Determine which rules match which response given the responses.
-        $rulematches = \qtype_pmatch\testquestion_responses::get_rule_matches_from_responses($responses);
+        $rulematches = \qtype_patternessay\testquestion_responses::get_rule_matches_from_responses($responses);
 
         // Translate the rule and response ids into responses and rules to test.
         $responseandrulematches = $this->get_rule_matches_as_responses_and_rules($rulematches, $rules, $responses);

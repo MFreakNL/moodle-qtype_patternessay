@@ -17,20 +17,20 @@
 /**
  * Pattern-match question type installation code.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2013 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-use qtype_pmatch\local\spell\qtype_pmatch_spell_checker;
+use qtype_patternessay\local\spell\qtype_patternessay_spell_checker;
 
-function xmldb_qtype_pmatch_install() {
+function xmldb_qtype_patternessay_install() {
     global $CFG;
 
-    $backends = qtype_pmatch_spell_checker::get_installed_backends();
+    $backends = qtype_patternessay_spell_checker::get_installed_backends();
     end($backends);
-    set_config('spellchecker', key($backends), 'qtype_pmatch');
-    set_config('spellcheck_languages', 'en', 'qtype_pmatch');
+    set_config('spellchecker', key($backends), 'qtype_patternessay');
+    set_config('spellcheck_languages', 'en', 'qtype_patternessay');
 }

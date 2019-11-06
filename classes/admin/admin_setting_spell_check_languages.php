@@ -18,14 +18,14 @@
 /**
  * Admin settings class for generate spell-checker dictionaries checkbox.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace qtype_pmatch\admin;
+namespace qtype_patternessay\admin;
 
-use qtype_pmatch\local\spell\qtype_pmatch_spell_checker;
+use qtype_patternessay\local\spell\qtype_patternessay_spell_checker;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -34,12 +34,12 @@ require_once($CFG->libdir . '/adminlib.php');
 /**
  * Admin settings class for generate spell-checker dictionaries checkbox.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2019 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-class qtype_pmatch_admin_setting_spell_check_languages extends \admin_setting_configmulticheckbox {
+class qtype_patternessay_admin_setting_spell_check_languages extends \admin_setting_configmulticheckbox {
 
     /**
      * This function may be used in ancestors for lazy loading of choices
@@ -55,17 +55,17 @@ class qtype_pmatch_admin_setting_spell_check_languages extends \admin_setting_co
         }
 
         $this->choices = [];
-        $availablelangs = qtype_pmatch_spell_checker::get_available_languages();
+        $availablelangs = qtype_patternessay_spell_checker::get_available_languages();
         foreach ($availablelangs as $availablelang) {
             $language = new \stdClass();
-            $language->name = qtype_pmatch_spell_checker::get_display_name_for_language_code($availablelang);
+            $language->name = qtype_patternessay_spell_checker::get_display_name_for_language_code($availablelang);
             $language->code = $availablelang;
-            $this->choices[$availablelang] = get_string('apply_spellchecker_select', 'qtype_pmatch', $language);
+            $this->choices[$availablelang] = get_string('apply_spellchecker_select', 'qtype_patternessay', $language);
         }
         ksort($this->choices);
 
         if (empty($this->choices)) {
-            $this->choices[''] = get_string('nolanguagesfound', 'qtype_pmatch');
+            $this->choices[''] = get_string('nolanguagesfound', 'qtype_patternessay');
         }
 
         return true;

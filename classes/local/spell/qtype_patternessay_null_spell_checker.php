@@ -17,12 +17,12 @@
 /**
  * Null spell checker class.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2019 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace qtype_pmatch\local\spell;
+namespace qtype_patternessay\local\spell;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -30,14 +30,14 @@ defined('MOODLE_INTERNAL') || die();
  * Implements the {@core_spell_checker} by saying that that any string is a
  * correctly spelled word. This can be used when there is no back-end installed.
  */
-class qtype_pmatch_null_spell_checker extends qtype_pmatch_spell_checker {
+class qtype_patternessay_null_spell_checker extends qtype_patternessay_spell_checker {
 
     public function is_in_dictionary($word) {
         return true;
     }
 
     public static function get_name() {
-        return get_string('spellcheckernull', 'qtype_pmatch');
+        return get_string('spellcheckernull', 'qtype_patternessay');
     }
 
     public static function is_available() {
