@@ -35,7 +35,7 @@
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="qtype_patternessay_test_responses" COMMENT="marked test responses for patternessay questions.">
+    <TABLE NAME="qtype_patternessay_responses" COMMENT="marked test responses for patternessay questions.">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="points to the question that these relate to"/>
@@ -48,16 +48,16 @@
         <KEY NAME="questionid" TYPE="foreign" FIELDS="questionid" REFTABLE="question" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
-    <TABLE NAME="qtype_patternessay_rule_matches" COMMENT="Store id of each answer/rule that matches a test response">
+    <TABLE NAME="qtype_patternessay_r_matches" COMMENT="Store id of each answer/rule that matches a test response">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="answerid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ponits to id of the question_answers table"/>
-        <FIELD NAME="testresponseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ponits to id of the qtype_patternessay_test_responses table"/>
+        <FIELD NAME="testresponseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="ponits to id of the qtype_patternessay_responses table"/>
         <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0" SEQUENCE="false" COMMENT="ID of the linked question"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="testresponseid" TYPE="foreign" FIELDS="testresponseid" REFTABLE="qtype_patternessay_test_responses" REFFIELDS="id"/>
+        <KEY NAME="testresponseid" TYPE="foreign" FIELDS="testresponseid" REFTABLE="qtype_patternessay_responses" REFFIELDS="id"/>
         <KEY NAME="answerid" TYPE="foreign" FIELDS="answerid" REFTABLE="question_answers" REFFIELDS="id"/>
         <KEY NAME="questionid" TYPE="foreign" FIELDS="questionid" REFTABLE="question" REFFIELDS="id"/>
       </KEYS>

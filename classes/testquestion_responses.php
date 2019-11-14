@@ -87,7 +87,7 @@ class testquestion_responses {
      */
     public static function get_responses_by_questionid($questionid) {
         global $DB;
-        $responses = $DB->get_records('qtype_patternessay_test_responses', array('questionid' => $questionid), 'id ASC');
+        $responses = $DB->get_records('qtype_patternessay_responses', array('questionid' => $questionid), 'id ASC');
         return self::data_to_responses($responses);
     }
 
@@ -98,7 +98,7 @@ class testquestion_responses {
      */
     public static function get_graded_responses_by_questionid($questionid) {
         global $DB;
-        $sqlgraded = "SELECT * FROM {qtype_patternessay_test_responses} WHERE questionid = ? " .
+        $sqlgraded = "SELECT * FROM {qtype_patternessay_responses} WHERE questionid = ? " .
                 self::SQLGRADED . " ORDER BY id ASC";
         $responses = $DB->get_records_sql($sqlgraded, array('questionid' => $questionid));
         return self::data_to_responses($responses);
@@ -111,7 +111,7 @@ class testquestion_responses {
      */
     public static function get_responses_by_ids($responseids) {
         global $DB;
-        $responses = $DB->get_records_list('qtype_patternessay_test_responses', 'id', $responseids, 'id ASC');
+        $responses = $DB->get_records_list('qtype_patternessay_responses', 'id', $responseids, 'id ASC');
         return self::data_to_responses($responses);
     }
 
@@ -160,7 +160,7 @@ class testquestion_responses {
             $count++;
             // There could be matching responses in the DB. Ugly to have a DB call in a for loop.
             // but seemed best compromise since this is a rare function.
-            $id = $DB->get_field_select('qtype_patternessay_test_responses', 'id', 'response=? AND questionid=?',
+            $id = $DB->get_field_select('qtype_patternessay_responses', 'id', 'response=? AND questionid=?',
                     array($response->response, $response->questionid));
             // Check for duplicates.
             if ($id) {
@@ -170,7 +170,7 @@ class testquestion_responses {
             }
 
             // Save unique response.
-            $DB->insert_record('qtype_patternessay_test_responses', $response);
+            $DB->insert_record('qtype_patternessay_responses', $response);
             $feedback->saved++;
         }
         return $feedback;
@@ -183,7 +183,7 @@ class testquestion_responses {
      */
     public static function update_response($response) {
         global $DB;
-        return $DB->update_record('qtype_patternessay_test_responses', $response);
+        return $DB->update_record('qtype_patternessay_responses', $response);
     }
 
     /**
@@ -193,8 +193,8 @@ class testquestion_responses {
      */
     public static function delete_responses_by_ids ($responseids) {
         global $DB;
-        $DB->delete_records_list('qtype_patternessay_rule_matches', 'testresponseid', $responseids);
-        return $DB->delete_records_list('qtype_patternessay_test_responses', 'id', $responseids);
+        $DB->delete_records_list('qtype_patternessay_r_matches', 'testresponseid', $responseids);
+        return $DB->delete_records_list('qtype_patternessay_responses', 'id', $responseids);
     }
 
     /**
@@ -229,22 +229,22 @@ class testquestion_responses {
         $counts = new \stdClass();
 
         // Get graded count.
-        $sqlgraded = "SELECT COUNT(1) FROM {qtype_patternessay_test_responses}
+        $sqlgraded = "SELECT COUNT(1) FROM {qtype_patternessay_responses}
                 WHERE questionid = ? " . self::SQLGRADED;
         $params = array('questionid' => $question->id);
         $counts->graded = $DB->count_records_sql($sqlgraded, $params);
 
         // Get total responses.
-        $counts->total = $DB->count_records('qtype_patternessay_test_responses', $params);
+        $counts->total = $DB->count_records('qtype_patternessay_responses', $params);
         $counts->ungraded = $counts->total - $counts->graded;
 
         $params['expectedfraction'] = 1;
         $params['gradedfraction'] = 1;
-        $counts->correctlymarkedright = $DB->count_records('qtype_patternessay_test_responses', $params);
+        $counts->correctlymarkedright = $DB->count_records('qtype_patternessay_responses', $params);
 
         $params['expectedfraction'] = 0;
         $params['gradedfraction'] = 0;
-        $counts->correctlymarkedwrong = $DB->count_records('qtype_patternessay_test_responses', $params);
+        $counts->correctlymarkedwrong = $DB->count_records('qtype_patternessay_responses', $params);
 
         $counts->correct = $counts->correctlymarkedright + $counts->correctlymarkedwrong;
 
@@ -284,7 +284,7 @@ class testquestion_responses {
         $params = array('questionid' => $question->id);
 
         // Get total responses.
-        return $DB->record_exists('qtype_patternessay_test_responses', $params);
+        return $DB->record_exists('qtype_patternessay_responses', $params);
     }
 
     /**
@@ -383,7 +383,7 @@ class testquestion_responses {
             self::delete_rule_matches($question, $responseids);
             $responses = self::get_responses_by_ids($responseids);
         }
-        // Grade a response and save results to the qtype_patternessay_rule_matches table.
+        // Grade a response and save results to the qtype_patternessay_r_matches table.
         foreach ($responses as $response) {
             // Do not re-grade responses that have not already been graded.
             if (!is_double($response->gradedfraction) || !is_double($response->expectedfraction)) {
@@ -407,7 +407,7 @@ class testquestion_responses {
                     $rulematch['answerid'] = $rule->id;
                     $rulematch['testresponseid'] = $response->id;
                     $rulematch['questionid'] = $question->id;
-                    $DB->insert_record('qtype_patternessay_rule_matches', (object)$rulematch);
+                    $DB->insert_record('qtype_patternessay_r_matches', (object)$rulematch);
                 }
             }
         }
@@ -507,11 +507,11 @@ class testquestion_responses {
     public static function delete_rule_matches($question, $responseids=array()) {
         global $DB;
         if (empty($responseids)) {
-            $DB->delete_records('qtype_patternessay_rule_matches', array('questionid' => $question->id));
+            $DB->delete_records('qtype_patternessay_r_matches', array('questionid' => $question->id));
         } else {
             list ($sql, $params) = $DB->get_in_or_equal($responseids);
             $params[] = $question->id;
-            $DB->delete_records_select('qtype_patternessay_rule_matches',
+            $DB->delete_records_select('qtype_patternessay_r_matches',
                     "testresponseid $sql AND questionid = ?", $params);
         }
     }
@@ -538,7 +538,7 @@ class testquestion_responses {
         }
 
         // Get the response ids for the question.
-        $sql = "SELECT id, testresponseid, answerid FROM {qtype_patternessay_rule_matches}
+        $sql = "SELECT id, testresponseid, answerid FROM {qtype_patternessay_r_matches}
                     WHERE questionid='" . $questionid . "'
                     AND testresponseid IN(". implode(',', $responseids) . ")
                     ORDER BY testresponseid ASC";
@@ -782,7 +782,7 @@ class testquestion_responses {
     public static function check_duplicate_response($questionid, $response) {
         global $DB;
 
-        return $DB->record_exists_select('qtype_patternessay_test_responses', 'response = ? AND questionid = ?',
+        return $DB->record_exists_select('qtype_patternessay_responses', 'response = ? AND questionid = ?',
                 ['response' => $response, 'questionid' => $questionid]);
     }
 }

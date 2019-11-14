@@ -51,7 +51,7 @@ if (!question_has_capability_on($question, 'edit')) {
     echo json_encode($return);
     die;
 }
-$response = $DB->get_record('qtype_patternessay_test_responses', array('id' => $rid), 'id, expectedfraction');
+$response = $DB->get_record('qtype_patternessay_responses', array('id' => $rid), 'id, expectedfraction');
 if (!$response) {
     $return['status'] = 'error';
     $return['data'] = 'The response id:' . $rid . ' does not match a record.';
@@ -60,7 +60,7 @@ if (!$response) {
 }
 $response->expectedfraction = $ef;
 try {
-    $DB->update_record('qtype_patternessay_test_responses', $response);
+    $DB->update_record('qtype_patternessay_responses', $response);
 } catch (Exception $e) {
     $return['status'] = 'error';
     $return['data'] = 'Cannot update response id:' . $rid;

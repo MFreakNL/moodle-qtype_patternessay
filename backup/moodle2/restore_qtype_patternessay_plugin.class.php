@@ -134,7 +134,7 @@ class restore_qtype_patternessay_plugin extends restore_qtype_plugin {
 
         if ($questioncreated) {
             $data->questionid = $newquestionid;
-            $newitemid = $DB->insert_record('qtype_patternessay_test_responses', $data);
+            $newitemid = $DB->insert_record('qtype_patternessay_responses', $data);
             // A mapping is required by the rule_match process below.
             $this->set_mapping('test_response', $oldid, $newitemid);
         }
@@ -158,7 +158,7 @@ class restore_qtype_patternessay_plugin extends restore_qtype_plugin {
             $data->questionid = $newquestionid;
             $data->testresponseid = $this->get_new_parentid('test_response');
             $data->answerid = $this->get_mappingid('question_answer', $data->answerid);
-            $newitemid = $DB->insert_record('qtype_patternessay_rule_matches', $data);
+            $newitemid = $DB->insert_record('qtype_patternessay_r_matches', $data);
         }
     }
 }

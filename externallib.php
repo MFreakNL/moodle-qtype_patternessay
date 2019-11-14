@@ -113,8 +113,8 @@ class qtype_patternessay_external extends external_api {
      * Create pattern match test response
      *
      * @param int $questionid The question id
-     * @param int $expectedfraction The expectedfraction for qtype_patternessay_test_responses table
-     * @param string $response The response for qtype_patternessay_test_responses table
+     * @param int $expectedfraction The expectedfraction for qtype_patternessay_responses table
+     * @param string $response The response for qtype_patternessay_responses table
      * @param int $curentrow The index of curent row editing.
      *
      * @return array The status and data after created the response. If not success return the error message.
@@ -136,7 +136,7 @@ class qtype_patternessay_external extends external_api {
                     $params['response']);
 
             if (!$duplicated) {
-                $rid = $DB->insert_record('qtype_patternessay_test_responses', $response);
+                $rid = $DB->insert_record('qtype_patternessay_responses', $response);
             } else {
                 throw new Exception(get_string('testquestionformduplicateresponse', 'qtype_patternessay'));
             }

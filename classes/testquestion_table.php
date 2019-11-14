@@ -141,7 +141,7 @@ class testquestion_table extends \table_sql {
     public function base_sql() {
         global $DB;
 
-        $from = '{qtype_patternessay_test_responses}';
+        $from = '{qtype_patternessay_responses}';
         $fields = 'id, expectedfraction, gradedfraction, response';
         $params = array('questionid' => $this->question->id);
         $where = 'questionid = '.$this->question->id;

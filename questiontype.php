@@ -319,8 +319,8 @@ class qtype_patternessay extends question_type {
     public function delete_question($questionid, $contextid) {
         global $DB;
         $DB->delete_records('qtype_patternessay_synonyms', array('questionid' => $questionid));
-        $DB->delete_records('qtype_patternessay_rule_matches', array('questionid' => $questionid));
-        $DB->delete_records('qtype_patternessay_test_responses', array('questionid' => $questionid));
+        $DB->delete_records('qtype_patternessay_r_matches', array('questionid' => $questionid));
+        $DB->delete_records('qtype_patternessay_responses', array('questionid' => $questionid));
 
         parent::delete_question($questionid, $contextid);
     }
