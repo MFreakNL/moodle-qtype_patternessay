@@ -26,7 +26,7 @@ namespace qtype_patternessay;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Question type: Pattern match: Test response class.
+ * Question type: Pattern essay: Test response class.
  *
  * A simple object representing one test response.
  *

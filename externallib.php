@@ -53,7 +53,7 @@ class qtype_patternessay_external extends external_api {
     }
 
     /**
-     * Check response for create pattern match test response.
+     * Check response for create pattern essay test response.
      *
      * @param int $questionid The question id
      * @param int $response The response to check
@@ -110,7 +110,7 @@ class qtype_patternessay_external extends external_api {
     }
 
     /**
-     * Create pattern match test response
+     * Create pattern essay test response
      *
      * @param int $questionid The question id
      * @param int $expectedfraction The expectedfraction for qtype_patternessay_responses table

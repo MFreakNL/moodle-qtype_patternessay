@@ -380,6 +380,8 @@ class patternessay_expression {
         $this->originalexpression = $expression;
         $this->interpreter = new patternessay_interpreter_whole_expression($options);
         list($matched, $endofmatch) = $this->interpreter->interpret($expression);
+
+        echo '<pre>';print_r($expression);echo '</pre>';die(__LINE__.' '.__FILE__);
         $this->errormessage = $this->interpreter->get_error_message();
         if ($endofmatch == core_text::strlen($expression) && $matched && $this->errormessage == '') {
             $this->valid = true;

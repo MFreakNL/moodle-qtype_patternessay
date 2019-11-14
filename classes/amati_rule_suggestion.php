@@ -28,7 +28,7 @@ require_once($CFG->dirroot . '/question/type/patternessay/question.php');
 require_once($CFG->dirroot . '/question/type/patternessay/patternessaylib.php');
 
 /**
- * Question type: Pattern match: Test rules class.
+ * Question type: Pattern essay: Test rules class.
  *
  * Manages the test rules associated with a given question.
  *
@@ -218,7 +218,7 @@ class amati_rule_suggestion {
     }
 
     /**
-     * Return a valid pattern match rule combining from the rules craeted from the
+     * Return a valid pattern essay rule combining from the rules craeted from the
      * parameters of the give subrules
      *
      * AMATI rules are broken down into commands, operators and words. We determine

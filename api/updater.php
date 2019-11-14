@@ -41,7 +41,7 @@ header('Content-type: application/json');
 
 if (!$question || !is_a($question->qtype, 'qtype_patternessay')) {
     $return['status'] = 'error';
-    $return['data'] = 'Incorrect question id, or not a pattern match question.';
+    $return['data'] = 'Incorrect question id, or not a pattern essay question.';
     echo json_encode($return);
     die;
 }

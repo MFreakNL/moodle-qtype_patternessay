@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Pattern match form utils.
+ * Pattern essay form utils.
  *
  * @package qtype_patternessay
  * @copyright 2017 The Open University
@@ -26,7 +26,7 @@ namespace qtype_patternessay;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Pattern match form utils.
+ * Pattern essay form utils.
  *
  * @copyright 2017 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later

@@ -1,4 +1,4 @@
-This file contains a sequence of test cases for most pattern match test question features.
+This file contains a sequence of test cases for most pattern essay test question features.
 
 Each section has a unique (within this test case) three letter code and the
 steps are numbered so that the location where a failure occurs can be reported.
@@ -20,10 +20,10 @@ Some steps don't have specific items to check. In that case, the check
 Initial set-up
 ==============
 
-The test assumes you have the pattern match question type installed and configured.
+The test assumes you have the pattern essay question type installed and configured.
 Ideal you will already have questions created.
 
-It is probably worth having a test course with a 'Pattern Match' question category
+It is probably worth having a test course with a 'Pattern essay' question category
 set up in its question bank.
 
 
@@ -35,11 +35,11 @@ Testing a question
 TST01 / author
 Using the "Test this question" feature
 To access the "test this question" feature:
-access the appropriate test quiz 
+access the appropriate test quiz
     Open
         a question in preview
-    Click 
-        the "test this question" link in the top right hand corner. 
+    Click
+        the "test this question" link in the top right hand corner.
     Upload
         responses as described in the Upload responses section
     Select
@@ -47,13 +47,13 @@ access the appropriate test quiz
     Click
         "Test selected responses"
     Verify
-        a mark is added or updated in the "Actual mark" column of each selected grade 
-    
+        a mark is added or updated in the "Actual mark" column of each selected grade
+
 Uploading Responses
 ==================
 UPL01 / author
     Follow
-        the procedure for "Using the test this question" feature 
+        the procedure for "Using the test this question" feature
     Click
         "Upload responses"
     Create
@@ -70,11 +70,11 @@ Deleting a response
 DEL01 / author
 Using the "Test this question" feature
 To access the "test this question" feature:
-access the appropriate test quiz 
+access the appropriate test quiz
     Open
         a question in preview
-    Click 
-        the "test this question" link in the top right hand corner. 
+    Click
+        the "test this question" link in the top right hand corner.
     Upload
         responses as described in the Upload responses section
     Select

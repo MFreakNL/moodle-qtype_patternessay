@@ -1,4 +1,4 @@
-# Pattern match question type [![Build Status](https://travis-ci.org/moodleou/moodle-qtype_patternessay.svg?branch=master)](https://travis-ci.org/moodleou/moodle-qtype_patternessay)
+# Pattern essay question type [![Build Status](https://travis-ci.org/moodleou/moodle-qtype_patternessay.svg?branch=master)](https://travis-ci.org/moodleou/moodle-qtype_patternessay)
 
 Students can enter a response of up to 20 words, which is then graded by matching
 it against various model answers expressed using a sophisticated patten

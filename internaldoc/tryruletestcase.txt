@@ -22,7 +22,7 @@ first,line is ignored but required as first line of file.
 0,pear banana orange
 1,apple
 1,some stuff before an apple
-Please note you will also need to ensure the Admin setting for Pattern match minresponses = 10.
+Please note you will also need to ensure the Admin setting for Pattern essay minresponses = 10.
   Ensure these responses have been computer graded (use Test the question using these responses).
   Return to the question edit page, refresh the page.
     Check the Try rule button now shows against answer 1

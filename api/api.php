@@ -58,7 +58,7 @@ try {
 }
 
 if (!$question || !is_a($question->qtype, 'qtype_patternessay')) {
-    $return = 'The question id is not a pattern match question.';
+    $return = 'The question id is not a pattern essay question.';
     header('Content-type: application/json');
     echo json_encode($return);
     die();

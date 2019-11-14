@@ -29,7 +29,7 @@ global $CFG;
 require_once($CFG->dirroot . '/question/type/patternessay/question.php');
 
 /**
- * Question type: Pattern match: Test responses class.
+ * Question type: Pattern essay: Test responses class.
  *
  * Manages the test responses associated with a given question.
  *
