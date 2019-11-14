@@ -158,3 +158,9 @@ $string['errorfileformat'] = 'The file must be in .csv format.';
 $string['errorfilecell'] = 'The file requires at least two rows (the first row is the header row, the second row onwards for responses).';
 $string['errorfilecolumnbigger'] = 'The file has more than two columns. Please only include the expected mark and response.';
 $string['errorfilecolumnless'] = 'The file requires at least two columns (the first column for expected marks, the second column for responses).';
+
+$string['responsetemplate'] = 'Response template';
+$string['responsetemplateheader'] = 'Response Template';
+$string['responsetemplate_help'] = 'Any text entered here will be displayed in the response input box when a new attempt at the question starts.';
+$string['nlines'] = '{$a} lines';
+$string['responsefieldlines'] = 'Input box size';

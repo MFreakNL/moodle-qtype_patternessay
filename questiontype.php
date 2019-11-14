@@ -49,7 +49,8 @@ class qtype_patternessay extends question_type {
 
     public function extra_question_fields() {
         return array('qtype_patternessay', 'usecase', 'allowsubscript', 'allowsuperscript',
-                'forcelength', 'applydictionarycheck', 'extenddictionary', 'converttospace');
+                'forcelength', 'applydictionarycheck', 'extenddictionary', 'converttospace' ,
+                     'responsetemplate' , 'responsetemplateformat' , 'responsefieldlines');
     }
 
     public function move_files($questionid, $oldcontextid, $newcontextid) {
@@ -101,6 +102,8 @@ class qtype_patternessay extends question_type {
         if (!isset($questionform->extenddictionary)) {
             $questionform->extenddictionary = '';
         }
+        $questionform->responsetemplateformat = $questionform->responsetemplate['format'];
+        $questionform->responsetemplate = $questionform->responsetemplate['text'];
         $parentresult = parent::save_question_options($questionform);
 
         if ($parentresult !== null) {
@@ -289,6 +292,10 @@ class qtype_patternessay extends question_type {
         $question->allowsuperscript = $questiondata->options->allowsuperscript;
         $question->forcelength = $questiondata->options->forcelength;
         $question->applydictionarycheck = $questiondata->options->applydictionarycheck;
+
+        $question->responsetemplate = $questiondata->options->responsetemplate;
+        $question->responsetemplateformat = $questiondata->options->responsetemplateformat;
+        $question->responsefieldlines = $questiondata->options->responsefieldlines;
         $this->initialise_question_answers($question, $questiondata);
     }
 
@@ -323,5 +330,16 @@ class qtype_patternessay extends question_type {
         $DB->delete_records('qtype_patternessay_responses', array('questionid' => $questionid));
 
         parent::delete_question($questionid, $contextid);
+    }
+
+    /**
+     * @return array the choices that should be offered for the input box size.
+     */
+    public function response_sizes() {
+        $choices = array();
+        for ($lines = 5; $lines <= 40; $lines += 5) {
+            $choices[$lines] = get_string('nlines', 'qtype_essay', $lines);
+        }
+        return $choices;
     }
 }

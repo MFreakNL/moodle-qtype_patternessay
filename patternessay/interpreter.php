@@ -292,7 +292,6 @@ abstract class patternessay_interpreter_item_with_enclosed_subcontents
         list($found, $endofopening, $subpatterns) =
                                 $this->find_pattern($this->openingpattern, $string, $start);
 
-        echo '<pre>';print_r($this);echo '</pre>';
         if (!$found) {
             return array(false, $start);
         }

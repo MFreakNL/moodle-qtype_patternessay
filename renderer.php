@@ -39,6 +39,10 @@ class qtype_patternessay_renderer extends qtype_renderer {
         $question = $qa->get_question();
         $currentanswer = $qa->get_last_qt_var('answer');
 
+        if(empty($currentanswer)){
+            $currentanswer = strip_tags($question->responsetemplate);
+        }
+
         $inputname = $qa->get_qt_field_name('answer');
         $attributes = array(
             'class' => 'answerinputfield',
@@ -71,7 +75,7 @@ class qtype_patternessay_renderer extends qtype_renderer {
             }
         }
         $questiontext = $question->format_questiontext($qa);
-        $rows = 2;
+        $rows = $question->responsefieldlines;
         $cols = 50;
         $placeholder = false;
         if (preg_match('/__([0-9]+)x([0-9]+)__/i', $questiontext, $matches)) {

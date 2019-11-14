@@ -55,7 +55,7 @@ class backup_qtype_patternessay_plugin extends backup_qtype_plugin {
         // Now create the qtype own structures.
         $patternessayoptions = new backup_nested_element('patternessay', array('id'), array('forcelength',
             'usecase', 'converttospace', 'applydictionarycheck', 'extenddictionary',
-            'allowsubscript', 'allowsuperscript'));
+            'allowsubscript', 'allowsuperscript' , 'responsetemplate' , 'responsetemplateformat' , 'responsefieldlines'));
 
         $synonyms = new backup_nested_element('synonyms');
 

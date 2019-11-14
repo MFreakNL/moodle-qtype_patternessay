@@ -46,7 +46,11 @@ class qtype_combined_combinable_type_patternessay extends qtype_combined_combina
                      'applydictionarycheck' => null,
                      'extenddictionary' => '',
                      'converttospace' => ',;:',
-                     'synonymsdata' => array());
+                     'synonymsdata' => array(),
+                     'responsetemplate' => '',
+                     'responsetemplateformat' => FORMAT_HTML ,
+                     'responsefieldlines' => 15
+            );
     }
 }
 

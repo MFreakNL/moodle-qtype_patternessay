@@ -244,6 +244,15 @@ class qtype_patternessay_edit_form extends question_edit_form {
         $mform->setDefault('converttospace', ',;:');
         $mform->setType('converttospace', PARAM_RAW_TRIMMED);
 
+        $mform->addElement('header', 'responsetemplateheader', get_string('responsetemplateheader', 'qtype_patternessay'));
+        $mform->addElement('editor', 'responsetemplate', get_string('responsetemplate', 'qtype_patternessay'),
+            array('rows' => 10),  array_merge($this->editoroptions, array('maxfiles' => 0)));
+        $mform->addHelpButton('responsetemplate', 'responsetemplate', 'qtype_patternessay');
+
+        $qtype = question_bank::get_qtype('patternessay');
+        $mform->addElement('select', 'responsefieldlines',
+            get_string('responsefieldlines', 'qtype_patternessay'), $qtype->response_sizes());
+        $mform->setDefault('responsefieldlines', 15);
     }
 
     /**
@@ -444,6 +453,11 @@ EOT;
             $question->applydictionarycheck = $question->options->applydictionarycheck;
             $question->extenddictionary = $question->options->extenddictionary;
             $question->converttospace = $question->options->converttospace;
+
+            $question->responsetemplate = ['text' => $question->options->responsetemplate , 'format' => FORMAT_HTML];
+            $question->responsetemplateformat = $question->options->responsetemplateformat;
+            $question->responsefieldlines = $question->options->responsefieldlines;
+
         }
         if (isset($question->options->synonyms)) {
             $synonyms = $question->options->synonyms;
