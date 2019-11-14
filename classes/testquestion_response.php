@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Defines the \qtype_pmatch\test response class.
+ * Defines the \qtype_patternessay\test response class.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2013 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace qtype_pmatch;
+namespace qtype_patternessay;
 defined('MOODLE_INTERNAL') || die();
 
 /**

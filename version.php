@@ -17,16 +17,16 @@
 /**
  * Pattern-match question type version information.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2011 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2018111900;
+$plugin->version   = 2019111400;
 $plugin->requires  = 2016120500;
-$plugin->component = 'qtype_pmatch';
+$plugin->component = 'qtype_patternessay';
 $plugin->maturity  = MATURITY_STABLE;
 $plugin->release   = '2.4 for Moodle 3.4+';
 

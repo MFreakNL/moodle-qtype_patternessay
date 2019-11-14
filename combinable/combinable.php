@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Defines the hooks necessary to make the pmatch question type combinable
+ * Defines the hooks necessary to make the patternessay question type combinable
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright  2013 The Open University
  * @author     Jamie Pratt <me@jamiep.org>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -25,11 +25,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/question/type/pmatch/pmatchlib.php');
+require_once($CFG->dirroot.'/question/type/patternessay/patternessaylib.php');
 
-class qtype_combined_combinable_type_pmatch extends qtype_combined_combinable_type_base {
+class qtype_combined_combinable_type_patternessay extends qtype_combined_combinable_type_base {
 
-    protected $identifier = 'pmatch';
+    protected $identifier = 'patternessay';
 
     protected function extra_question_properties() {
         return array('forcelength' => '0');
@@ -51,7 +51,7 @@ class qtype_combined_combinable_type_pmatch extends qtype_combined_combinable_ty
 }
 
 
-class qtype_combined_combinable_pmatch extends qtype_combined_combinable_text_entry {
+class qtype_combined_combinable_patternessay extends qtype_combined_combinable_text_entry {
 
     /**
      * @param moodleform      $combinedform
@@ -62,31 +62,31 @@ class qtype_combined_combinable_pmatch extends qtype_combined_combinable_text_en
     public function add_form_fragment(moodleform $combinedform, MoodleQuickForm $mform, $repeatenabled) {
         $susubels = array();
         $susubels[] = $mform->createElement('selectyesno', $this->form_field_name('allowsubscript'),
-                                            get_string('allowsubscript', 'qtype_pmatch'));
+                                            get_string('allowsubscript', 'qtype_patternessay'));
         $susubels[] = $mform->createElement('selectyesno', $this->form_field_name('allowsuperscript'),
-                                            get_string('allowsuperscript', 'qtype_pmatch'));
-        $mform->addGroup($susubels, $this->form_field_name('susubels'), get_string('allowsubscript', 'qtype_pmatch'),
+                                            get_string('allowsuperscript', 'qtype_patternessay'));
+        $mform->addGroup($susubels, $this->form_field_name('susubels'), get_string('allowsubscript', 'qtype_patternessay'),
                                                                     '',
                                                                     false);
         $menu = array(
-            get_string('caseno', 'qtype_pmatch'),
-            get_string('caseyes', 'qtype_pmatch')
+            get_string('caseno', 'qtype_patternessay'),
+            get_string('caseyes', 'qtype_patternessay')
         );
         $casedictels = array();
         $casedictels[] = $mform->createElement('select', $this->form_field_name('usecase'),
-                                               get_string('casesensitive', 'qtype_pmatch'), $menu);
+                                               get_string('casesensitive', 'qtype_patternessay'), $menu);
         $casedictels[] = $mform->createElement('selectyesno', $this->form_field_name('applydictionarycheck'),
-                                                                            get_string('applydictionarycheck', 'qtype_pmatch'));
+                                                                            get_string('applydictionarycheck', 'qtype_patternessay'));
         $mform->addGroup($casedictels, $this->form_field_name('casedictels'),
-                                                                        get_string('casesensitive', 'qtype_pmatch'), '', false);
+                                                                        get_string('casesensitive', 'qtype_patternessay'), '', false);
         $mform->setDefault($this->form_field_name('applydictionarycheck'), 1);
 
-        $mform->addElement('textarea', $this->form_field_name('extenddictionary'), get_string('extenddictionary', 'qtype_pmatch'),
+        $mform->addElement('textarea', $this->form_field_name('extenddictionary'), get_string('extenddictionary', 'qtype_patternessay'),
             array('rows' => '3', 'cols' => '57'));
 
-        $mform->addElement('text', $this->form_field_name('converttospace'), get_string('converttospace', 'qtype_pmatch'));
+        $mform->addElement('text', $this->form_field_name('converttospace'), get_string('converttospace', 'qtype_patternessay'));
         $mform->setDefault($this->form_field_name('converttospace'), ',;:');
-        \qtype_pmatch\form_utils::add_synonyms($combinedform, $mform, $this->questionrec, false,
+        \qtype_patternessay\form_utils::add_synonyms($combinedform, $mform, $this->questionrec, false,
                 $this->form_field_name('synonymsdata'), 1, 0);
 
         $mform->addElement('textarea', $this->form_field_name('answer[0]'), get_string('answer', 'question'),
@@ -121,15 +121,15 @@ class qtype_combined_combinable_pmatch extends qtype_combined_combinable_text_en
         $errors = array();
         $trimmedanswer = $this->formdata->answer[0];
         if ('' !== $trimmedanswer) {
-            $expression = new pmatch_expression($trimmedanswer);
+            $expression = new patternessay_expression($trimmedanswer);
             if (!$expression->is_valid()) {
                 $errors[$this->form_field_name('answer[0]')] = $expression->get_parse_error();
             }
         } else {
-            $errors[$this->form_field_name('answer[0]')] = get_string('err_providepmatchexpression', 'qtype_pmatch');
+            $errors[$this->form_field_name('answer[0]')] = get_string('err_providepatternessayexpression', 'qtype_patternessay');
         }
 
-        $errors += \qtype_pmatch\form_utils::validate_synonyms((array)$this->formdata, $this->form_field_name('synonymsdata'));
+        $errors += \qtype_patternessay\form_utils::validate_synonyms((array)$this->formdata, $this->form_field_name('synonymsdata'));
 
         return $errors;
     }

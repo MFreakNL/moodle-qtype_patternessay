@@ -16,7 +16,7 @@
 /**
  * This class provides functionality for the testquestion response updater.
  *
- * @module    qtype_pmatch
+ * @module    qtype_patternessay
  * @class     updater
  * @package   question
  * @copyright 2016 The Open University
@@ -25,7 +25,7 @@
 define(['jquery'], function($) {
 
     /**
-     * @alias qtype_pmatch/updater
+     * @alias qtype_patternessay/updater
      */
     var t = {
         baseUrl: '',
@@ -87,7 +87,7 @@ define(['jquery'], function($) {
                     tr.addClass(result.rowclass);
                     tr.find('td[class="c3"]').text(result.gf);
                     // Update the grade summary.
-                    var c = M.util.get_string('testquestionresultssummary', 'qtype_pmatch', result.counts);
+                    var c = M.util.get_string('testquestionresultssummary', 'qtype_patternessay', result.counts);
                     $('#testquestion_gradesummary').html(c);
                 } else {
                     // Developer debugging - failure states are in api/updater.php.

@@ -15,16 +15,16 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Defines the editing form for the pmatch question type.
+ * Defines the editing form for the patternessay question type.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2007 Jamie Pratt
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot.'/question/type/pmatch/pmatchlib.php');
+require_once($CFG->dirroot.'/question/type/patternessay/patternessaylib.php');
 
 /**
  * Short answer question editing form definition.
@@ -32,7 +32,7 @@ require_once($CFG->dirroot.'/question/type/pmatch/pmatchlib.php');
  * @copyright 2007 Jamie Pratt
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch_edit_form extends question_edit_form {
+class qtype_patternessay_edit_form extends question_edit_form {
     /**
      * @var stdClass the 'Any other' answer.
      */
@@ -64,9 +64,9 @@ class qtype_pmatch_edit_form extends question_edit_form {
      */
     protected function definition_inner($mform) {
         $this->general_answer_fields($mform);
-        \qtype_pmatch\form_utils::add_synonyms($this, $mform, $this->question, true, 'synonymsdata', 3, 2);
+        \qtype_patternessay\form_utils::add_synonyms($this, $mform, $this->question, true, 'synonymsdata', 3, 2);
 
-        $this->add_per_answer_fields($mform, get_string('answerno', 'qtype_pmatch', '{no}'),
+        $this->add_per_answer_fields($mform, get_string('answerno', 'qtype_patternessay', '{no}'),
                 question_bank::fraction_options());
 
         $this->add_interactive_settings();
@@ -86,17 +86,17 @@ class qtype_pmatch_edit_form extends question_edit_form {
         parent::add_per_answer_fields($mform, $label, $gradeoptions);
         $results = '';
 
-        if (\qtype_pmatch\testquestion_responses::has_responses($this->question)) {
-            $counts = \qtype_pmatch\testquestion_responses::get_question_grade_summary_counts($this->question);
-            $results = html_writer::tag('p', get_string('testquestionresultssummary', 'qtype_pmatch', $counts));
+        if (\qtype_patternessay\testquestion_responses::has_responses($this->question)) {
+            $counts = \qtype_patternessay\testquestion_responses::get_question_grade_summary_counts($this->question);
+            $results = html_writer::tag('p', get_string('testquestionresultssummary', 'qtype_patternessay', $counts));
         }
         $answersinstruct = $mform->createElement('static', 'answersinstruct',
-                                                get_string('correctanswers', 'qtype_pmatch'),
-                                                get_string('filloutoneanswer', 'qtype_pmatch') .
+                                                get_string('correctanswers', 'qtype_patternessay'),
+                                                get_string('filloutoneanswer', 'qtype_patternessay') .
                                                 $results);
         $mform->insertElementBefore($answersinstruct, 'topborder[0]');
 
-        if (\qtype_pmatch\testquestion_responses::has_responses($this->question)) {
+        if (\qtype_patternessay\testquestion_responses::has_responses($this->question)) {
             // Add rule suggestion button.
             $answerssuggest = $this->add_rule_suggestion_fields($mform);
         }
@@ -115,15 +115,15 @@ class qtype_pmatch_edit_form extends question_edit_form {
             return;
         }
         $questionobj = question_bank::load_question($this->question->id);
-        if (!$hasrepsonses = \qtype_pmatch\testquestion_responses::has_responses($questionobj)) {
+        if (!$hasrepsonses = \qtype_patternessay\testquestion_responses::has_responses($questionobj)) {
             return;
         }
 
         $rules = $questionobj->get_answers();
-        $responses = \qtype_pmatch\testquestion_responses::get_graded_responses_by_questionid($questionobj->id);
+        $responses = \qtype_patternessay\testquestion_responses::get_graded_responses_by_questionid($questionobj->id);
 
         $responseids = array_keys($responses);
-        $matches = \qtype_pmatch\testquestion_responses::get_rule_matches_for_responses($responseids, $this->question->id);
+        $matches = \qtype_patternessay\testquestion_responses::get_rule_matches_for_responses($responseids, $this->question->id);
 
         // If there are no matches.
         if (!$matches) {
@@ -137,9 +137,9 @@ class qtype_pmatch_edit_form extends question_edit_form {
             }
 
             // Add the Rule accuracy section.
-            $accuracy = \qtype_pmatch\testquestion_responses::get_rule_accuracy_counts($responses, $rule->id, $matches);
-            $labelhtml = html_writer::div(get_string('ruleaccuracylabel', 'qtype_pmatch'), 'fitemtitle');
-            $elementhtml = html_writer::div(get_string('ruleaccuracy', 'qtype_pmatch', $accuracy),
+            $accuracy = \qtype_patternessay\testquestion_responses::get_rule_accuracy_counts($responses, $rule->id, $matches);
+            $labelhtml = html_writer::div(get_string('ruleaccuracylabel', 'qtype_patternessay'), 'fitemtitle');
+            $elementhtml = html_writer::div(get_string('ruleaccuracy', 'qtype_patternessay', $accuracy),
                     'felement fselect', array('id' => 'fitem_accuracy_' . $count));
             $html = html_writer::div($labelhtml. $elementhtml, 'fitem fitem_accuracy');
             $answersaccuracy = $mform->createElement('html', $html);
@@ -162,18 +162,18 @@ class qtype_pmatch_edit_form extends question_edit_form {
                         }
                     } else {
                         if ($responses[$responseid]->expectedfraction) {
-                            $items[] = '<span class="qtype_pmatch-selftest-missed-negative">' .
+                            $items[] = '<span class="qtype_patternessay-selftest-missed-negative">' .
                                     $responses[$responseid]->id . ': ' . $responses[$responseid]->response .
                                     '</span>';
                         } else {
-                            $items[] = '<span class="qtype_pmatch-selftest-missed-positive">' .
+                            $items[] = '<span class="qtype_patternessay-selftest-missed-positive">' .
                                     $responses[$responseid]->id . ': ' . $responses[$responseid]->response .
                                     '</span>';
                         }
                     }
                 }
                 $reponseslist = print_collapsible_region_start('', 'matchedresponses_' . $count,
-                        get_string('showcoverage', 'qtype_pmatch'), '', true, true);
+                        get_string('showcoverage', 'qtype_patternessay'), '', true, true);
                 $reponseslist .= html_writer::alist($items);
                 $reponseslist .= print_collapsible_region_end(true);
                 $html = html_writer::div($reponseslist, 'fitem fitem_matchedresponses');
@@ -189,7 +189,7 @@ class qtype_pmatch_edit_form extends question_edit_form {
      * Language string to use for 'Add {no} more {whatever we call answers}'.
      */
     protected function get_more_choices_string() {
-        return get_string('addmoreanswerblanks', 'qtype_pmatch');
+        return get_string('addmoreanswerblanks', 'qtype_patternessay');
     }
     /**
      * Add answer options for any other (wrong) answer.
@@ -198,7 +198,7 @@ class qtype_pmatch_edit_form extends question_edit_form {
      */
     protected function add_other_answer_fields($mform) {
         $otheranswerhdr = $mform->addElement('static', 'otheranswerhdr',
-                                                get_string('anyotheranswer', 'qtype_pmatch'));
+                                                get_string('anyotheranswer', 'qtype_patternessay'));
         $otheranswerhdr->setAttributes(array('class' => 'otheranswerhdr'));
         $mform->addElement('static', 'otherfraction', get_string('grade'), '0%');
         $mform->addElement('editor', 'otherfeedback', get_string('feedback', 'question'),
@@ -212,34 +212,34 @@ class qtype_pmatch_edit_form extends question_edit_form {
      */
     protected function general_answer_fields($mform) {
         $mform->addElement('header', 'answeroptionsheader',
-                                                get_string('answeroptions', 'qtype_pmatch'));
+                                                get_string('answeroptions', 'qtype_patternessay'));
         $mform->addElement('static', 'generaldescription', '',
-                                                get_string('answeringoptions', 'qtype_pmatch'));
+                                                get_string('answeringoptions', 'qtype_patternessay'));
         $menu = array(
-            get_string('caseno', 'qtype_pmatch'),
-            get_string('caseyes', 'qtype_pmatch')
+            get_string('caseno', 'qtype_patternessay'),
+            get_string('caseyes', 'qtype_patternessay')
         );
-        $mform->addElement('select', 'usecase', get_string('casesensitive', 'qtype_pmatch'), $menu);
+        $mform->addElement('select', 'usecase', get_string('casesensitive', 'qtype_patternessay'), $menu);
         $mform->addElement('selectyesno', 'allowsubscript',
-                                                    get_string('allowsubscript', 'qtype_pmatch'));
+                                                    get_string('allowsubscript', 'qtype_patternessay'));
         $mform->addElement('selectyesno', 'allowsuperscript',
-                                                    get_string('allowsuperscript', 'qtype_pmatch'));
+                                                    get_string('allowsuperscript', 'qtype_patternessay'));
         $menu = array(
-            get_string('forcelengthno', 'qtype_pmatch'),
-            get_string('forcelengthyes', 'qtype_pmatch')
+            get_string('forcelengthno', 'qtype_patternessay'),
+            get_string('forcelengthyes', 'qtype_patternessay')
         );
         $mform->addElement('select', 'forcelength',
-                                                get_string('forcelength', 'qtype_pmatch'), $menu);
+                                                get_string('forcelength', 'qtype_patternessay'), $menu);
         $mform->setDefault('forcelength', 1);
         $mform->addElement('selectyesno', 'applydictionarycheck',
-                                            get_string('applydictionarycheck', 'qtype_pmatch'));
+                                            get_string('applydictionarycheck', 'qtype_patternessay'));
         $mform->setDefault('applydictionarycheck', 1);
         $mform->addElement('textarea', 'extenddictionary',
-                        get_string('extenddictionary', 'qtype_pmatch'),
+                        get_string('extenddictionary', 'qtype_patternessay'),
                         array('rows' => '5', 'cols' => '80'));
         $mform->disabledIf('extenddictionary', 'applydictionarycheck', 'eq', 0);
         $mform->addElement('text', 'converttospace',
-                        get_string('converttospace', 'qtype_pmatch'),
+                        get_string('converttospace', 'qtype_patternessay'),
                         array('size' => 60));
         $mform->setDefault('converttospace', ',;:');
         $mform->setType('converttospace', PARAM_RAW_TRIMMED);
@@ -264,7 +264,7 @@ class qtype_pmatch_edit_form extends question_edit_form {
         $repeated[] = $mform->createElement('static', 'topborder', '', ' ');
         $repeated[] = $mform->createElement('textarea', 'answer', $label,
                             array('rows' => '8', 'cols' => '60', 'class' => 'textareamonospace'));
-        if ($this->question->qtype == 'pmatch') {
+        if ($this->question->qtype == 'patternessay') {
             $title = $this->get_rc_title();
             $content = $this->get_rc_content();
             $repeated[] = $mform->createElement('static', 'rule-creator-wrapper', $title, $content);
@@ -285,7 +285,7 @@ class qtype_pmatch_edit_form extends question_edit_form {
 
     protected function get_try_button() {
         $html = '';
-        if (!\qtype_pmatch\testquestion_responses::has_responses($this->question)) {
+        if (!\qtype_patternessay\testquestion_responses::has_responses($this->question)) {
             return $html;
         }
         $button = '<input type="button" name="tryrule" value="Try rule">';
@@ -300,7 +300,7 @@ class qtype_pmatch_edit_form extends question_edit_form {
      */
     protected function get_rc_title() {
         global $OUTPUT;
-        return html_writer::link('#', get_string('rulecreationasst', 'qtype_pmatch') . ' ' .
+        return html_writer::link('#', get_string('rulecreationasst', 'qtype_patternessay') . ' ' .
                 $OUTPUT->pix_icon('t/collapsed', ''), array('class' => 'rule-creator-btn'));
     }
 
@@ -370,14 +370,14 @@ EOT;
         // suggested.
         if ($this->suggestedrules !== null) {
             $rulecount = $this->suggestedrules ? count($this->suggestedrules) : 0;
-            $feedback = get_string('xrulesuggested', 'qtype_pmatch', $rulecount);
+            $feedback = get_string('xrulesuggested', 'qtype_patternessay', $rulecount);
         }
 
         $textelement = $mform->createElement('static', 'answersuggesttext',
-                                                get_string('rulesuggestionlabel', 'qtype_pmatch'), $feedback);
+                                                get_string('rulesuggestionlabel', 'qtype_patternessay'), $feedback);
         $mform->insertElementBefore($textelement, 'topborder[0]');
         $buttonelement = $mform->createElement('submit', 'answersuggestbutton',
-                                                get_string('rulesuggestionbutton', 'qtype_pmatch'));
+                                                get_string('rulesuggestionbutton', 'qtype_patternessay'));
         $mform->insertElementBefore($buttonelement, 'topborder[0]');
         $mform->registerNoSubmitButton('answersuggestbutton');
     }
@@ -388,7 +388,7 @@ EOT;
      */
     protected function add_suggested_answers($mform) {
         try {
-            $suggestedrules = \qtype_pmatch\amati_rule_suggestion::suggest_rules($mform, $this->question);
+            $suggestedrules = \qtype_patternessay\amati_rule_suggestion::suggest_rules($mform, $this->question);
             // Now we have removed duplicate and invalid rules we can store them for use later.
             $this->suggestedrules = $suggestedrules;
 
@@ -468,7 +468,7 @@ EOT;
         foreach ($answers as $key => $answer) {
             $trimmedanswer = trim($answer);
             if ($trimmedanswer !== '') {
-                $expression = new pmatch_expression($trimmedanswer);
+                $expression = new patternessay_expression($trimmedanswer);
                 if (!$expression->is_valid()) {
                     $errors["answer[$key]"] = $expression->get_parse_error();
                 }
@@ -478,18 +478,18 @@ EOT;
                 }
             } else if ($data['fraction'][$key] != 0 ||
                                             !html_is_blank($data['feedback'][$key]['text'])) {
-                $errors["answer[$key]"] = get_string('answermustbegiven', 'qtype_pmatch');
+                $errors["answer[$key]"] = get_string('answermustbegiven', 'qtype_patternessay');
                 $answercount++;
             }
         }
         if ($answercount == 0) {
-            $errors['answer[0]'] = get_string('notenoughanswers', 'qtype_pmatch', 1);
+            $errors['answer[0]'] = get_string('notenoughanswers', 'qtype_patternessay', 1);
         }
         if ($maxgrade == false) {
             $errors['fraction[0]'] = get_string('fractionsnomax', 'question');
         }
 
-        $errors += \qtype_pmatch\form_utils::validate_synonyms($data);
+        $errors += \qtype_patternessay\form_utils::validate_synonyms($data);
 
         $errors += $this->place_holder_errors($data['questiontext']['text'],
                                               $data['allowsubscript'] || $data['allowsuperscript']);
@@ -510,23 +510,23 @@ EOT;
             $placeholder = $matches[0];
         }
         if ($placeholder && ($rows > 100 || $cols > 150)) {
-            $errors['questiontext'] = get_string('inputareatoobig', 'qtype_pmatch', $placeholder);
+            $errors['questiontext'] = get_string('inputareatoobig', 'qtype_patternessay', $placeholder);
         }
         if ($placeholder && ($rows > 1) && $usesubsup) {
-            $errors['questiontext'] = get_string('subsuponelineonly', 'qtype_pmatch');
+            $errors['questiontext'] = get_string('subsuponelineonly', 'qtype_patternessay');
         }
         return $errors;
     }
 
     public function qtype() {
-        return 'pmatch';
+        return 'patternessay';
     }
 
     public function js_call() {
         global $PAGE;
-        $PAGE->requires->js_call_amd('qtype_pmatch/rulecreator', 'init');
-        $PAGE->requires->string_for_js('rulecreationtoomanyterms', 'qtype_pmatch');
-        $PAGE->requires->string_for_js('rulecreationtoomanyors', 'qtype_pmatch');
-        $PAGE->requires->js_call_amd('qtype_pmatch/tryrule', 'init');
+        $PAGE->requires->js_call_amd('qtype_patternessay/rulecreator', 'init');
+        $PAGE->requires->string_for_js('rulecreationtoomanyterms', 'qtype_patternessay');
+        $PAGE->requires->string_for_js('rulecreationtoomanyors', 'qtype_patternessay');
+        $PAGE->requires->js_call_amd('qtype_patternessay/tryrule', 'init');
     }
 }

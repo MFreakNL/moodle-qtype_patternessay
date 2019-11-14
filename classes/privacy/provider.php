@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Privacy provider for qtype_pmatch
+ * Privacy provider for qtype_patternessay
  *
  * @copyright 2018 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- * @package qtype_pmatch
+ * @package qtype_patternessay
  */
 
-namespace qtype_pmatch\privacy;
+namespace qtype_patternessay\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -33,21 +33,21 @@ use core_privacy\local\request\transform;
 /**
  * External dashboard provider for user preferences
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  */
 class provider implements \core_privacy\local\metadata\provider, \core_privacy\local\request\user_preference_provider {
 
     public static function get_metadata(collection $collection) : collection {
-        $collection->add_user_preference('qtype_pmatch_testquestion_pagesize', 'privacy:metadata:preference:pagesize');
+        $collection->add_user_preference('qtype_patternessay_testquestion_pagesize', 'privacy:metadata:preference:pagesize');
         return $collection;
     }
 
     public static function export_user_preferences(int $userid) {
-        $pagesize = get_user_preferences('qtype_pmatch_testquestion_pagesize', null, $userid);
+        $pagesize = get_user_preferences('qtype_patternessay_testquestion_pagesize', null, $userid);
 
         if (!is_null($pagesize)) {
-            writer::export_user_preference('qtype_pmatch', 'qtype_pmatch_testquestion_pagesize',
-                    $pagesize, get_string('privacy:metadata:preference:pagesize', 'qtype_pmatch'));
+            writer::export_user_preference('qtype_patternessay', 'qtype_patternessay_testquestion_pagesize',
+                    $pagesize, get_string('privacy:metadata:preference:pagesize', 'qtype_patternessay'));
         }
     }
 }

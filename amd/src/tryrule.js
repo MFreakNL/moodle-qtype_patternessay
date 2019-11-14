@@ -19,7 +19,7 @@
  * This is based on the work of Dr Alistair Willis published:
  * http://aclweb.org/anthology/W/W15/W15-0628.pdf
  *
- * @module    qtype_pmatch
+ * @module    qtype_patternessay
  * @class     tryrule
  * @package   question
  * @copyright 2016 The Open University
@@ -29,7 +29,7 @@
 define(['jquery'], function($) {
 
     /**
-     * @alias qtype_pmatch/tryrule
+     * @alias qtype_patternessay/tryrule
      */
     var t = {
         baseUrl: '',
@@ -45,7 +45,7 @@ define(['jquery'], function($) {
             t.pendingid = 'tryrule_' + Math.random().toString(36).slice(2); // Random string.
             var base = window.location;
             t.baseUrl = base.protocol + '//' + base.host +
-                    base.pathname.replace('question.php', 'type/pmatch/api/api.php');
+                    base.pathname.replace('question.php', 'type/patternessay/api/api.php');
             t.sessKey = $('#mform1 input[name="sesskey"]').val();
             t.qid = $('#mform1 input[name="id"]').val();
             // Add ids to try rule buttons.

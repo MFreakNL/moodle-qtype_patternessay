@@ -17,7 +17,7 @@
 /**
  * Question type class for the pattern-match question type.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/questionlib.php');
 require_once($CFG->dirroot . '/question/engine/lib.php');
-require_once($CFG->dirroot . '/question/type/pmatch/question.php');
+require_once($CFG->dirroot . '/question/type/patternessay/question.php');
 
 
 /**
@@ -36,19 +36,19 @@ require_once($CFG->dirroot . '/question/type/pmatch/question.php');
  * @copyright 1999 onwards Martin Dougiamas  {@link http://moodle.com}
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch extends question_type {
+class qtype_patternessay extends question_type {
 
     public function get_question_options($question) {
         global $DB;
         parent::get_question_options($question);
-        $question->options->synonyms = $DB->get_records('qtype_pmatch_synonyms',
+        $question->options->synonyms = $DB->get_records('qtype_patternessay_synonyms',
                                                         array('questionid' => $question->id),
                                                         'id ASC');
         return true;
     }
 
     public function extra_question_fields() {
-        return array('qtype_pmatch', 'usecase', 'allowsubscript', 'allowsuperscript',
+        return array('qtype_patternessay', 'usecase', 'allowsubscript', 'allowsuperscript',
                 'forcelength', 'applydictionarycheck', 'extenddictionary', 'converttospace');
     }
 
@@ -67,7 +67,7 @@ class qtype_pmatch extends question_type {
     public function save_question_options($questionform) {
         global $DB;
 
-        $oldsynonyms = $DB->get_records('qtype_pmatch_synonyms',
+        $oldsynonyms = $DB->get_records('qtype_patternessay_synonyms',
                 array('questionid' => $questionform->id), 'id ASC');
 
         foreach ($questionform->synonymsdata as $key => $synonymfromform) {
@@ -84,18 +84,18 @@ class qtype_pmatch extends question_type {
                 $synonym->questionid = $questionform->id;
                 $synonym->synonyms = '';
                 $synonym->word = '';
-                $synonym->id = $DB->insert_record('qtype_pmatch_synonyms', $synonym);
+                $synonym->id = $DB->insert_record('qtype_patternessay_synonyms', $synonym);
             }
 
             $synonym->word = $word;
             $synonym->synonyms = trim($synonymfromform['synonyms']);
-            $DB->update_record('qtype_pmatch_synonyms', $synonym);
+            $DB->update_record('qtype_patternessay_synonyms', $synonym);
 
         }
 
         // Delete any remaining synonyms.
         foreach ($oldsynonyms as $oldsynonym) {
-            $DB->delete_records('qtype_pmatch_synonyms', array('id' => $oldsynonym->id));
+            $DB->delete_records('qtype_patternessay_synonyms', array('id' => $oldsynonym->id));
         }
 
         if (!isset($questionform->extenddictionary)) {
@@ -122,7 +122,7 @@ class qtype_pmatch extends question_type {
         question_bank::notify_question_edited($question->id);
         $questionobj = question_bank::load_question($question->id);
         // If there are test responses grade them with the new answers and record matches.
-        \qtype_pmatch\testquestion_responses::grade_responses_and_save_matches($questionobj);
+        \qtype_patternessay\testquestion_responses::grade_responses_and_save_matches($questionobj);
     }
 
     protected function save_answers($question) {
@@ -152,7 +152,7 @@ class qtype_pmatch extends question_type {
             }
 
             $answer->answer = trim($answerdata);
-            $expression = new pmatch_expression($answer->answer);
+            $expression = new patternessay_expression($answer->answer);
             if ($expression->is_valid()) {
                 $answer->answer = $expression->get_formatted_expression_string();
             }
@@ -278,12 +278,12 @@ class qtype_pmatch extends question_type {
     protected function initialise_question_instance(question_definition $question, $questiondata) {
         parent::initialise_question_instance($question, $questiondata);
 
-        $question->pmatchoptions = new pmatch_options();
-        $question->pmatchoptions->ignorecase = !$questiondata->options->usecase;
-        $question->pmatchoptions->set_extra_dictionary_words(
+        $question->patternessayoptions = new patternessay_options();
+        $question->patternessayoptions->ignorecase = !$questiondata->options->usecase;
+        $question->patternessayoptions->set_extra_dictionary_words(
                                                         $questiondata->options->extenddictionary);
-        $question->pmatchoptions->converttospace = $questiondata->options->converttospace;
-        $question->pmatchoptions->set_synonyms($questiondata->options->synonyms);
+        $question->patternessayoptions->converttospace = $questiondata->options->converttospace;
+        $question->patternessayoptions->set_synonyms($questiondata->options->synonyms);
 
         $question->allowsubscript = $questiondata->options->allowsubscript;
         $question->allowsuperscript = $questiondata->options->allowsuperscript;
@@ -318,9 +318,9 @@ class qtype_pmatch extends question_type {
 
     public function delete_question($questionid, $contextid) {
         global $DB;
-        $DB->delete_records('qtype_pmatch_synonyms', array('questionid' => $questionid));
-        $DB->delete_records('qtype_pmatch_rule_matches', array('questionid' => $questionid));
-        $DB->delete_records('qtype_pmatch_test_responses', array('questionid' => $questionid));
+        $DB->delete_records('qtype_patternessay_synonyms', array('questionid' => $questionid));
+        $DB->delete_records('qtype_patternessay_rule_matches', array('questionid' => $questionid));
+        $DB->delete_records('qtype_patternessay_test_responses', array('questionid' => $questionid));
 
         parent::delete_question($questionid, $contextid);
     }

@@ -25,17 +25,17 @@
  * The second column contains the response. The first row in the file is ignored
  * (on the assumption that it contains the column headers "mark","response".)
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2016 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// Login is checked in qtype_pmatch_setup_question_test_page but CodeChecker can't see that.
+// Login is checked in qtype_patternessay_setup_question_test_page but CodeChecker can't see that.
 // @codingStandardsIgnoreLine
 require_once(__DIR__ . '/../../../config.php');
 require_once($CFG->libdir . '/questionlib.php');
 require_once($CFG->libdir . '/formslib.php');
-require_once($CFG->dirroot . '/question/type/pmatch/lib.php');
+require_once($CFG->dirroot . '/question/type/patternessay/lib.php');
 
 /**
  * The upload form.
@@ -43,17 +43,17 @@ require_once($CFG->dirroot . '/question/type/pmatch/lib.php');
 class upload_form extends moodleform {
     protected function definition() {
         $this->_form->addElement('header', 'header',
-                get_string('testquestionformheader', 'qtype_pmatch'));
+                get_string('testquestionformheader', 'qtype_patternessay'));
         $this->_form->addElement('static', 'help', '',
-                get_string('testquestionforminfo', 'qtype_pmatch'));
+                get_string('testquestionforminfo', 'qtype_patternessay'));
         $this->_form->addElement('filepicker', 'responsesfile',
-                get_string('testquestionformuploadlabel', 'qtype_pmatch'), null,
+                get_string('testquestionformuploadlabel', 'qtype_patternessay'), null,
                 ['accepted_types' => 'csv']);
         $this->_form->addRule('responsesfile', null, 'required', null, 'client');
         $this->_form->addElement('hidden', 'id', 0);
         $this->_form->setType('id', PARAM_INT);
         $this->_form->addElement('submit', 'submitbutton',
-                get_string('testquestionuploadresponses', 'qtype_pmatch'));
+                get_string('testquestionuploadresponses', 'qtype_patternessay'));
     }
 
     /**
@@ -107,17 +107,17 @@ class upload_form extends moodleform {
 
         // Get error case and return.
         if (in_array('format', $errcase)) {
-            $errortext = get_string('errorfileformat', 'qtype_pmatch');
+            $errortext = get_string('errorfileformat', 'qtype_patternessay');
         } else {
             $errortextarr = [];
             if (in_array('cell', $errcase)) {
-                $errortextarr[] = get_string('errorfilecell', 'qtype_pmatch');
+                $errortextarr[] = get_string('errorfilecell', 'qtype_patternessay');
             }
             if (in_array('columnbigger', $errcase)) {
-                $errortextarr[] = get_string('errorfilecolumnbigger', 'qtype_pmatch');
+                $errortextarr[] = get_string('errorfilecolumnbigger', 'qtype_patternessay');
             }
             if (in_array('columnless', $errcase)) {
-                $errortextarr[] = get_string('errorfilecolumnless', 'qtype_pmatch');
+                $errortextarr[] = get_string('errorfilecolumnless', 'qtype_patternessay');
             }
             $errortext = implode('<br>', $errortextarr);
         }
@@ -131,17 +131,17 @@ class upload_form extends moodleform {
 $questionid = required_param('id', PARAM_INT);
 
 $questiondata = $DB->get_record('question', array('id' => $questionid), '*', MUST_EXIST);
-if ($questiondata->qtype != 'pmatch') {
+if ($questiondata->qtype != 'patternessay') {
     throw new coding_exception('That is not a pattern-match question.');
 }
 $question = question_bank::load_question($questionid);
 
 // Process any other URL parameters, and do require_login.
-list($context, $urlparams) = qtype_pmatch_setup_question_test_page($question);
+list($context, $urlparams) = qtype_patternessay_setup_question_test_page($question);
 question_require_capability_on($questiondata, 'edit');
 
-$url = new moodle_url('/question/type/pmatch/uploadresponses.php', array('id' => $questionid));
-$title = get_string('testquestionformtitle', 'qtype_pmatch');
+$url = new moodle_url('/question/type/patternessay/uploadresponses.php', array('id' => $questionid));
+$title = get_string('testquestionformtitle', 'qtype_patternessay');
 
 $PAGE->set_url($url);
 $PAGE->set_context($context);
@@ -151,12 +151,12 @@ $PAGE->set_heading($title);
 $form = new upload_form();
 $form->set_data(array('id' => $questionid));
 
-$renderer = $PAGE->get_renderer('qtype_pmatch');
+$renderer = $PAGE->get_renderer('qtype_patternessay');
 $link = $renderer->back_to_test_question_link($questionid);
 
 echo $OUTPUT->header();
 echo $OUTPUT->heading($title . ': ' .
-        get_string('testquestionheader', 'qtype_pmatch', format_string($questiondata->name)));
+        get_string('testquestionheader', 'qtype_patternessay', format_string($questiondata->name)));
 
 // Display link back to test question.
 echo $link;
@@ -170,21 +170,21 @@ if ($fromform = $form->get_data()) {
         throw new moodle_exception('uploadproblem');
     }
 
-    list($responses, $problems) = \qtype_pmatch\testquestion_responses::load_responses_from_file(
+    list($responses, $problems) = \qtype_patternessay\testquestion_responses::load_responses_from_file(
             $responsefile, $question);
 
     // Save responses to the database.
-    $feedback = \qtype_pmatch\testquestion_responses::add_responses($responses);
+    $feedback = \qtype_patternessay\testquestion_responses::add_responses($responses);
     $feedback->problems = $problems;
     // Because this process could take a long time if there are a large number of responses
     // and a large number of rules, we could add a spinner or other indicator of progress here.
     // The best rule of thumb is to keep the number of responses under 100 if the number of
     // rules is greater than maybe 10. More responses are OK if there are fewer rules.
-    \qtype_pmatch\testquestion_responses::grade_responses_and_save_matches($question);
+    \qtype_patternessay\testquestion_responses::grade_responses_and_save_matches($question);
 
     echo $renderer->display_feedback($feedback);
 
-    echo $OUTPUT->heading(get_string('testquestionuploadanother', 'qtype_pmatch'));
+    echo $OUTPUT->heading(get_string('testquestionuploadanother', 'qtype_patternessay'));
 }
 
 $form->display();

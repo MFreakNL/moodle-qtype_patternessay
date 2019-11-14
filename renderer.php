@@ -17,7 +17,7 @@
 /**
  * Pattern-match question renderer class.
  *
- * @package    qtype_pmatch
+ * @package    qtype_patternessay
  * @copyright  2011 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -32,7 +32,7 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2011 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class qtype_pmatch_renderer extends qtype_renderer {
+class qtype_patternessay_renderer extends qtype_renderer {
     public function formulation_and_controls(question_attempt $qa,
                                                             question_display_options $options) {
 
@@ -167,11 +167,11 @@ class qtype_pmatch_renderer extends qtype_renderer {
 
     /**
      * Displays a link to run the question tests, if applicable.
-     * @param qtype_pmatch_question $question
+     * @param qtype_patternessay_question $question
      * @param question_display_options $options
      * @return string HTML fragment.
      */
-    protected function question_tests_link(qtype_pmatch_question $question, question_display_options $options) {
+    protected function question_tests_link(qtype_patternessay_question $question, question_display_options $options) {
         if (!empty($options->suppressruntestslink)) {
             return '';
         }
@@ -180,27 +180,27 @@ class qtype_pmatch_renderer extends qtype_renderer {
         }
 
         $link = html_writer::link(new moodle_url(
-                '/question/type/pmatch/testquestion.php', array('id' => $question->id)),
-                get_string('testthisquestion', 'qtype_pmatch'));
+                '/question/type/patternessay/testquestion.php', array('id' => $question->id)),
+                get_string('testthisquestion', 'qtype_patternessay'));
 
         return html_writer::tag('div', $link, array('class' => 'questiontestslink'));
     }
 
     public function back_to_test_question_link($qid) {
         return html_writer::tag('p', html_writer::link(
-                new moodle_url('/question/type/pmatch/testquestion.php', array('id' => $qid)),
-                get_string('testquestionbacklink', 'qtype_pmatch')));
+                new moodle_url('/question/type/patternessay/testquestion.php', array('id' => $qid)),
+                get_string('testquestionbacklink', 'qtype_patternessay')));
     }
 
     public function display_feedback($feedback) {
-        $html = html_writer::div(get_string('savedxresponses', 'qtype_pmatch', ($feedback->saved)));
+        $html = html_writer::div(get_string('savedxresponses', 'qtype_patternessay', ($feedback->saved)));
         if (count($feedback->duplicates)) {
-            $html .= html_writer::div(get_string('xresponsesduplicated', 'qtype_pmatch',
+            $html .= html_writer::div(get_string('xresponsesduplicated', 'qtype_patternessay',
                     (count($feedback->duplicates))));
             $html .= html_writer::alist($feedback->duplicates);
         }
         if (count($feedback->problems)) {
-            $html .= html_writer::div(get_string('xresponsesproblems', 'qtype_pmatch',
+            $html .= html_writer::div(get_string('xresponsesproblems', 'qtype_patternessay',
                     (count($feedback->problems))));
             $html .= html_writer::alist($feedback->problems);
         }

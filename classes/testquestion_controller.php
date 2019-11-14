@@ -14,17 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace qtype_pmatch;
+namespace qtype_patternessay;
 
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/lib/questionlib.php');
 
 /**
- * Defines the \qtype_pmatch\testquestion_controller class.
+ * Defines the \qtype_patternessay\testquestion_controller class.
  * Manages the testquestion page - particularly the forms actions.
  *
- * @package    qtype_pmatch
+ * @package    qtype_patternessay
  * @copyright  2016 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -53,13 +53,13 @@ class testquestion_controller {
 
     public function __construct($question, $context) {
         $this->question = $question;
-        $this->testresponses = \qtype_pmatch\testquestion_responses::create_for_question($question);
+        $this->testresponses = \qtype_patternessay\testquestion_responses::create_for_question($question);
         $this->context = $context;
         $pagesize = optional_param('pagesize', self::DEFAULT_PAGE_SIZE, PARAM_INT);
         $page = optional_param('page', 0, PARAM_INT);
-        $this->options = new \qtype_pmatch\testquestion_options($question);
-        $this->optionsform = new \qtype_pmatch\testquestion_options_form($this->get_base_url());
-        $this->responsestable = new \qtype_pmatch\testquestion_table($question,
+        $this->options = new \qtype_patternessay\testquestion_options($question);
+        $this->optionsform = new \qtype_patternessay\testquestion_options_form($this->get_base_url());
+        $this->responsestable = new \qtype_patternessay\testquestion_table($question,
                 $this->testresponses, $this->options);
         // Initiate download dropdown list.
         $this->responsestable->is_downloading('');
@@ -89,7 +89,7 @@ class testquestion_controller {
      * @return moodle_url the URL.
      */
     protected function get_base_url() {
-        return new \moodle_url('/question/type/pmatch/testquestion.php',
+        return new \moodle_url('/question/type/patternessay/testquestion.php',
                 array('id' => $this->question->id));
     }
 
@@ -102,7 +102,7 @@ class testquestion_controller {
         if (optional_param('test', 0, PARAM_BOOL) && confirm_sesskey()) {
             if ($responseids = optional_param_array('responseid', array(), PARAM_INT)) {
                 $this->print_grading_responses_progressbar($responseids);
-                \qtype_pmatch\testquestion_responses::save_rule_matches($this->question, $responseids);
+                \qtype_patternessay\testquestion_responses::save_rule_matches($this->question, $responseids);
                 echo $OUTPUT->continue_button($redirecturl);
                 echo $OUTPUT->footer();
                 exit;
@@ -112,8 +112,8 @@ class testquestion_controller {
         if (optional_param('delete', 0, PARAM_BOOL) && confirm_sesskey()) {
             if ($responseids = optional_param_array('responseid', array(), PARAM_INT)) {
                 question_require_capability_on($this->question, 'edit');
-                \qtype_pmatch\testquestion_responses::delete_responses_by_ids($responseids);
-                echo get_string('testquestiondeletedresponses', 'qtype_pmatch');
+                \qtype_patternessay\testquestion_responses::delete_responses_by_ids($responseids);
+                echo get_string('testquestiondeletedresponses', 'qtype_patternessay');
                 echo $OUTPUT->continue_button($redirecturl);
                 echo $OUTPUT->footer();
                 exit;
@@ -122,7 +122,7 @@ class testquestion_controller {
     }
 
     protected function print_grading_responses_progressbar($responseids) {
-        $responses = \qtype_pmatch\testquestion_responses::get_responses_by_ids($responseids);
+        $responses = \qtype_patternessay\testquestion_responses::get_responses_by_ids($responseids);
         $pbar = new \progress_bar('testingquestion', 500, true);
         $row = 0;
         $rowcount = count($responseids);
@@ -132,8 +132,8 @@ class testquestion_controller {
         foreach ($responses as $response) {
             \core_php_time_limit::raise(60);
             $row++;
-            \qtype_pmatch\testquestion_responses::grade_response($response, $this->question);
-            $pbar->update($row, $rowcount, get_string('processingxofy', 'qtype_pmatch',
+            \qtype_patternessay\testquestion_responses::grade_response($response, $this->question);
+            $pbar->update($row, $rowcount, get_string('processingxofy', 'qtype_patternessay',
                     array('row' => $row, 'total' => $rowcount, 'response' => $response->response)));
         }
     }

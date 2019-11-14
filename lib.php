@@ -18,7 +18,7 @@
  * Serve question type files
  *
  * @since      2.0
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright  2012 The Open University
  * @author     Jamie Pratt <me@jamiep.org>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
@@ -31,10 +31,10 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Checks file access for pattern-match questions.
  */
-function qtype_pmatch_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
+function qtype_patternessay_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
     global $DB, $CFG;
     require_once($CFG->libdir . '/questionlib.php');
-    question_pluginfile($course, $context, 'qtype_pmatch', $filearea, $args, $forcedownload, $options);
+    question_pluginfile($course, $context, 'qtype_patternessay', $filearea, $args, $forcedownload, $options);
 }
 
 /**
@@ -42,7 +42,7 @@ function qtype_pmatch_pluginfile($course, $cm, $context, $filearea, $args, $forc
  * that is needed on all of them.
  * @return array page context, and URL parameters.
  */
-function qtype_pmatch_setup_question_test_page($question) {
+function qtype_patternessay_setup_question_test_page($question) {
     global $PAGE;
 
     $urlparams = array('questionid' => $question->id);

@@ -17,7 +17,7 @@
 /**
  * Ajax endpoint for updating the human mark for a response.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2016 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -26,7 +26,7 @@ define('AJAX_SCRIPT', true);
 
 require_once('../../../../config.php');
 require_once($CFG->libdir . '/questionlib.php');
-require_once($CFG->dirroot . '/question/type/pmatch/classes/output/testquestion_renderer.php');
+require_once($CFG->dirroot . '/question/type/patternessay/classes/output/testquestion_renderer.php');
 
 require_login();
 require_sesskey();
@@ -39,7 +39,7 @@ $return = array();
 
 header('Content-type: application/json');
 
-if (!$question || !is_a($question->qtype, 'qtype_pmatch')) {
+if (!$question || !is_a($question->qtype, 'qtype_patternessay')) {
     $return['status'] = 'error';
     $return['data'] = 'Incorrect question id, or not a pattern match question.';
     echo json_encode($return);
@@ -51,7 +51,7 @@ if (!question_has_capability_on($question, 'edit')) {
     echo json_encode($return);
     die;
 }
-$response = $DB->get_record('qtype_pmatch_test_responses', array('id' => $rid), 'id, expectedfraction');
+$response = $DB->get_record('qtype_patternessay_test_responses', array('id' => $rid), 'id, expectedfraction');
 if (!$response) {
     $return['status'] = 'error';
     $return['data'] = 'The response id:' . $rid . ' does not match a record.';
@@ -60,7 +60,7 @@ if (!$response) {
 }
 $response->expectedfraction = $ef;
 try {
-    $DB->update_record('qtype_pmatch_test_responses', $response);
+    $DB->update_record('qtype_patternessay_test_responses', $response);
 } catch (Exception $e) {
     $return['status'] = 'error';
     $return['data'] = 'Cannot update response id:' . $rid;
@@ -71,16 +71,16 @@ try {
 // Now update the computed mark (though this will never change), as it allows us
 // to get the correct row class. It also means that if you change the human mark
 // of a response that has not been computer marked yet, the computed mark will be inserted.
-$responses = \qtype_pmatch\testquestion_responses::get_responses_by_ids(array($rid));
+$responses = \qtype_patternessay\testquestion_responses::get_responses_by_ids(array($rid));
 $response = $responses[$rid];
-\qtype_pmatch\testquestion_responses::grade_response($response, $question);
-\qtype_pmatch\testquestion_responses::save_rule_matches($question, array($rid));
-$options = new \qtype_pmatch\testquestion_options($question);
-$table = new \qtype_pmatch\testquestion_table($question, $responses, $options);
+\qtype_patternessay\testquestion_responses::grade_response($response, $question);
+\qtype_patternessay\testquestion_responses::save_rule_matches($question, array($rid));
+$options = new \qtype_patternessay\testquestion_options($question);
+$table = new \qtype_patternessay\testquestion_table($question, $responses, $options);
 // Counts could be returned as the lang string 'testquestionresultssummary', and that
 // would mean any changes in the string would not need to be replicated in updater.js,
 // but it was felt that just passing an object of integers is better.
-$counts = \qtype_pmatch\testquestion_responses::get_question_grade_summary_counts($question);
+$counts = \qtype_patternessay\testquestion_responses::get_question_grade_summary_counts($question);
 
 $return['status'] = 'success';
 $return['ef'] = $response->expectedfraction;

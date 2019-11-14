@@ -19,7 +19,7 @@
  * This is based on the work of Dr Alistair Willis published:
  * http://aclweb.org/anthology/W/W15/W15-0628.pdf
  *
- * @module    qtype_pmatch
+ * @module    qtype_patternessay
  * @class     rulecreator
  * @package   question
  * @copyright 2016 The Open University
@@ -29,7 +29,7 @@
 define(['jquery'], function($) {
 
     /**
-     * @alias qtype_pmatch/rulecreator
+     * @alias qtype_patternessay/rulecreator
      */
     var t = {
         store: {},
@@ -220,7 +220,7 @@ define(['jquery'], function($) {
         getTerm: function(id, type) {
             // Amati limits the number of terms to a max of 6.
             if (this.getStoreLength(id) > 4) {
-                $('#rc_notice_' + id).text(M.util.get_string('rulecreationtoomanyterms', 'qtype_pmatch'));
+                $('#rc_notice_' + id).text(M.util.get_string('rulecreationtoomanyterms', 'qtype_patternessay'));
                 return false;
             }
             var term = $('#rc_' + type + '_' + id).val();
@@ -235,7 +235,7 @@ define(['jquery'], function($) {
             if (term.indexOf(' ') > -1) {
                 return false;
             }
-            // Note Pmatch relies on an underscore for closely precedes, so these cannot be included
+            // Note Patternessay relies on an underscore for closely precedes, so these cannot be included
             // without escaping (\_). Also applies to | [] ? and * (* is except for templates).
             // Amati ignores apostrophies, numbers, special and extended characters etc.
             // It seems to only work with [a-z][A-Z].
@@ -493,7 +493,7 @@ define(['jquery'], function($) {
             } else {
                 // Currently this simple interface cannot cope with more than two 'or's,
                 // though adding all or's will work.
-                $('#rc_notice_' + id).text(M.util.get_string('rulecreationtoomanyors', 'qtype_pmatch'));
+                $('#rc_notice_' + id).text(M.util.get_string('rulecreationtoomanyors', 'qtype_patternessay'));
                 return '';
             }
             return rule.trim();

@@ -17,12 +17,12 @@
 /**
  * Pattern match form utils.
  *
- * @package qtype_pmatch
+ * @package qtype_patternessay
  * @copyright 2017 The Open University
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-namespace qtype_pmatch;
+namespace qtype_patternessay;
 defined('MOODLE_INTERNAL') || die();
 
 /**
@@ -51,27 +51,27 @@ class form_utils {
             }
 
             if ($trimmedword != '' && $trimmedsynonyms == '') {
-                $errors[$fieldname . '[' . $key . ']'] = get_string('nomatchingsynonymforword', 'qtype_pmatch');
+                $errors[$fieldname . '[' . $key . ']'] = get_string('nomatchingsynonymforword', 'qtype_patternessay');
                 continue;
             } else if ($trimmedword == '' && $trimmedsynonyms != '') {
-                $errors[$fieldname . '[' . $key . ']'] = get_string('nomatchingwordforsynonym', 'qtype_pmatch');
+                $errors[$fieldname . '[' . $key . ']'] = get_string('nomatchingwordforsynonym', 'qtype_patternessay');
                 continue;
             }
 
-            $wordinterpreter = new \pmatch_interpreter_word();
+            $wordinterpreter = new \patternessay_interpreter_word();
             list($wordmatched, $endofmatch) = $wordinterpreter->interpret($trimmedword);
             if ((!$wordmatched) || !($endofmatch == (strlen($trimmedword)))) {
-                $errors[$fieldname . '[' . $key . ']'] = get_string('wordcontainsillegalcharacters', 'qtype_pmatch');
+                $errors[$fieldname . '[' . $key . ']'] = get_string('wordcontainsillegalcharacters', 'qtype_patternessay');
                 continue;
             } else if ($wordinterpreter->get_error_message()) {
                 $errors[$fieldname . '[' . $key . ']'] = $wordinterpreter->get_error_message();
                 continue;
             }
 
-            $synonyminterpreter = new \pmatch_interpreter_synonym();
+            $synonyminterpreter = new \patternessay_interpreter_synonym();
             list($synonymmatched, $endofmatch) = $synonyminterpreter->interpret($trimmedsynonyms);
             if ((!$synonymmatched) || !($endofmatch == (strlen($trimmedsynonyms)))) {
-                $errors[$fieldname . '[' . $key . ']'] = get_string('synonymcontainsillegalcharacters', 'qtype_pmatch');
+                $errors[$fieldname . '[' . $key . ']'] = get_string('synonymcontainsillegalcharacters', 'qtype_patternessay');
                 continue;
             } else if ($synonyminterpreter->get_error_message()) {
                 $errors[$fieldname . '[' . $key . ']'] = $synonyminterpreter->get_error_message();
@@ -79,7 +79,7 @@ class form_utils {
             }
 
             if (in_array($trimmedword, $wordssofar)) {
-                $errors[$fieldname . '[' . $key . ']'] = get_string('repeatedword', 'qtype_pmatch');
+                $errors[$fieldname . '[' . $key . ']'] = get_string('repeatedword', 'qtype_patternessay');
             }
             $wordssofar[] = $trimmedword;
         }
@@ -101,13 +101,13 @@ class form_utils {
     public static function add_synonyms($editform, $mform, $question, $showheader, $elementname, $repeatwhenempty,
                                         $repeatwhenexist) {
         if ($showheader) {
-            $mform->addElement('header', 'synonymshdr', get_string('synonym', 'qtype_pmatch'));
+            $mform->addElement('header', 'synonymshdr', get_string('synonym', 'qtype_patternessay'));
         }
         $mform->addElement('static', 'synonymsdescription', '',
-                get_string('synonymsheader', 'qtype_pmatch'));
+                get_string('synonymsheader', 'qtype_patternessay'));
         $textboxgroup = array();
         $textboxgroup[] = $mform->createElement('group', $elementname,
-                get_string('synonymsno', 'qtype_pmatch', '{no}'), self::add_synonym($mform));
+                get_string('synonymsno', 'qtype_patternessay', '{no}'), self::add_synonym($mform));
         $repeatedoptions = array('synonymsdata[word]' => array('type' => PARAM_RAW),
                 'synonymsdata[synonyms]' => array('type' => PARAM_RAW));
 
@@ -122,7 +122,7 @@ class form_utils {
         }
 
         $editform->repeat_elements($textboxgroup, $repeatsatstart, $repeatedoptions, 'nosynonyms' . $elementname,
-                'addsynonyms' . $elementname, 2, get_string('addmoresynonymblanks', 'qtype_pmatch'), true);
+                'addsynonyms' . $elementname, 2, get_string('addmoresynonymblanks', 'qtype_patternessay'), true);
     }
 
     /**
@@ -134,9 +134,9 @@ class form_utils {
     public static function add_synonym($mquickform) {
         $grouparray = array();
         $grouparray[] = $mquickform->createElement('text', 'word',
-                get_string('wordwithsynonym', 'qtype_pmatch'), array('size' => 15));
+                get_string('wordwithsynonym', 'qtype_patternessay'), array('size' => 15));
         $grouparray[] = $mquickform->createElement('text', 'synonyms',
-                get_string('synonym', 'qtype_pmatch'), array('size' => 50));
+                get_string('synonym', 'qtype_patternessay'), array('size' => 50));
         return $grouparray;
     }
 }

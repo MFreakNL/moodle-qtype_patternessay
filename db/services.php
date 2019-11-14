@@ -17,7 +17,7 @@
 /**
  * Pattern-match question type web service declarations.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2018 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,18 +25,18 @@
 defined('MOODLE_INTERNAL') || die();
 
 $functions = [
-    'qtype_pmatch_check_response' => [
-        'classname' => 'qtype_pmatch_external',
-        'classpath' => 'question/type/pmatch/externallib.php',
+    'qtype_patternessay_check_response' => [
+        'classname' => 'qtype_patternessay_external',
+        'classpath' => 'question/type/patternessay/externallib.php',
         'methodname' => 'check_response',
         'description' => 'Returns error or success of when insert new response',
         'type' => 'read',
         'capabilities' => 'moodle/question:editall',
         'ajax' => true
     ],
-    'qtype_pmatch_create_response' => [
-        'classname' => 'qtype_pmatch_external',
-        'classpath' => 'question/type/pmatch/externallib.php',
+    'qtype_patternessay_create_response' => [
+        'classname' => 'qtype_patternessay_external',
+        'classpath' => 'question/type/patternessay/externallib.php',
         'methodname' => 'create_response',
         'description' => 'Create a new response',
         'type' => 'write',

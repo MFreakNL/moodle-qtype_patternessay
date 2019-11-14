@@ -15,9 +15,9 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Admin settings for the pmatch question type.
+ * Admin settings for the patternessay question type.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright  2011 The Open University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -25,19 +25,19 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/question/type/pmatch/spellinglib.php');
+require_once($CFG->dirroot . '/question/type/patternessay/spellinglib.php');
 
-$settings->add(new qtype_pmatch_admin_setting_spell_checker('qtype_pmatch/spellchecker',
-        get_string('spellcheckertype', 'qtype_pmatch'),
-        get_string('spellcheckertype_desc', 'qtype_pmatch'), 'null', null));
+$settings->add(new qtype_patternessay_admin_setting_spell_checker('qtype_patternessay/spellchecker',
+        get_string('spellcheckertype', 'qtype_patternessay'),
+        get_string('spellcheckertype_desc', 'qtype_patternessay'), 'null', null));
 
-$settings->add(new qtype_pmatch_admin_setting_environment_check('qtype_pmatch_environment_check',
-        get_string('environmentcheck', 'qtype_pmatch'), null));
+$settings->add(new qtype_patternessay_admin_setting_environment_check('qtype_patternessay_environment_check',
+        get_string('environmentcheck', 'qtype_patternessay'), null));
 
-$settings->add(new admin_setting_configtext('qtype_pmatch/amatiwsurl',
-        get_string('amatiwsurl', 'qtype_pmatch'),
-        get_string('amatiwsurl_desc', 'qtype_pmatch'), '', PARAM_URL));
+$settings->add(new admin_setting_configtext('qtype_patternessay/amatiwsurl',
+        get_string('amatiwsurl', 'qtype_patternessay'),
+        get_string('amatiwsurl_desc', 'qtype_patternessay'), '', PARAM_URL));
 
-$settings->add(new admin_setting_configtext('qtype_pmatch/minresponses',
-        get_string('minresponses', 'qtype_pmatch'),
-        get_string('minresponses_desc', 'qtype_pmatch'), 10, PARAM_INT));
+$settings->add(new admin_setting_configtext('qtype_patternessay/minresponses',
+        get_string('minresponses', 'qtype_patternessay'),
+        get_string('minresponses_desc', 'qtype_patternessay'), 10, PARAM_INT));

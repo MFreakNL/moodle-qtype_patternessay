@@ -1,8 +1,8 @@
 Try rule testcase.
 ==================
 
-Test on new pmatch question:
-  Create a new blank pmatch question.
+Test on new patternessay question:
+  Create a new blank patternessay question.
     Check there is no Try rule button on any answer.
   Add anything in the question name and text, and with match_w(a) in answer 1 textbox.
   Click Save changes and continue editing.

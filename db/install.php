@@ -17,18 +17,18 @@
 /**
  * Pattern-match question type installation code.
  *
- * @package   qtype_pmatch
+ * @package   qtype_patternessay
  * @copyright 2013 The Open University
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-function xmldb_qtype_pmatch_install() {
+function xmldb_qtype_patternessay_install() {
     global $CFG;
 
-    require_once($CFG->dirroot . '/question/type/pmatch/spellinglib.php');
-    $backends = qtype_pmatch_spell_checker::get_installed_backends();
+    require_once($CFG->dirroot . '/question/type/patternessay/spellinglib.php');
+    $backends = qtype_patternessay_spell_checker::get_installed_backends();
     end($backends);
-    set_config('spellchecker', key($backends), 'qtype_pmatch');
+    set_config('spellchecker', key($backends), 'qtype_patternessay');
 }
