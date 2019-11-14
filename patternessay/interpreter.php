@@ -135,7 +135,7 @@ abstract class patternessay_interpreter_item {
         return new $matchclassname($this, $externaloptions);
     }
     public function get_type_name_of_interpreter_object($object) {
-        return core_text::substr(get_class($object), 19);
+        return core_text::substr(get_class($object), 25);
     }
     public function get_code_fragment() {
         return $this->codefragment;
@@ -292,6 +292,7 @@ abstract class patternessay_interpreter_item_with_enclosed_subcontents
         list($found, $endofopening, $subpatterns) =
                                 $this->find_pattern($this->openingpattern, $string, $start);
 
+        echo '<pre>';print_r($this);echo '</pre>';
         if (!$found) {
             return array(false, $start);
         }
