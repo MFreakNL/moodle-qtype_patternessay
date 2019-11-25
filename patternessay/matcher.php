@@ -141,7 +141,7 @@ abstract class patternessay_matcher_item {
         return $typeobj;
     }
     public function get_type_name($object) {
-        return core_text::substr(get_class($object), 15);
+        return core_text::substr(get_class($object), 21);
     }
 }
 abstract class patternessay_matcher_item_with_subcontents extends patternessay_matcher_item {

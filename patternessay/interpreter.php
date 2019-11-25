@@ -307,7 +307,7 @@ abstract class patternessay_interpreter_item_with_enclosed_subcontents
         list($this->subcontents, $endofcontents) =
                                             $this->interpret_subcontents($string, $endofopening);
         if (empty($this->subcontents)) {
-            $this->set_error_message('unrecognisedsubcontents', core_text::substr($string, $start, 20));
+            $this->set_error_message('unrecognisedsubcontents', core_text::substr($string, $start, 25));
             return array(false, $start);
         }
         list($found, $endofclosing, $subpatterns) =
