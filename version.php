@@ -24,7 +24,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2019111400;
+$plugin->version   = 2019112500;
 $plugin->requires  = 2016120500;
 $plugin->component = 'qtype_patternessay';
 $plugin->maturity  = MATURITY_STABLE;
