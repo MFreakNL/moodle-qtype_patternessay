@@ -230,7 +230,7 @@ class qtype_patternessay_edit_form extends question_edit_form {
         );
         $mform->addElement('select', 'forcelength',
                                                 get_string('forcelength', 'qtype_patternessay'), $menu);
-        $mform->setDefault('forcelength', 1);
+        $mform->setDefault('forcelength', 0);
         $mform->addElement('selectyesno', 'applydictionarycheck',
                                             get_string('applydictionarycheck', 'qtype_patternessay'));
         $mform->setDefault('applydictionarycheck', 1);
