@@ -27,12 +27,21 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-
 /**
  * Checks file access for pattern-match questions.
+ *
+ * Standard callback for question types.
+ *
+ * @param stdClass $course
+ * @param stdClass $cm
+ * @param context $context
+ * @param string $filearea
+ * @param array $args
+ * @param bool $forcedownload
+ * @param array $options
  */
 function qtype_patternessay_pluginfile($course, $cm, $context, $filearea, $args, $forcedownload, array $options=array()) {
-    global $DB, $CFG;
+    global $CFG;
     require_once($CFG->libdir . '/questionlib.php');
     question_pluginfile($course, $context, 'qtype_patternessay', $filearea, $args, $forcedownload, $options);
 }
@@ -40,6 +49,8 @@ function qtype_patternessay_pluginfile($course, $cm, $context, $filearea, $args,
 /**
  * Used by the testquestion.php and uploadresponse.php scripts to do some initialisation
  * that is needed on all of them.
+ *
+ * @param qtype_patternessay_question $question the question.
  * @return array page context, and URL parameters.
  */
 function qtype_patternessay_setup_question_test_page($question) {
@@ -49,6 +60,7 @@ function qtype_patternessay_setup_question_test_page($question) {
 
     // Were we given a particular context to run the question in?
     // This affects things like filter settings, or forced theme or language.
+    $qcontext = $question->get_context();
     if ($cmid = optional_param('cmid', 0, PARAM_INT)) {
         $cm = get_coursemodule_from_id(false, $cmid);
         require_login($cm->course, false, $cm);
@@ -60,6 +72,17 @@ function qtype_patternessay_setup_question_test_page($question) {
         $context = context_course::instance($courseid);
         $urlparams['courseid'] = $courseid;
 
+    } else if ($qcontext->contextlevel == CONTEXT_MODULE) {
+        $cm = get_coursemodule_from_id(false, $qcontext->instanceid);
+        require_login($cm->course, false, $cm);
+        $context = $qcontext;
+        $urlparams['cmid'] = $cm->id;
+
+    } else if ($qcontext->contextlevel == CONTEXT_COURSE) {
+        require_login($qcontext->instanceid);
+        $context = $qcontext;
+        $urlparams['courseid'] = $courseid;
+
     } else {
         require_login();
         $context = $question->get_context();
@@ -68,4 +91,58 @@ function qtype_patternessay_setup_question_test_page($question) {
     }
 
     return array($context, $urlparams);
+}
+
+/**
+ * Renders element for inline editing.
+ *
+ * @param string $itemtype type of response item.
+ * @param int $itemid an item id.
+ * @param mixed $newvalue new given response.
+ * @return string the inplace editable response.
+ */
+function qtype_patternessay_inplace_editable($itemtype, $itemid, $newvalue) {
+    global $CFG, $DB;
+    require_once($CFG->libdir . '/questionlib.php');
+    require_once($CFG->dirroot . '/question/type/patternessay/externallib.php');
+
+    if ($itemtype === 'responsetable') {
+        $responses = \qtype_patternessay\testquestion_responses::get_responses_by_ids([$itemid]);
+        $response = $responses[$itemid];
+        $question = \question_bank::load_question($response->questionid);
+        $context = $question->get_context();
+        \external_api::validate_context($context);
+        require_capability('moodle/question:editall', $context);
+        // Clean input and update the record.
+        $newvalue = clean_param($newvalue, PARAM_NOTAGS);
+        $newvalue = trim($newvalue);
+
+        if ($newvalue !== $response->response) {
+            if (!strlen($newvalue) > 0) {
+                throw new moodle_exception('error:blank', 'qtype_patternessay');
+            } else {
+                $duplicated = \qtype_patternessay\testquestion_responses::check_duplicate_response(
+                        $response->questionid, $newvalue);
+                if ($duplicated) {
+                    throw new moodle_exception('testquestionformduplicateresponse', 'qtype_patternessay');
+                }
+            }
+            $response->response = $newvalue;
+            $DB->update_record('qtype_patternessay_test_responses',
+                    (object) ['id' => $itemid, 'response' => $newvalue]);
+            $result = qtype_patternessay_external::update_computed_mark_and_get_row_response($response->id, $question, null);
+            // An json string pass value to updater.js file.
+            $responsevalue = json_encode(['html' => $result['html'],
+                    'summary' => get_string('testquestionresultssummary', 'qtype_patternessay', $result['counts'])]);
+        } else {
+            $responsevalue = $response->response;
+        }
+
+        // Prepare the element for the output.
+        $editresponse = get_string('testquestioneditresponse', 'qtype_patternessay');
+        return new \core\output\inplace_editable('qtype_patternessay', 'responsetable', $response->id,
+                true, $response->response, $responsevalue, $editresponse, $editresponse);
+    }
+
+    throw new coding_exception('Unexpected item type in qtype_patternessay_inplace_editable.');
 }

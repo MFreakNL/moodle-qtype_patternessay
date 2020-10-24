@@ -22,6 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+use qtype_patternessay\local\spell\qtype_patternessay_spell_checker;
 
 defined('MOODLE_INTERNAL') || die();
 
@@ -47,6 +48,9 @@ class qtype_patternessay_question extends question_graded_by_strategy
 
     /** @var boolean whether to spell check students response. */
     public $applydictionarycheck;
+
+    /** @var string to be used for 'Preview question' and 'Answer sheet' in print. */
+    public $modelanswer;
 
     /** @var patternessay_options options for patternessay expression matching. */
     public $patternessayoptions;
@@ -98,7 +102,8 @@ class qtype_patternessay_question extends question_graded_by_strategy
             $a = $parsestring->unparseable();
             $responsevalidationerrors[] = get_string('unparseable', 'qtype_patternessay', $a);
         }
-        if ($this->applydictionarycheck && !$parsestring->is_spelt_correctly()) {
+        if ($this->applydictionarycheck != qtype_patternessay_spell_checker::DO_NOT_CHECK_OPTION &&
+                !$parsestring->is_spelled_correctly()) {
             $misspelledwords = $parsestring->get_spelling_errors();
             $a = join(' ', $misspelledwords);
             $responsevalidationerrors[] = get_string('spellingmistakes', 'qtype_patternessay', $a);
@@ -145,6 +150,14 @@ class qtype_patternessay_question extends question_graded_by_strategy
         return $expression->matches($string);
     }
 
+    public function get_correct_response() {
+        if ($this->modelanswer === '' || $this->modelanswer === null) {
+            // We don't have a correct answer.
+            return null;
+        }
+        return ['answer' => $this->modelanswer];
+    }
+
     public function check_file_access($qa, $options, $component, $filearea, $args, $forcedownload) {
         if ($component == 'question' && $filearea == 'answerfeedback') {
             $currentanswer = $qa->get_last_qt_var('answer');
@@ -162,7 +175,7 @@ class qtype_patternessay_question extends question_graded_by_strategy
     }
 
     public function start_attempt(question_attempt_step $step, $variant) {
-        $this->patternessayoptions->lang = get_string('iso6391', 'langconfig');
+        $this->patternessayoptions->lang = $this->applydictionarycheck;
         $step->set_qt_var('_responselang', $this->patternessayoptions->lang);
     }
 
@@ -183,5 +196,31 @@ class qtype_patternessay_question extends question_graded_by_strategy
 
     public function user_can_view() {
         return $this->has_question_capability('view');
+    }
+
+    /**
+     * Check that current user can see the missing dictionary warning message.
+     *
+     * @return bool True ìf user has the require capability, otherwise False
+     */
+    public function user_can_see_missing_dict_warning() {
+        return $this->has_question_capability('edit');
+    }
+
+    /**
+     * Checks whether the spell-check language for this question is available on the server.
+     *
+     * @return bool returns false if the question is set to use spell-checking, and the required
+     *      language dictionaries are not available.
+     */
+    public function is_spell_check_laguage_available() {
+        $spellchecklanguagesdata = get_config('qtype_patternessay', 'spellcheck_languages');
+        if (!$spellchecklanguagesdata) {
+            return false;
+        }
+        $availablelangs = explode(',', $spellchecklanguagesdata);
+
+        return !in_array($this->applydictionarycheck, $availablelangs) &&
+                $this->applydictionarycheck !== qtype_patternessay_spell_checker::DO_NOT_CHECK_OPTION;
     }
 }

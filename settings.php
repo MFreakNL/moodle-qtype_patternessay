@@ -22,16 +22,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/question/type/patternessay/spellinglib.php');
+require_once($CFG->dirroot . '/question/type/patternessay/classes/admin/admin_setting_spell_checker.php');
+require_once($CFG->dirroot . '/question/type/patternessay/classes/admin/admin_setting_environment_check.php');
+require_once($CFG->dirroot . '/question/type/patternessay/classes/admin/admin_setting_spell_check_languages.php');
 
-$settings->add(new qtype_patternessay_admin_setting_spell_checker('qtype_patternessay/spellchecker',
+$settings->add(new \qtype_patternessay\admin\qtype_patternessay_admin_setting_spell_checker('qtype_patternessay/spellchecker',
         get_string('spellcheckertype', 'qtype_patternessay'),
-        get_string('spellcheckertype_desc', 'qtype_patternessay'), 'null', null));
+        get_string('spellcheckertype_desc', 'qtype_patternessay'), null, null));
 
-$settings->add(new qtype_patternessay_admin_setting_environment_check('qtype_patternessay_environment_check',
+$settings->add(new \qtype_patternessay\admin\qtype_patternessay_admin_setting_environment_check('qtype_patternessay_environment_check',
         get_string('environmentcheck', 'qtype_patternessay'), null));
 
 $settings->add(new admin_setting_configtext('qtype_patternessay/amatiwsurl',
@@ -41,3 +42,7 @@ $settings->add(new admin_setting_configtext('qtype_patternessay/amatiwsurl',
 $settings->add(new admin_setting_configtext('qtype_patternessay/minresponses',
         get_string('minresponses', 'qtype_patternessay'),
         get_string('minresponses_desc', 'qtype_patternessay'), 10, PARAM_INT));
+
+$settings->add(new \qtype_patternessay\admin\qtype_patternessay_admin_setting_spell_check_languages('qtype_patternessay/spellcheck_languages',
+        get_string('setting_installed_spell_check_dictionaries', 'qtype_patternessay'),
+        get_string('setting_installed_spell_check_dictionaries_des', 'qtype_patternessay'), null, null));

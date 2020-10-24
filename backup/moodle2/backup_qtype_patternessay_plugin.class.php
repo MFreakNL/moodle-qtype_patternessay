@@ -54,8 +54,8 @@ class backup_qtype_patternessay_plugin extends backup_qtype_plugin {
 
         // Now create the qtype own structures.
         $patternessayoptions = new backup_nested_element('patternessay', array('id'), array('forcelength',
-            'usecase', 'converttospace', 'applydictionarycheck', 'extenddictionary',
-            'allowsubscript', 'allowsuperscript'));
+            'usecase', 'sentencedividers', 'converttospace', 'modelanswer', 'applydictionarycheck',
+            'extenddictionary', 'allowsubscript', 'allowsuperscript'));
 
         $synonyms = new backup_nested_element('synonyms');
 
@@ -83,9 +83,9 @@ class backup_qtype_patternessay_plugin extends backup_qtype_plugin {
                 array('questionid' => backup::VAR_PARENTID));
         $synonym->set_source_table('qtype_patternessay_synonyms',
                 array('questionid' => backup::VAR_PARENTID), 'id ASC');
-        $response->set_source_table('qtype_patternessay_responses',
+        $response->set_source_table('qtype_patternessay_test_responses',
                 array('questionid' => backup::VAR_PARENTID), 'id ASC');
-        $match->set_source_table('qtype_patternessay_r_matches',
+        $match->set_source_table('qtype_patternessay_rule_matches',
                 array('testresponseid' => backup::VAR_PARENTID));
 
         // Don't need to annotate ids nor files.

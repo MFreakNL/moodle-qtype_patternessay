@@ -27,17 +27,18 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->dirroot . '/question/type/patternessay/patternessay/matcher.php');
 
-define('PATTERNESSAY_SPECIAL_CHARACTER', '[\(\)\\\\\|\?\*_\[\]]');
-define('PATTERNESSAY_CHARACTER', '[\pL\pM\pN!"#£$%&\'/\-+<=>@\^`{}\~\.]'); // Ignore codechecker warning.
+define('patternessay_SPECIAL_CHARACTER', '[\(\)\\\\\|\?\*_\[\]]');
+// All characters in many Unicode classes, but not the special ones.
+define('patternessay_CHARACTER', '(?:(?!' . patternessay_SPECIAL_CHARACTER . ')[\pL\pM\pN\pP\pS])');
 
-define('PATTERNESSAY_LNUM', '[0-9]+');
-define('PATTERNESSAY_DNUM', PATTERNESSAY_LNUM.'[\.]'.PATTERNESSAY_LNUM);
-define('PATTERNESSAY_HTML_EXPONENT', '[*xX]10<(sup|SUP)>([+-]?'.PATTERNESSAY_LNUM.')</(sup|SUP)>');
-define('PATTERNESSAY_EXPONENT_DNUM', '(('.PATTERNESSAY_LNUM.'|'.PATTERNESSAY_DNUM.')'.
-                            '([eE][+-]?'.PATTERNESSAY_LNUM.'|'.PATTERNESSAY_HTML_EXPONENT.'))');
-define('PATTERNESSAY_NUMBER', '((([+|-])?'.PATTERNESSAY_EXPONENT_DNUM.')'.
-                            '|(([+|-])?'.PATTERNESSAY_DNUM.')'.
-                            '|(([+|-])?'.PATTERNESSAY_LNUM.'))');
+define('patternessay_LNUM', '[0-9]+');
+define('patternessay_DNUM', patternessay_LNUM.'[\.]'.patternessay_LNUM);
+define('patternessay_HTML_EXPONENT', '[*xX]10<(sup|SUP)>([+-]?'.patternessay_LNUM.')</(sup|SUP)>');
+define('patternessay_EXPONENT_DNUM', '(('.patternessay_LNUM.'|'.patternessay_DNUM.')'.
+                            '([eE][+-]?'.patternessay_LNUM.'|'.patternessay_HTML_EXPONENT.'))');
+define('patternessay_NUMBER', '((([+|-])?'.patternessay_EXPONENT_DNUM.')'.
+                            '|(([+|-])?'.patternessay_DNUM.')'.
+                            '|(([+|-])?'.patternessay_LNUM.'))');
 
 abstract class patternessay_interpreter_item {
     protected $interpretererrormessage;
@@ -344,10 +345,6 @@ class patternessay_interpreter_whole_expression extends patternessay_interpreter
     protected $limitsubcontents = 1;
 
     public function interpret($string, $start = 0) {
-        if (preg_match('/[^0-9]\.|\.[^0-9]/', $string)) {
-            $this->set_error_message('nofullstop', null);
-            return array('', 0);
-        }
         return parent::interpret($string, $start);
     }
 
@@ -823,7 +820,7 @@ class patternessay_interpreter_word extends patternessay_interpreter_item_with_s
 class patternessay_interpreter_number extends patternessay_interpreter_item {
     public function __construct($patternessayoptions) {
         parent::__construct($patternessayoptions);
-        $this->pattern = '~'.PATTERNESSAY_NUMBER.'~';
+        $this->pattern = '~'.patternessay_NUMBER.'~';
     }
 }
 
@@ -831,7 +828,7 @@ class patternessay_interpreter_number extends patternessay_interpreter_item {
 class patternessay_interpreter_character_in_word extends patternessay_interpreter_item {
     public function __construct($patternessayoptions) {
         parent::__construct($patternessayoptions);
-        $this->pattern = '~'.PATTERNESSAY_CHARACTER.'~';
+        $this->pattern = '~'.patternessay_CHARACTER.'~';
     }
 }
 
@@ -839,7 +836,7 @@ class patternessay_interpreter_character_in_word extends patternessay_interprete
 class patternessay_interpreter_special_character_in_word extends patternessay_interpreter_item {
     public function __construct($patternessayoptions) {
         parent::__construct($patternessayoptions);
-        $this->pattern = '~\\\\'.PATTERNESSAY_SPECIAL_CHARACTER.'~';
+        $this->pattern = '~\\\\'.patternessay_SPECIAL_CHARACTER.'~';
     }
 }
 

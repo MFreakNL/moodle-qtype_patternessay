@@ -25,6 +25,9 @@
 namespace qtype_patternessay;
 defined('MOODLE_INTERNAL') || die();
 
+require_once(__DIR__ . '/../question.php');
+
+
 /**
  * Pattern match form utils.
  *
@@ -60,7 +63,7 @@ class form_utils {
 
             $wordinterpreter = new \patternessay_interpreter_word();
             list($wordmatched, $endofmatch) = $wordinterpreter->interpret($trimmedword);
-            if ((!$wordmatched) || !($endofmatch == (strlen($trimmedword)))) {
+            if ((!$wordmatched) || !($endofmatch == (\core_text::strlen($trimmedword)))) {
                 $errors[$fieldname . '[' . $key . ']'] = get_string('wordcontainsillegalcharacters', 'qtype_patternessay');
                 continue;
             } else if ($wordinterpreter->get_error_message()) {
@@ -70,7 +73,7 @@ class form_utils {
 
             $synonyminterpreter = new \patternessay_interpreter_synonym();
             list($synonymmatched, $endofmatch) = $synonyminterpreter->interpret($trimmedsynonyms);
-            if ((!$synonymmatched) || !($endofmatch == (strlen($trimmedsynonyms)))) {
+            if ((!$synonymmatched) || !($endofmatch == (\core_text::strlen($trimmedsynonyms)))) {
                 $errors[$fieldname . '[' . $key . ']'] = get_string('synonymcontainsillegalcharacters', 'qtype_patternessay');
                 continue;
             } else if ($synonyminterpreter->get_error_message()) {
@@ -85,6 +88,57 @@ class form_utils {
         }
 
         return $errors;
+    }
+
+    /**
+     * Check whether any char of the first string appear in the second string.
+     *
+     * @param string $fiststring
+     * @param string $secondstring
+     * @return string
+     */
+    public static function find_char_in_both_strings($firststring, $secondstring) {
+        if (empty($firststring)) {
+            return null;
+        }
+        $firstchars = str_split($firststring);
+        $secondchars = str_split($secondstring);
+        foreach ($firstchars as $char) {
+            if (in_array($char, $secondchars)) {
+                return $char;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Check validity of the modelanswer if it is given and return the string, otherwise retun null
+     *
+     * @param $answers
+     * @param $grades
+     * @param $modelanswer
+     * @return bool
+     */
+    public static function validate_modelanswer($answers, $grades, $modelanswer) {
+        // If there is no modelanswer there is no need for validation.
+        if ($modelanswer === '') {
+            return true;
+        }
+        foreach ($answers as $key => $answer) {
+            $trimmedanswer = trim($answer);
+            if ($trimmedanswer === '') {
+                // Not an answer, just part of the form that was left blank.
+                continue;
+            }
+            $expression = new \patternessay_expression($trimmedanswer);
+            if (\qtype_patternessay_question::compare_string_with_patternessay_expression(
+                    $modelanswer, $trimmedanswer, $expression->get_options())) {
+                // This answer matches. Is the grade right?
+                return $grades[$key] == 1.0;
+            }
+        }
+        // No matching answers.
+        return false;
     }
 
     /**

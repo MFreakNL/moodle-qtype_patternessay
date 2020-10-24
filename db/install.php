@@ -24,11 +24,13 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+use qtype_patternessay\local\spell\qtype_patternessay_spell_checker;
+
 function xmldb_qtype_patternessay_install() {
     global $CFG;
 
-    require_once($CFG->dirroot . '/question/type/patternessay/spellinglib.php');
     $backends = qtype_patternessay_spell_checker::get_installed_backends();
     end($backends);
     set_config('spellchecker', key($backends), 'qtype_patternessay');
+    set_config('spellcheck_languages', 'en', 'qtype_patternessay');
 }

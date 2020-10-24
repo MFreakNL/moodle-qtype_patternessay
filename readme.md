@@ -2,7 +2,7 @@
 
 Students can enter a response of up to 20 words, which is then graded by matching
 it against various model answers expressed using a sophisticated patten
-matching algorithm. See http://docs.moodle.org/dev/The_OU_Patternessay_algorithm
+matching algorithm. See http://docs.moodle.org/dev/The_OU_patternessay_algorithm
 
 
 ## Acknowledgements
@@ -13,7 +13,7 @@ This question type was created by Jamie Pratt, working for the Open University
 
 ## Installation and set-up
 
-This plugin should be compatible with Moodle 3.4+. It is best if you also install
+This plugin should be compatible with Moodle 3.5+. It is best if you also install
 the associated superscript/subscript editor plugin. This makes the superscript
 and subscript options in the question editing form.  If the editor is not
 installed the question type can still be used but these options will not be

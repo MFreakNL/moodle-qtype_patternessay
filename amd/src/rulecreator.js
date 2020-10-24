@@ -103,15 +103,20 @@ define(['jquery'], function($) {
                     return false;
                 });
             });
-            $('.rule-creator-btn').click(function(e) {
-                $(e.target).parent().parent().parent().find('div.rule-creator').slideToggle();
-                var src = $(e.target).find('img.icon').attr('src');
+            $('.rule-creator-btn').click(function (e) {
+                var wrapper = $(e.target).closest('.fitem.rcw'),
+                    icon = $(e.target).closest('.rule-creator-btn').find('img.icon'),
+                    src = icon.attr('src');
+                wrapper.find('.rule-creator').slideToggle();
+                if (src === undefined) {
+                    return false;
+                }
                 if (src.indexOf('collapsed') > 0) {
                     src = src.slice(0, -9) + 'expanded';
                 } else {
                     src = src.slice(0, -8) + 'collapsed';
                 }
-                $(e.target).find('img.icon').attr('src', src);
+                icon.attr('src', src);
                 return false;
             });
         },
@@ -235,7 +240,7 @@ define(['jquery'], function($) {
             if (term.indexOf(' ') > -1) {
                 return false;
             }
-            // Note Patternessay relies on an underscore for closely precedes, so these cannot be included
+            // Note patternessay relies on an underscore for closely precedes, so these cannot be included
             // without escaping (\_). Also applies to | [] ? and * (* is except for templates).
             // Amati ignores apostrophies, numbers, special and extended characters etc.
             // It seems to only work with [a-z][A-Z].
